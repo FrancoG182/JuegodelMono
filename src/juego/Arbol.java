@@ -1,12 +1,10 @@
 package juego;
 
 import java.awt.Image;
-//import java.awt.Paint;
 
 import entorno.Entorno;
 import entorno.Herramientas;
 import java.awt.Color;
-//import javafx.scene.paint.Color;
 
 public class Arbol {
 	double x, y;

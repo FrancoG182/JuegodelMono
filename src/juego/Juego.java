@@ -32,7 +32,6 @@ public class Juego extends InterfaceJuego {
 		background = Herramientas.cargarImagen("background.jpg");
 		mono = new Mono(50, 410);
 		arbol = new Arbol(300, 340);
-		
 //		arbol = new Arbol(300, 295); // Para la imagen del arbol
 
 		// Inicializar lo que haga falta para el juego
