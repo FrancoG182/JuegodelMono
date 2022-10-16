@@ -2,6 +2,8 @@ package juego;
 
 import java.awt.Color;
 
+//import java.awt.Color;
+
 import java.awt.Image;
 
 import entorno.Entorno;
@@ -19,7 +21,8 @@ public class Mono {
 	}
 
 	public void dibujarse(Entorno entorno) {
-		entorno.dibujarImagen(img1, this.x, this.y, 0, 1);
+//		entorno.dibujarImagen(img1, this.x, this.y, 0, 1);
+		entorno.dibujarRectangulo(this.x, this.y, 80.0, 80.0, 0.0, Color.gray);
 //		else
 //			entorno.dibujarImagen(img2, this.x, this.y, 0);
 	}

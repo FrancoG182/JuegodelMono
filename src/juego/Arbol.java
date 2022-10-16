@@ -31,6 +31,6 @@ public class Arbol {
 	}
 
 	public void moverAdelante() {
-		this.x -= 2;
+		this.x -= 1;
 	}
 }
