@@ -29,7 +29,7 @@ public class Juego extends InterfaceJuego {
 		
 		background = Herramientas.cargarImagen("background.jpg");
 		
-		mono = new Mono(100); // 420
+		mono = new Mono(100, 100); // 420
 		
 		arbol = new Arbol(300, 360); // Para el rectangulo
 //		arbol = new Arbol(300, 295); // Para la imagen del arbol
@@ -54,6 +54,7 @@ public class Juego extends InterfaceJuego {
 		
 		arbol.dibujarse(entorno);
 		mono.dibujarse(entorno);
+		mono.gravedad();
 		
 		arbol.moverAdelante();
 		if (arbol.x < -100.0) {
