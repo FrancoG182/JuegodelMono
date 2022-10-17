@@ -1,7 +1,9 @@
 package juego;
 
+import java.awt.Color;
 //import java.awt.Color;
 import java.awt.Image;
+import java.awt.Rectangle;
 
 import entorno.Entorno;
 import entorno.Herramientas;
@@ -25,7 +27,7 @@ public class Juego extends InterfaceJuego {
 		this.entorno = new Entorno(this, "Selva Mono Capuchino - Grupo 10 - v1", 800, 600);
 		
 		background = Herramientas.cargarImagen("background.jpg");
-		mono = new Mono(100, 300); // 420
+		mono = new Mono(100, 420); // 420
 		
 		arbol = new Arbol(300, 360); // Para el rectangulo
 //		arbol = new Arbol(300, 295); // Para la imagen del arbol
@@ -49,36 +51,25 @@ public class Juego extends InterfaceJuego {
 		arbol.dibujarse(entorno);
 		mono.dibujarse(entorno);
 		
-		arbol.moverAdelante();
-		if (arbol.x < -100) {
+//		arbol.moverAdelante();
+		if (arbol.x < -100.0) {
 			arbol.x = 200;
 			arbol.arbolRect.x = 200;
 		}
 		
-		colisionEntre(mono, arbol);
-		
+		// Linea que delimita el piso. El mono nunca debe traspasarla
+		int asd = Configuracion.POSICION_Y_PISO;
+		entorno.dibujarRectangulo(400, asd, 800, 1, 0.0, Color.red);
+
+		colisionEntre(mono.monoRect, arbol.arbolRect);	
 	}
-	public static boolean colisionEntre(Mono mono, Arbol arbol) {
-//		if (
-//			    mono.x < arbol.x + 30 &&
-//			    mono.x + 80 > arbol.x &&
-//			    mono.y < arbol.y + 200 &&
-//			    80 + mono.y > arbol.y
-//			  ) {
-//			    // Collision detected!
-//			    System.out.println("Collision detected!");
-//			    return true;
-//			  }
-//		return false;
-		if (mono.monoRect.intersects(arbol.arbolRect)) {
+	
+	public static boolean colisionEntre(Rectangle rect1, Rectangle rect2) {
+		if (rect1.intersects(rect2)) {
 			System.out.println("Collision detected!");
 			return true;
 		}
 		return false;
-	}
-	
-	public boolean colision(double x1, double y1, double x2, double y2, double dist) {
-		return (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) < dist * dist;
 	}
 
 	@SuppressWarnings("unused")

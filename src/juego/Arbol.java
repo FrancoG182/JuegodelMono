@@ -22,17 +22,9 @@ public class Arbol {
 		this.arbolRect.height = 200;
 		this.arbolRect.x = x - arbolRect.width / 2;
 		this.arbolRect.y = y - arbolRect.height / 2;
-		
+
 		img1 = Herramientas.cargarImagen("arbol.png");
 	}
-
-//	public Arbol(int x, int y, int ancho, int alto) {
-//		this.x = x - ancho / 2;
-//		this.y = y - alto / 2;
-//		this.ancho = ancho;
-//		this.alto = alto;
-//		Rectangle arbolR = new Rectangle(this.x, this.y, this.ancho, this.alto);
-//	}
 
 	// Tal vez un metodo que construya un array de arboles con tamaños, coordenadas
 	// y otras propiedades distintas.
@@ -51,15 +43,6 @@ public class Arbol {
 //		else
 //			entorno.dibujarImagen(img2, this.x, this.y, 0);
 	}
-
-//	public Rectangle rectangulo(int x, int y, int ancho, int alto) {
-//		this.x = x - ancho / 2;
-//		this.y = y - alto / 2;
-//		this.ancho = ancho;
-//		this.alto = alto;
-//		Rectangle arbolR = new Rectangle(this.x, this.y, this.ancho, this.alto);
-//		return arbolR;
-//	}
 	
 	public void moverAdelante() {
 		this.x -= 1;
