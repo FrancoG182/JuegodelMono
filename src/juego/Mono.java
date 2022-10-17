@@ -15,7 +15,7 @@ public class Mono {
 
 	public Mono(int x) {
 //		img1 = Herramientas.cargarImagen("Mono1.png");
-		img1 = Herramientas.cargarImagen("Rect.png");
+		img1 = Herramientas.cargarImagen("Rect2.png");
 		img2 = Herramientas.cargarImagen("Mono2.png");
 		
 		this.x = x;
@@ -23,8 +23,13 @@ public class Mono {
 		
 		// Coordenadas y tamaño del rectangulo que va a hacer de hitbox del mono.
 		this.monoRect = new Rectangle();
-		this.monoRect.width = 80;
-		this.monoRect.height = 80;
+		
+//		this.monoRect.width = 80;	// Esta asignacion es para cuando se esta dibujando un rectangulo.
+		this.monoRect.width = img1.getWidth(null);
+		
+//		this.monoRect.height = 80;	// Esta asignacion es para cuando se esta dibujando un rectangulo.
+		this.monoRect.height = img1.getHeight(null);
+		
 		this.monoRect.x = x - monoRect.width / 2;
 		this.monoRect.y = y - monoRect.height / 2;
 		
@@ -45,23 +50,5 @@ public class Mono {
 		} else {
 			this.y = 410;
 		}
-	}
-
-	public void moverAdelante() {
-		this.x += Math.cos(this.x) * 20;
-		this.y += Math.sin(this.x) * 20;
-		if (this.x > 900) {
-			this.x = -100;
-		}
-		if (this.x < -100) {
-			this.x = 900;
-		}
-		if (this.y > 650) {
-			this.y = -50;
-		}
-		if (this.y < -50) {
-			this.y = 650;
-		}
-
 	}
 }
