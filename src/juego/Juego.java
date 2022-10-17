@@ -1,7 +1,6 @@
 package juego;
 
 import java.awt.Color;
-//import java.awt.Color;
 import java.awt.Image;
 import java.awt.Rectangle;
 
@@ -16,7 +15,7 @@ public class Juego extends InterfaceJuego {
 	Mono mono;
 	Arbol arbol;
 
-//	double coordPiso;
+	static int piso = Configuracion.POSICION_Y_PISO;
 //	Arbol[] arboles;
 
 	// Variables y métodos propios de cada grupo
@@ -26,14 +25,14 @@ public class Juego extends InterfaceJuego {
 		// Inicializa el objeto entorno
 		this.entorno = new Entorno(this, "Selva Mono Capuchino - Grupo 10 - v1", 800, 600);
 		
+		// Inicializar lo que haga falta para el juego
+		
 		background = Herramientas.cargarImagen("background.jpg");
-		mono = new Mono(100, 420); // 420
+		
+		mono = new Mono(100); // 420
 		
 		arbol = new Arbol(300, 360); // Para el rectangulo
 //		arbol = new Arbol(300, 295); // Para la imagen del arbol
-
-		// Inicializar lo que haga falta para el juego
-		// ...
 
 		// Inicia el juego!
 		this.entorno.iniciar();
@@ -48,20 +47,32 @@ public class Juego extends InterfaceJuego {
 	public void tick() {
 		entorno.dibujarImagen(background, 400, 300, 0, 1);
 
+//		int posYPiso = Configuracion.POSICION_Y_PISO;
+		
+		// Linea que delimita el piso. Ni el mono ni los enemigos deben traspasarla al hacer efecto la gravedad.
+		entorno.dibujarRectangulo(400, piso, 800, 1, 0.0, Color.red);
+		
 		arbol.dibujarse(entorno);
 		mono.dibujarse(entorno);
 		
-//		arbol.moverAdelante();
+		arbol.moverAdelante();
 		if (arbol.x < -100.0) {
 			arbol.x = 200;
 			arbol.arbolRect.x = 200;
 		}
-		
-		// Linea que delimita el piso. El mono nunca debe traspasarla
-		int asd = Configuracion.POSICION_Y_PISO;
-		entorno.dibujarRectangulo(400, asd, 800, 1, 0.0, Color.red);
 
 		colisionEntre(mono.monoRect, arbol.arbolRect);	
+	}
+	
+	// Los elementos del juego son imagenes (rectangulos). Este metodo ayudaria a posicionarlos correctamente sobre el piso. 
+//	public static int coordYDeLaBase(Image img) {
+//		return img.getHeight(null);
+//	}
+	
+	// Los elementos del juego son imagenes (rectangulos). Este metodo ayudaria a posicionarlos correctamente sobre el piso.	
+	// Calcula la coordenada Y que se debe pasar como parametro al constructor del objeto en cuestion. 
+	public static int apoyarSobrePiso(Image img) {
+		return piso - img.getHeight(null) / 2;
 	}
 	
 	public static boolean colisionEntre(Rectangle rect1, Rectangle rect2) {

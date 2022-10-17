@@ -1,6 +1,6 @@
 package juego;
 
-import java.awt.Color;
+//import java.awt.Color;
 
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -13,9 +13,13 @@ public class Mono {
 	Image img1, img2;
 	Rectangle monoRect;
 
-	public Mono(int x, int y) {
+	public Mono(int x) {
+//		img1 = Herramientas.cargarImagen("Mono1.png");
+		img1 = Herramientas.cargarImagen("Rect.png");
+		img2 = Herramientas.cargarImagen("Mono2.png");
+		
 		this.x = x;
-		this.y = y;
+		this.y = Juego.apoyarSobrePiso(img1);
 		
 		// Coordenadas y tamaño del rectangulo que va a hacer de hitbox del mono.
 		this.monoRect = new Rectangle();
@@ -24,13 +28,11 @@ public class Mono {
 		this.monoRect.x = x - monoRect.width / 2;
 		this.monoRect.y = y - monoRect.height / 2;
 		
-		img1 = Herramientas.cargarImagen("Mono1.png");
-		img2 = Herramientas.cargarImagen("Mono2.png");
 	}
 
 	public void dibujarse(Entorno entorno) {
-//		entorno.dibujarImagen(img1, this.x, this.y, 0, 1);
-		entorno.dibujarRectangulo(this.x, this.y, this.monoRect.width, this.monoRect.height, 0.0, Color.gray);
+		entorno.dibujarImagen(img1, this.x, this.y, 0, 1);
+//		entorno.dibujarRectangulo(this.x, this.y, this.monoRect.width, this.monoRect.height, 0.0, Color.gray);
 //		else
 //			entorno.dibujarImagen(img2, this.x, this.y, 0);
 	}
