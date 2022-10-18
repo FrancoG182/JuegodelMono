@@ -30,9 +30,9 @@ public class Juego extends InterfaceJuego {
 		
 		background = Herramientas.cargarImagen("background.jpg");
 		
-		mono = new Mono(100, 100); // 420
+		mono = new Mono(100, 300); // 420
 		
-		arbol = new Arbol(300, 360); // Para el rectangulo
+		arbol = new Arbol(100, 360); // Para el rectangulo
 //		arbol = new Arbol(300, 295); // Para la imagen del arbol
 
 		// Inicia el juego!
@@ -66,11 +66,6 @@ public class Juego extends InterfaceJuego {
 		colisionEntre(mono.monoRect, arbol.arbolRect);	
 	}
 	
-	// Los elementos del juego son imagenes (rectangulos). Este metodo ayudaria a posicionarlos correctamente sobre el piso. 
-//	public static int coordYDeLaBase(Image img) {
-//		return img.getHeight(null);
-//	}
-	
 	// Los elementos del juego son imagenes (rectangulos). Este metodo ayudaria a posicionarlos correctamente sobre el piso.	
 	// Calcula la coordenada Y que se debe pasar como parametro al constructor del objeto en cuestion. 
 	public static int apoyarSobrePiso(Image img) {
@@ -79,7 +74,7 @@ public class Juego extends InterfaceJuego {
 	
 	public static boolean colisionEntre(Rectangle rect1, Rectangle rect2) {
 		if (rect1.intersects(rect2)) {
-			System.out.println("Collision detected!");
+//			System.out.println("Collision detected!");
 			return true;
 		}
 		return false;

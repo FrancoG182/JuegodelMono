@@ -58,9 +58,19 @@ public class Mono {
 	}
 	
 	public void gravedad() {
-		if (this.y < Juego.apoyarSobrePiso(img1)) {
-			this.y += 1;
-			this.monoRect.y += 1;
+		int coordPiso = Configuracion.POSICION_Y_PISO;
+		int limitePiso = Juego.apoyarSobrePiso(img1);
+		
+		if (this.y < limitePiso) { // Si el mono esta por encima del piso:
+			int nuevaPos = this.y + Configuracion.GRAVEDAD;	// Su Y crece tanto como diga GRAVEDAD (esto es la velocidad de caida)
+			
+			if(nuevaPos < limitePiso) { // Si la posicion a la que va a ser dibujado sigue por encima del piso:
+				this.y = nuevaPos;	// El mono sigue cayendo.
+				this.monoRect.y = nuevaPos;	// Lo mismo para la hitbox.			
+			} else { // Si la posicion a la que va a ser dibujado no está por enciima del piso (es decir, toca el piso o lo traspasa):
+				this.y = coordPiso - monoRect.height / 2;	// El mono se coloca por encima del piso.
+				this.monoRect.y = coordPiso - monoRect.height / 2;	// Lo mismo para la hitbox.				
+			}
 		}
 	}
 }
