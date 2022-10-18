@@ -3,7 +3,6 @@ package juego;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Rectangle;
-
 import entorno.Entorno;
 import entorno.Herramientas;
 import entorno.InterfaceJuego;
@@ -61,7 +60,7 @@ public class Juego extends InterfaceJuego {
 		arbol.moverAdelante();
 		if (arbol.x < -100.0) {
 			arbol.x = 200;
-			arbol.arbolRect.x = 200;
+			arbol.arbolRect.x = arbol.x - arbol.arbolRect.width / 2;
 		}
 
 		colisionEntre(mono.monoRect, arbol.arbolRect);	
