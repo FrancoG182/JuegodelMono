@@ -63,12 +63,12 @@ public class Juego extends InterfaceJuego {
 		rama.dibujarse(entorno);
 		mono.dibujarse(entorno);
 		
-		if (mono.sobreRama(rama)) {
+		if (!mono.sobreRama(rama)) {
 			mono.gravedad();
 		}
 		
-		rama.moverAdelante();
-//		rama.subir();
+//		rama.moverAdelante();
+		rama.subir();
 		
 		arbol.moverAdelante();
 		if (arbol.x < -100.0) {
@@ -87,6 +87,10 @@ public class Juego extends InterfaceJuego {
 	public static int apoyarSobrePiso(Image img) {
 		return piso - img.getHeight(null) / 2;
 	}
+	
+//	public static int apoyarSobrePiso(Mono mono) {
+//		return piso - mono.monoRect.height / 2;
+//	}
 
 	public static boolean colisionEntre(Rectangle rect1, Rectangle rect2) {
 		if (rect1.intersects(rect2)) {

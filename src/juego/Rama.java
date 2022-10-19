@@ -23,9 +23,9 @@ public class Rama {
 
 		this.ramaRect.width = 100;
 		this.ramaRect.height = 15;
+		
 		this.ramaRect.x = this.x - ramaRect.width / 2;
 		this.ramaRect.y = this.y - ramaRect.height / 2;
-
 	}
 	
 	public void dibujarse(Entorno entorno) {

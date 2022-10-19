@@ -55,18 +55,18 @@ public class Mono {
 		}
 	}
 	public boolean sobreRama(Rama rama) {
-		int topeDeRama = rama.ramaRect.y - rama.ramaRect.height / 2;
-		int baseMono = this.monoRect.y + monoRect.height / 2;
+		int topeDeRama = rama.ramaRect.y;
+		int baseMono = this.monoRect.y;
 		System.out.println("rama = " + topeDeRama);
 		System.out.println("mono = " + baseMono);
 //		int centradorMono = -this.monoRect.width / 2; 
 //		int centradorRama = -rama.ramaRect.width / 2;
 		
 		if (baseMono < topeDeRama) {
-			if (this.monoRect.x + this.monoRect.width >= rama.ramaRect.x || 
-					this.monoRect.x <= rama.ramaRect.x + rama.ramaRect.width ) {
+//			if (this.monoRect.x + this.monoRect.width >= rama.ramaRect.x || 
+//					this.monoRect.x <= rama.ramaRect.x + rama.ramaRect.width ) {
 				return false;
-			}
+//			}
 		}
 		
 		return true;
@@ -74,7 +74,8 @@ public class Mono {
 	
 	public void gravedad() {
 		int coordPiso = Configuracion.POSICION_Y_PISO;
-		int limitePiso = Juego.apoyarSobrePiso(img1);
+		int limitePiso = Juego.apoyarSobrePiso(this.img1);
+//		int limitePiso = Juego.apoyarSobrePiso(this);
 		
 		if (this.y < limitePiso) { // Si el mono esta por encima del piso:
 			int nuevaPos = this.y + Configuracion.GRAVEDAD;	// Su Y crece tanto como diga GRAVEDAD (esto es la velocidad de caida)
