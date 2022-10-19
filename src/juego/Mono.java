@@ -1,7 +1,5 @@
 package juego;
 
-//import java.awt.Color;
-
 import java.awt.Image;
 import java.awt.Rectangle;
 
@@ -56,6 +54,23 @@ public class Mono {
 			this.y = 410;
 		}
 	}
+	public boolean sobreRama(Rama rama) {
+		int topeDeRama = rama.ramaRect.y - rama.ramaRect.height / 2;
+		int baseMono = this.monoRect.y + monoRect.height / 2;
+		System.out.println("rama = " + topeDeRama);
+		System.out.println("mono = " + baseMono);
+//		int centradorMono = -this.monoRect.width / 2; 
+//		int centradorRama = -rama.ramaRect.width / 2;
+		
+		if (baseMono > topeDeRama) {
+//			if (this.monoRect.x + this.monoRect.width >= rama.ramaRect.x || 
+//					this.monoRect.x <= rama.ramaRect.x + rama.ramaRect.width ) {
+				return true;
+//			}
+		}
+		
+		return false;
+	}
 	
 	public void gravedad() {
 		int coordPiso = Configuracion.POSICION_Y_PISO;
@@ -64,10 +79,11 @@ public class Mono {
 		if (this.y < limitePiso) { // Si el mono esta por encima del piso:
 			int nuevaPos = this.y + Configuracion.GRAVEDAD;	// Su Y crece tanto como diga GRAVEDAD (esto es la velocidad de caida)
 			
-			if(nuevaPos < limitePiso) { // Si la posicion a la que va a ser dibujado sigue por encima del piso:
+			if(nuevaPos < limitePiso) { // Si la posicion a la que va a ser dibujado va a seguir por encima del piso:
 				this.y = nuevaPos;	// El mono sigue cayendo.
-				this.monoRect.y = nuevaPos;	// Lo mismo para la hitbox.			
-			} else { // Si la posicion a la que va a ser dibujado no está por enciima del piso (es decir, toca el piso o lo traspasa):
+				this.monoRect.y = nuevaPos;	// Lo mismo para la hitbox.
+				
+			} else { // Si la posicion a la que va a ser dibujado no va a estar por enciima del piso (es decir, toca el piso o lo traspasa):
 				this.y = coordPiso - monoRect.height / 2;	// El mono se coloca por encima del piso.
 				this.monoRect.y = coordPiso - monoRect.height / 2;	// Lo mismo para la hitbox.				
 			}
