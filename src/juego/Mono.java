@@ -34,8 +34,8 @@ public class Mono {
 		/* Teniendo en cuenta que los metodos preintegrados del TP dibujan las imgs con su centro en las
 			coordenadas pasadas como parametro, estas asignaciones calculan la posicion del rectangulo con
 			respecto a la posicion de la img. */
-		this.monoRect.x = x - monoRect.width / 2;
-		this.monoRect.y = y - monoRect.height / 2;
+		this.monoRect.x = this.x - monoRect.width / 2;
+		this.monoRect.y = this.y - monoRect.height / 2;
 		
 	}
 
@@ -62,14 +62,14 @@ public class Mono {
 //		int centradorMono = -this.monoRect.width / 2; 
 //		int centradorRama = -rama.ramaRect.width / 2;
 		
-		if (baseMono > topeDeRama) {
-//			if (this.monoRect.x + this.monoRect.width >= rama.ramaRect.x || 
-//					this.monoRect.x <= rama.ramaRect.x + rama.ramaRect.width ) {
-				return true;
-//			}
+		if (baseMono < topeDeRama) {
+			if (this.monoRect.x + this.monoRect.width >= rama.ramaRect.x || 
+					this.monoRect.x <= rama.ramaRect.x + rama.ramaRect.width ) {
+				return false;
+			}
 		}
 		
-		return false;
+		return true;
 	}
 	
 	public void gravedad() {

@@ -63,12 +63,12 @@ public class Juego extends InterfaceJuego {
 		rama.dibujarse(entorno);
 		mono.dibujarse(entorno);
 		
-		if (!mono.sobreRama(rama)) {
+		if (mono.sobreRama(rama)) {
 			mono.gravedad();
 		}
 		
-//		rama.moverAdelante();
-		rama.subir();
+		rama.moverAdelante();
+//		rama.subir();
 		
 		arbol.moverAdelante();
 		if (arbol.x < -100.0) {
