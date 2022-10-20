@@ -58,7 +58,7 @@ public class Juego extends InterfaceJuego {
 		entorno.dibujarRectangulo(400, piso, 800, 1, 0.0, Color.red);
 		
 //		entorno.dibujarRectangulo(400, 394, 800, 1, 0.0, Color.red);
-
+///
 //		arbol.dibujarse(entorno);
 		rama.dibujarse(entorno);
 		mono.dibujarse(entorno);
