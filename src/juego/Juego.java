@@ -30,11 +30,11 @@ public class Juego extends InterfaceJuego {
 
 		background = Herramientas.cargarImagen("background.jpg");
 
-		mono = new Mono(100, 300); // 420
+		mono = new Mono(100, 250); // 420
 
 		arbol = new Arbol(100, 360); // Para el rectangulo
 
-		rama = new Rama(100, 400); // Para el rectangulo
+		rama = new Rama(220, 400); // Para el rectangulo
 
 //		arbol = new Arbol(300, 295); // Para la imagen del arbol
 
@@ -58,7 +58,7 @@ public class Juego extends InterfaceJuego {
 		entorno.dibujarRectangulo(400, piso, 800, 1, 0.0, Color.red);
 		
 //		entorno.dibujarRectangulo(400, 394, 800, 1, 0.0, Color.red);
-///
+
 //		arbol.dibujarse(entorno);
 		rama.dibujarse(entorno);
 		mono.dibujarse(entorno);
@@ -67,8 +67,8 @@ public class Juego extends InterfaceJuego {
 			mono.gravedad();
 		}
 		
-//		rama.moverAdelante();
-		rama.subir();
+		rama.moverAdelante();
+//		rama.subir();
 		
 		arbol.moverAdelante();
 		if (arbol.x < -100.0) {

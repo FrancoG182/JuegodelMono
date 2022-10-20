@@ -56,20 +56,27 @@ public class Mono {
 	}
 	public boolean sobreRama(Rama rama) {
 		int topeDeRama = rama.ramaRect.y;
-		int baseMono = this.monoRect.y;
+		int baseMono = this.monoRect.y + this.monoRect.height / 2;
+		
+		boolean derMonoSobreIzqRama = this.monoRect.x + this.monoRect.width >= rama.ramaRect.x &&
+				this.monoRect.x + this.monoRect.width  <= rama.ramaRect.x + rama.ramaRect.width;
+		
+		boolean izqMonoSobreDerRama = this.monoRect.x >= rama.ramaRect.x &&
+				this.monoRect.x <= rama.ramaRect.x + rama.ramaRect.width;
+				
+		boolean centroMonoSobreCentroRama = this.monoRect.x >= rama.ramaRect.x &&
+				this.monoRect.x + this.monoRect.width <= rama.ramaRect.x + rama.ramaRect.width;
+		
 		System.out.println("rama = " + topeDeRama);
 		System.out.println("mono = " + baseMono);
-//		int centradorMono = -this.monoRect.width / 2; 
-//		int centradorRama = -rama.ramaRect.width / 2;
 		
-		if (baseMono < topeDeRama) {
-//			if (this.monoRect.x + this.monoRect.width >= rama.ramaRect.x || 
-//					this.monoRect.x <= rama.ramaRect.x + rama.ramaRect.width ) {
-				return false;
-//			}
-		}
+//		if (baseMono == topeDeRama) {
+			if (derMonoSobreIzqRama || centroMonoSobreCentroRama || izqMonoSobreDerRama) {
+				return true;
+			}
+//		}
 		
-		return true;
+		return false;
 	}
 	
 	public void gravedad() {
