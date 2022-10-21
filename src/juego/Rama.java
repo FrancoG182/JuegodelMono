@@ -1,5 +1,6 @@
 package juego;
 
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.Rectangle;
 //import java.awt.Color;
@@ -31,7 +32,7 @@ public class Rama {
 	public void dibujarse(Entorno entorno) {
 		entorno.dibujarImagen(img1, this.x, this.y, 0, 1);
 		
-//		entorno.dibujarRectangulo(this.x, this.y, this.ramaRect.width, this.ramaRect.height, 0.0, Color.gray);
+		entorno.dibujarRectangulo(this.ramaRect.x + ramaRect.width / 2, this.ramaRect.y + ramaRect.height / 2, this.ramaRect.width, this.ramaRect.height, 0.0, Color.gray);
 	}
 	
 	public void moverAdelante() {

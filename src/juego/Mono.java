@@ -1,5 +1,6 @@
 package juego;
 
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.Rectangle;
 
@@ -46,7 +47,7 @@ public class Mono {
 	public void dibujarse(Entorno entorno) {
 		entorno.dibujarImagen(img1, this.x, this.y, 0, 1);
 
-//		entorno.dibujarRectangulo(this.x, this.y, this.monoRect.width, this.monoRect.height, 0.0, Color.gray);
+//		entorno.dibujarRectangulo(this.monoRect.x + monoRect.width / 2, this.monoRect.y + monoRect.height / 2, this.monoRect.width, this.monoRect.height, 0.0, Color.gray);
 	}
 
 	// ESTA MAL ESTE METODO.

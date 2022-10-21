@@ -31,7 +31,7 @@ public class Juego extends InterfaceJuego {
 
 		background = Herramientas.cargarImagen("background.jpg");
 
-		mono = new Mono(100, 250); // 420
+		mono = new Mono(0,0); // 420
 
 		limiteSalto = 0;
 
@@ -59,17 +59,16 @@ public class Juego extends InterfaceJuego {
 		// Linea que delimita el piso. Ni el mono ni los enemigos deben traspasarla al
 		// hacer efecto la gravedad.
 		entorno.dibujarRectangulo(400, piso, 800, 1, 0.0, Color.red);
-
-		entorno.dibujarRectangulo(400, rama.ramaRect.y, 800, 1, 0.0, Color.red);
-		entorno.dibujarRectangulo(400, rama.ramaRect.y + rama.ramaRect.height, 800, 1, 0.0, Color.green);
-
+		
+		entorno.dibujarRectangulo(400, arbol.arbolRect.y, 800, 1, 0.0, Color.yellow);
+//		Juego.apoyarSobrePiso(arbol.arbolRect.height);
 		arbol.dibujarse(entorno);
 		rama.dibujarse(entorno);
 		mono.dibujarse(entorno);
 
 		if (!mono.monoCayendo && entorno.estaPresionada(entorno.TECLA_ARRIBA) && limiteSalto < Configuracion.LIMITE_SALTO) {
 			mono.saltar();
-			limiteSalto++;
+//			limiteSalto++;
 		} else {
 			limiteSalto = 0;
 			mono.gravedad(rama, arbol);
@@ -84,15 +83,19 @@ public class Juego extends InterfaceJuego {
 			mono.x -= Configuracion.FUERZA_SALTO;
 			mono.monoRect.x -= Configuracion.FUERZA_SALTO;
 		}
+		if (entorno.estaPresionada(entorno.TECLA_ABAJO)) {
+			mono.y += Configuracion.FUERZA_SALTO;
+			mono.monoRect.y += Configuracion.FUERZA_SALTO;
+		}
 
 //		rama.moverAdelante();
 //		rama.subir();
 
-		arbol.moverAdelante();
-		if (arbol.x < -100.0) {
-			arbol.x = 200;
-			arbol.arbolRect.x = arbol.x - arbol.arbolRect.width / 2;
-		}
+//		arbol.moverAdelante();
+//		if (arbol.x < -100.0) {
+//			arbol.x = 200;
+//			arbol.arbolRect.x = arbol.x - arbol.arbolRect.width / 2;
+//		}
 
 		colisionEntre(mono.monoRect, arbol.arbolRect);
 	}
@@ -105,10 +108,14 @@ public class Juego extends InterfaceJuego {
 	public static int apoyarSobrePiso(Image img) {
 		return piso - img.getHeight(null) / 2;
 	}
+	
+	public static int apoyarSobrePiso(int altura) {
+		return piso - altura / 2;
+	}
 
 	public static boolean colisionEntre(Rectangle rect1, Rectangle rect2) {
 		if (rect1.intersects(rect2)) {
-//			System.out.println("Collision detected!");
+			System.out.println("Collision detected!");
 			return true;
 		}
 		return false;
