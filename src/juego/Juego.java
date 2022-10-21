@@ -65,7 +65,7 @@ public class Juego extends InterfaceJuego {
 		arbol.dibujarse(entorno);
 		rama.dibujarse(entorno);
 		mono.dibujarse(entorno);
-
+		
 		if (!mono.monoCayendo && entorno.estaPresionada(entorno.TECLA_ARRIBA) && limiteSalto < Configuracion.LIMITE_SALTO) {
 			mono.saltar();
 //			limiteSalto++;

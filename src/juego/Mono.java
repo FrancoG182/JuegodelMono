@@ -47,7 +47,7 @@ public class Mono {
 	public void dibujarse(Entorno entorno) {
 		entorno.dibujarImagen(img1, this.x, this.y, 0, 1);
 
-//		entorno.dibujarRectangulo(this.monoRect.x + monoRect.width / 2, this.monoRect.y + monoRect.height / 2, this.monoRect.width, this.monoRect.height, 0.0, Color.gray);
+		entorno.dibujarRectangulo(this.monoRect.x + monoRect.width / 2, this.monoRect.y + monoRect.height / 2, this.monoRect.width, this.monoRect.height, 0.0, Color.gray);
 	}
 
 	// ESTA MAL ESTE METODO.
@@ -62,7 +62,7 @@ public class Mono {
 
 	public boolean sobreRama(Rama rama) {
 		int topeDeRama = rama.ramaRect.y;
-		int baseMono = this.monoRect.y + this.monoRect.height / 2;
+		int baseMono = this.monoRect.y + this.monoRect.height;
 		int proximaPosicion = baseMono + Configuracion.GRAVEDAD;
 
 		boolean derMonoSobreIzqRama = this.monoRect.x + this.monoRect.width >= rama.ramaRect.x
@@ -78,7 +78,7 @@ public class Mono {
 			
 			if (proximaPosicion >= topeDeRama && this.monoCayendo && baseMono <= topeDeRama) {
 				this.y = topeDeRama - this.monoRect.height / 2; // El mono se coloca por encima de la rama.
-				this.monoRect.y = topeDeRama - this.monoRect.height / 2; // Lo mismo para su hitbox.
+				this.monoRect.y = this.y - this.monoRect.height / 2; // Lo mismo para su hitbox.
 				return true;
 			}
 		}
@@ -98,12 +98,12 @@ public class Mono {
 				
 			} else if (proximaPosicion < limitePiso) { // Si la posicion a la que va a ser dibujado va a seguir por encima del piso:
 				this.y = proximaPosicion; // El mono sigue cayendo.
-				this.monoRect.y = proximaPosicion; // Lo mismo para la hitbox.
+				this.monoRect.y = this.y - this.monoRect.height / 2; // Lo mismo para la hitbox.
 				
 			} else { // Si la posicion a la que va a ser dibujado no va a estar por encima del piso
 				// (es decir, toca el piso o lo traspasa):
-				this.y = coordPiso - monoRect.height / 2; // El mono se coloca por encima del piso.
-				this.monoRect.y = coordPiso - monoRect.height / 2; // Lo mismo para la hitbox.
+				this.y = coordPiso - this.monoRect.height / 2; // El mono se coloca por encima del piso.
+				this.monoRect.y = this.y - this.monoRect.height / 2; // Lo mismo para la hitbox.
 				this.monoCayendo = false;
 			}
 		}
