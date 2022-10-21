@@ -23,7 +23,7 @@ public class Arbol {
 		this.arbolRect.x = x - arbolRect.width / 2;
 		this.arbolRect.y = y - arbolRect.height / 2;
 
-		img1 = Herramientas.cargarImagen("Arbol_fiero.png");
+		img1 = Herramientas.cargarImagen("Arbol.png");
 	}
 
 	// Tal vez un metodo que construya un array de arboles con tamaños, coordenadas
@@ -35,9 +35,9 @@ public class Arbol {
 
 	
 	public void dibujarse(Entorno entorno) {
-//		entorno.dibujarImagen(img1, this.x, this.y, 0, 0.4);
+		entorno.dibujarImagen(img1, this.x, this.y, 0, 1);
 		
-		entorno.dibujarRectangulo(this.x, this.y, this.arbolRect.width, this.arbolRect.height, 0.0, Color.black);
+//		entorno.dibujarRectangulo(this.x, this.y, this.arbolRect.width, this.arbolRect.height, 0.0, Color.black);
 		
 //		entorno.dibujarRectangulo(this.x, this.y, 30.0, 200.0, 0.0, Color.black);
 //		else
