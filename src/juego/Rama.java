@@ -13,7 +13,7 @@ public class Rama {
 
 	// PODRIA TOMAR COMO PARAMETRO UN ARBOL EN EL QUE DIBUJARSE.
 	public Rama(int x, int y) {
-		this.img1 = Herramientas.cargarImagen("rama3.png"); // Poner img cuando este lista.
+		this.img1 = Herramientas.cargarImagen("rama.png"); // Poner img cuando este lista.
 		this.x = x;
 		this.y = y;
 		
