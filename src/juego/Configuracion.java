@@ -6,6 +6,6 @@ public class Configuracion {
 	
 	static int GRAVEDAD = 4; 
 	static int LIMITE_SALTO = 30; 
-	static int FUERZA_SALTO = 2; 
+	static int FUERZA_SALTO = 5; 
 	
 }
