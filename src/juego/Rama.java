@@ -22,7 +22,7 @@ public class Rama {
 //		this.ramaRect.height = img1.getHeight(null);	// Para cuando sea una imagen
 
 		this.ramaRect.width = 100;
-		this.ramaRect.height = 1;
+		this.ramaRect.height = 12;
 		
 		this.ramaRect.x = this.x - ramaRect.width / 2;
 		this.ramaRect.y = this.y - ramaRect.height / 2;

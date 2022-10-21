@@ -33,7 +33,7 @@ public class Juego extends InterfaceJuego {
 
 		mono = new Mono(100, 250); // 420
 
-		limiteSalto = 0;
+		limiteSalto = 0; ///////////////////////////////////////////////////////////////////////////////////////////////
 
 		arbol = new Arbol(100, 360); // Para el rectangulo
 
@@ -60,7 +60,8 @@ public class Juego extends InterfaceJuego {
 		// hacer efecto la gravedad.
 		entorno.dibujarRectangulo(400, piso, 800, 1, 0.0, Color.red);
 
-//		entorno.dibujarRectangulo(400, 394, 800, 1, 0.0, Color.red);
+		entorno.dibujarRectangulo(400, rama.ramaRect.y, 800, 1, 0.0, Color.red);
+		entorno.dibujarRectangulo(400, rama.ramaRect.y + rama.ramaRect.height, 800, 1, 0.0, Color.green);
 
 //		arbol.dibujarse(entorno);
 		rama.dibujarse(entorno);
@@ -72,14 +73,6 @@ public class Juego extends InterfaceJuego {
 			mono.gravedad(rama, arbol);
 		}
 
-//		if (mono.monoCayendo) {
-//			if (mono.sobreRama(rama) && entorno.estaPresionada(entorno.TECLA_ARRIBA)) {
-//				mono.saltar();
-//			} else if (!mono.sobreRama(rama)){				
-//				mono.gravedad();
-//			}
-//		}
-
 		System.out.println(mono.monoCayendo);
 
 		if (entorno.estaPresionada(entorno.TECLA_DERECHA)) {
@@ -90,7 +83,7 @@ public class Juego extends InterfaceJuego {
 			mono.monoRect.x -= Configuracion.FUERZA_SALTO;
 		}
 
-		rama.moverAdelante();
+//		rama.moverAdelante();
 //		rama.subir();
 
 		arbol.moverAdelante();

@@ -62,6 +62,7 @@ public class Mono {
 	public boolean sobreRama(Rama rama) {
 		int topeDeRama = rama.ramaRect.y;
 		int baseMono = this.monoRect.y + this.monoRect.height / 2;
+		int nuevaPos = baseMono + Configuracion.GRAVEDAD;
 
 		boolean derMonoSobreIzqRama = this.monoRect.x + this.monoRect.width >= rama.ramaRect.x
 				&& this.monoRect.x + this.monoRect.width <= rama.ramaRect.x + rama.ramaRect.width;
@@ -71,26 +72,24 @@ public class Mono {
 
 		boolean centroMonoSobreCentroRama = this.monoRect.x >= rama.ramaRect.x
 				&& this.monoRect.x + this.monoRect.width <= rama.ramaRect.x + rama.ramaRect.width;
-
-//		System.out.println("rama = " + topeDeRama);
-//		System.out.println("mono = " + baseMono);
-
+				
 		if (derMonoSobreIzqRama || centroMonoSobreCentroRama || izqMonoSobreDerRama) {
-			if (baseMono == topeDeRama) {
-//				this.monoCayendo = false;
-//				System.out.println(this.monoCayendo + "rama");
+			if (nuevaPos >= topeDeRama && this.monoCayendo && baseMono <= topeDeRama) {
+				this.y = topeDeRama - this.monoRect.height / 2; // El mono se coloca por encima de la rama.
+				this.monoRect.y = topeDeRama - this.monoRect.height / 2; // Lo mismo para su hitbox.
 				return true;
 			}
+//			if (baseMono == topeDeRama) {
+//				return true;
+//			}
 		}
-//		this.monoCayendo = true;
-//		System.out.println(this.monoCayendo + "rama");
+		
 		return false;
 	}
 
 	public void gravedad(Rama rama, Arbol arbol) {
 		int coordPiso = Configuracion.POSICION_Y_PISO;
 		int limitePiso = Juego.apoyarSobrePiso(this.img1);
-//		int limitePiso = Juego.apoyarSobrePiso(this);
 
 		if (this.y < limitePiso) { // Si el mono esta por encima del piso:
 			this.monoCayendo = true;
@@ -110,11 +109,7 @@ public class Mono {
 					this.monoCayendo = false;
 				}
 			}
-//			}else {
-//				this.monoCayendo = false;
-//			}
 		}
-//		System.out.println(this.monoCayendo);
 	}
 
 	public void saltar() {
