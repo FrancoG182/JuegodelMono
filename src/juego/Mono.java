@@ -15,7 +15,7 @@ public class Mono {
 
 	public Mono(int x, int y) {
 //		img1 = Herramientas.cargarImagen("Mono1.png");
-		img1 = Herramientas.cargarImagen("Rect.png");
+		img1 = Herramientas.cargarImagen("RectAncho.png");
 		img2 = Herramientas.cargarImagen("Mono2.png");
 		monoCayendo = false;
 

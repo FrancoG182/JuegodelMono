@@ -62,6 +62,7 @@ public class Juego extends InterfaceJuego {
 		
 		entorno.dibujarRectangulo(400, arbol.arbolRect.y, 800, 1, 0.0, Color.yellow);
 //		Juego.apoyarSobrePiso(arbol.arbolRect.height);
+		
 		arbol.dibujarse(entorno);
 		rama.dibujarse(entorno);
 		mono.dibujarse(entorno);
