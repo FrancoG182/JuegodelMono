@@ -4,7 +4,7 @@ import java.awt.Image;
 import java.awt.Color;
 import java.awt.Rectangle;
 import entorno.Entorno;
-//import entorno.Herramientas;
+import entorno.Herramientas;
 
 public class Rama {
 	int x, y;
@@ -13,16 +13,16 @@ public class Rama {
 
 	// PODRIA TOMAR COMO PARAMETRO UN ARBOL EN EL QUE DIBUJARSE.
 	public Rama(int x, int y) {
-//		this.img1 = Herramientas.cargarImagen(null); // Poner img cuando este lista.
+		this.img1 = Herramientas.cargarImagen("rama"); // Poner img cuando este lista.
 		this.x = x;
 		this.y = y;
 		
 		this.ramaRect = new Rectangle();
-//		this.ramaRect.width = img1.getWidth(null);		// Para cuando sea una imagen
-//		this.ramaRect.height = img1.getHeight(null);	// Para cuando sea una imagen
+		this.ramaRect.width = img1.getWidth(null);		// Para cuando sea una imagen
+		this.ramaRect.height = img1.getHeight(null);	// Para cuando sea una imagen
 
-		this.ramaRect.width = 100;
-		this.ramaRect.height = 12;
+//		this.ramaRect.width = 100;
+//		this.ramaRect.height = 12;
 		
 		this.ramaRect.x = this.x - ramaRect.width / 2;
 		this.ramaRect.y = this.y - ramaRect.height / 2;

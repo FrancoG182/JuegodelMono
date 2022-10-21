@@ -62,7 +62,7 @@ public class Mono {
 	public boolean sobreRama(Rama rama) {
 		int topeDeRama = rama.ramaRect.y;
 		int baseMono = this.monoRect.y + this.monoRect.height / 2;
-		int nuevaPos = baseMono + Configuracion.GRAVEDAD;
+		int proximaPosicion = baseMono + Configuracion.GRAVEDAD;
 
 		boolean derMonoSobreIzqRama = this.monoRect.x + this.monoRect.width >= rama.ramaRect.x
 				&& this.monoRect.x + this.monoRect.width <= rama.ramaRect.x + rama.ramaRect.width;
@@ -74,16 +74,13 @@ public class Mono {
 				&& this.monoRect.x + this.monoRect.width <= rama.ramaRect.x + rama.ramaRect.width;
 				
 		if (derMonoSobreIzqRama || centroMonoSobreCentroRama || izqMonoSobreDerRama) {
-			if (nuevaPos >= topeDeRama && this.monoCayendo && baseMono <= topeDeRama) {
+			
+			if (proximaPosicion >= topeDeRama && this.monoCayendo && baseMono <= topeDeRama) {
 				this.y = topeDeRama - this.monoRect.height / 2; // El mono se coloca por encima de la rama.
 				this.monoRect.y = topeDeRama - this.monoRect.height / 2; // Lo mismo para su hitbox.
 				return true;
 			}
-//			if (baseMono == topeDeRama) {
-//				return true;
-//			}
 		}
-		
 		return false;
 	}
 
@@ -93,21 +90,20 @@ public class Mono {
 
 		if (this.y < limitePiso) { // Si el mono esta por encima del piso:
 			this.monoCayendo = true;
-			int nuevaPos = this.y + Configuracion.GRAVEDAD; // Su Y crece tanto como diga GRAVEDAD (esto es la velocidad
+			int proximaPosicion = this.y + Configuracion.GRAVEDAD; // Su Y crece tanto como diga GRAVEDAD (esto es la velocidad
 															// de caida)
 			if (this.sobreRama(rama)) {
 				this.monoCayendo = false;
-			} else {
-				if (nuevaPos < limitePiso) { // Si la posicion a la que va a ser dibujado va a seguir por encima del piso:
-					this.y = nuevaPos; // El mono sigue cayendo.
-					this.monoRect.y = nuevaPos; // Lo mismo para la hitbox.
-
-				} else { // Si la posicion a la que va a ser dibujado no va a estar por encima del piso
-					// (es decir, toca el piso o lo traspasa):
-					this.y = coordPiso - monoRect.height / 2; // El mono se coloca por encima del piso.
-					this.monoRect.y = coordPiso - monoRect.height / 2; // Lo mismo para la hitbox.
-					this.monoCayendo = false;
-				}
+				
+			} else if (proximaPosicion < limitePiso) { // Si la posicion a la que va a ser dibujado va a seguir por encima del piso:
+				this.y = proximaPosicion; // El mono sigue cayendo.
+				this.monoRect.y = proximaPosicion; // Lo mismo para la hitbox.
+				
+			} else { // Si la posicion a la que va a ser dibujado no va a estar por encima del piso
+				// (es decir, toca el piso o lo traspasa):
+				this.y = coordPiso - monoRect.height / 2; // El mono se coloca por encima del piso.
+				this.monoRect.y = coordPiso - monoRect.height / 2; // Lo mismo para la hitbox.
+				this.monoCayendo = false;
 			}
 		}
 	}

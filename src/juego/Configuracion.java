@@ -7,5 +7,4 @@ public class Configuracion {
 	static int GRAVEDAD = 4; 
 	static int FUERZA_SALTO = 2; 
 	
-	
 }
