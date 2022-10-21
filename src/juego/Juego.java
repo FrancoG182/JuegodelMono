@@ -37,7 +37,7 @@ public class Juego extends InterfaceJuego {
 
 		arbol = new Arbol(100, 360); // Para el rectangulo
 
-		rama = new Rama(210, 400); // Para el rectangulo
+		rama = new Rama(150, 400); // Para el rectangulo
 
 //		arbol = new Arbol(300, 295); // Para la imagen del arbol
 
@@ -67,9 +67,11 @@ public class Juego extends InterfaceJuego {
 		rama.dibujarse(entorno);
 		mono.dibujarse(entorno);
 
-		if (!mono.monoCayendo && entorno.estaPresionada(entorno.TECLA_ARRIBA)) {
+		if (!mono.monoCayendo && entorno.estaPresionada(entorno.TECLA_ARRIBA) && limiteSalto < Configuracion.LIMITE_SALTO) {
 			mono.saltar();
+			limiteSalto++;
 		} else {
+			limiteSalto = 0;
 			mono.gravedad(rama, arbol);
 		}
 
