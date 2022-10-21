@@ -23,7 +23,7 @@ public class Arbol {
 		this.arbolRect.x = x - arbolRect.width / 2;
 		this.arbolRect.y = y - arbolRect.height / 2;
 
-		img1 = Herramientas.cargarImagen("arbol_fiero.png");
+		img1 = Herramientas.cargarImagen("Arbol_fiero.png");
 	}
 
 	// Tal vez un metodo que construya un array de arboles con tamaños, coordenadas
