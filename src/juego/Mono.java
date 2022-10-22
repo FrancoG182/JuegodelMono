@@ -14,14 +14,14 @@ public class Mono {
 	boolean monoCayendo;
 
 	public Mono(int x, int y) {
-//		img1 = Herramientas.cargarImagen("Mono1.png");
-		img1 = Herramientas.cargarImagen("RectAncho.png");
+		img1 = Herramientas.cargarImagen("MonoChikito.png");
+//		img1 = Herramientas.cargarImagen("Rect.png");
 		img2 = Herramientas.cargarImagen("Mono2.png");
 		monoCayendo = false;
 
 		this.x = x;
-		this.y = y;
-//		this.y = Juego.apoyarSobrePiso(img1);
+//		this.y = y;
+		this.y = Juego.apoyarSobrePiso(img1);
 
 		// Coordenadas y tamanio del rectangulo que va a hacer de hitbox del mono.
 		this.monoRect = new Rectangle();
@@ -85,7 +85,7 @@ public class Mono {
 		return false;
 	}
 
-	public void gravedad(Rama rama, Arbol arbol) {
+	public void gravedad(Arbol arbol, Rama rama) {
 		int coordPiso = Configuracion.POSICION_Y_PISO;
 		int limitePiso = Juego.apoyarSobrePiso(this.img1);
 

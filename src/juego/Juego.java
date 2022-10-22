@@ -1,6 +1,6 @@
 package juego;
 
-import java.awt.Color;
+//import java.awt.Color;
 import java.awt.Image;
 import java.awt.Rectangle;
 import entorno.Entorno;
@@ -31,13 +31,13 @@ public class Juego extends InterfaceJuego {
 
 		background = Herramientas.cargarImagen("background.jpg");
 
-		mono = new Mono(0,0); // 420
+		mono = new Mono(100, 0);
 
 		limiteSalto = 0;
 
-		arbol = new Arbol(200, 360); // Para el rectangulo
-
-		rama = new Rama(150, 400); // Para el rectangulo
+		arbol = new Arbol(300, 360); // Para el rectangulo
+		
+//		rama = new Rama(arbol.x, arbol.y); // Para el rectangulo
 
 //		arbol = new Arbol(300, 295); // Para la imagen del arbol
 
@@ -58,47 +58,47 @@ public class Juego extends InterfaceJuego {
 
 		// Linea que delimita el piso. Ni el mono ni los enemigos deben traspasarla al
 		// hacer efecto la gravedad.
-		entorno.dibujarRectangulo(400, piso, 800, 1, 0.0, Color.red);
-		
-		entorno.dibujarRectangulo(400, arbol.arbolRect.y, 800, 1, 0.0, Color.yellow);
-//		Juego.apoyarSobrePiso(arbol.arbolRect.height);
+//		entorno.dibujarRectangulo(400, piso, 800, 1, 0.0, Color.red);		
 		
 		arbol.dibujarse(entorno);
-		rama.dibujarse(entorno);
+//		rama.dibujarse(entorno);
 		mono.dibujarse(entorno);
+		
 		
 		if (!mono.monoCayendo && entorno.estaPresionada(entorno.TECLA_ARRIBA) && limiteSalto < Configuracion.LIMITE_SALTO) {
 			mono.saltar();
-//			limiteSalto++;
+			limiteSalto++;
 		} else {
 			limiteSalto = 0;
-			mono.gravedad(rama, arbol);
+			mono.gravedad(arbol, arbol.rama);
 		}
 
 //		System.out.println(mono.monoCayendo);
 
-		if (entorno.estaPresionada(entorno.TECLA_DERECHA)) {
-			mono.avanzar();
-		}
-		if (entorno.estaPresionada(entorno.TECLA_IZQUIERDA)) {
-			mono.x -= Configuracion.FUERZA_SALTO;
-			mono.monoRect.x -= Configuracion.FUERZA_SALTO;
-		}
-		if (entorno.estaPresionada(entorno.TECLA_ABAJO)) {
-			mono.y += Configuracion.FUERZA_SALTO;
-			mono.monoRect.y += Configuracion.FUERZA_SALTO;
-		}
+//		if (entorno.estaPresionada(entorno.TECLA_DERECHA)) {
+//			mono.avanzar();
+//		}
+//		if (entorno.estaPresionada(entorno.TECLA_IZQUIERDA)) {
+//			mono.x -= Configuracion.FUERZA_SALTO;
+//			mono.monoRect.x -= Configuracion.FUERZA_SALTO;
+//		}
+//		if (entorno.estaPresionada(entorno.TECLA_ABAJO)) {
+//			mono.y += Configuracion.FUERZA_SALTO;
+//			mono.monoRect.y += Configuracion.FUERZA_SALTO;
+//		}
 
 //		rama.moverAdelante();
 //		rama.subir();
-
-//		arbol.moverAdelante();
-//		if (arbol.x < -100.0) {
-//			arbol.x = 200;
+		System.out.println(Configuracion.VELOCIDAD);
+		arbol.moverAdelante();
+		if (arbol.x < 20.0) {
+			arbol.x = 300;
+			arbol.rama.x = arbol.x;
+			arbol.rama.ramaRect.x = arbol.rama.x - arbol.rama.ramaRect.width / 2;
 //			arbol.arbolRect.x = arbol.x - arbol.arbolRect.width / 2;
-//		}
+		}
 
-		colisionEntre(mono.monoRect, arbol.arbolRect);
+//		colisionEntre(mono.monoRect, arbol.arbolRect);
 	}
 
 	/**
