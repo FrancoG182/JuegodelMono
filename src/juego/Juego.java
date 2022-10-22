@@ -3,6 +3,8 @@ package juego;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.io.ObjectInputFilter.Config;
+
 import entorno.Entorno;
 import entorno.Herramientas;
 import entorno.InterfaceJuego;
@@ -18,7 +20,7 @@ public class Juego extends InterfaceJuego {
 	int limiteSalto;
 
 	static int piso = Configuracion.POSICION_Y_PISO;
-//	Arbol[] arboles;
+	Arbol[] arboles;
 
 	// Variables y métodos propios de cada grupo
 	// ...
@@ -74,22 +76,26 @@ public class Juego extends InterfaceJuego {
 
 //		System.out.println(mono.monoCayendo);
 
-//		if (entorno.estaPresionada(entorno.TECLA_DERECHA)) {
-//			mono.avanzar();
-//		}
-//		if (entorno.estaPresionada(entorno.TECLA_IZQUIERDA)) {
-//			mono.x -= Configuracion.FUERZA_SALTO;
-//			mono.monoRect.x -= Configuracion.FUERZA_SALTO;
-//		}
-//		if (entorno.estaPresionada(entorno.TECLA_ABAJO)) {
-//			mono.y += Configuracion.FUERZA_SALTO;
-//			mono.monoRect.y += Configuracion.FUERZA_SALTO;
-//		}
+		if (Configuracion.MONO_DESPLAZAR) {			
+			if (entorno.estaPresionada(entorno.TECLA_DERECHA)) {
+				mono.avanzar();
+			}
+			if (entorno.estaPresionada(entorno.TECLA_IZQUIERDA)) {
+				mono.x -= Configuracion.FUERZA_SALTO;
+				mono.monoRect.x -= Configuracion.FUERZA_SALTO;
+			}
+			if (entorno.estaPresionada(entorno.TECLA_ABAJO)) {
+				mono.y += Configuracion.FUERZA_SALTO;
+				mono.monoRect.y += Configuracion.FUERZA_SALTO;
+			}
+		}
 
 //		rama.moverAdelante();
 //		rama.subir();
 //		System.out.println(Configuracion.VELOCIDAD);
+		if(Configuracion.AVANZAR_ARBOL) {
 		arbol.moverAdelante();
+		}
 		if (arbol.x < 20.0) {
 			arbol.x = 300;
 			arbol.rama.x = arbol.x;

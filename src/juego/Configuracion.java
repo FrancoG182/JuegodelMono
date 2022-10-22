@@ -10,6 +10,7 @@ public class Configuracion {
 													// la fuerza de salto para que, a mayores fuerzas de salto, la
 													// altura limite siga siendo la misma( funciona siqempre que la
 													// fuerza de salto menor a 100).
-//	static int LIMITE_SALTO = 30; 
-
+	
+	static boolean MONO_DESPLAZAR = false;
+	static boolean AVANZAR_ARBOL = false;
 }

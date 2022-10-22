@@ -15,26 +15,12 @@ public class Arbol {
 
 	public Arbol(int x, int y) {
 		this.img1 = Herramientas.cargarImagen("arbol.png");
-		// Tamanio del rectangulo que va a hacer de hitbox del arbol.
-//		this.arbolRect = new Rectangle();
-//		this.arbolRect.width = img1.getWidth(null);
-//		this.arbolRect.height = img1.getHeight(null);
-//		this.arbolRect.width = 30;
-//		this.arbolRect.height = 300;
 		
 		// Coordenadas del arbol en si.
 		this.x = x;
 		this.y = Juego.apoyarSobrePiso(img1.getHeight(null));
 		
 		this.rama = new Rama(this.x, this.y);
-		
-//		this.y = Juego.apoyarSobrePiso(this.arbolRect.height);
-//		this.y = y;
-		
-		// Coordenadas de la hitbox del arbol.
-//		this.arbolRect.x = this.x - arbolRect.width / 2;
-//		this.arbolRect.y = this.y - arbolRect.height / 2;
-
 	}
 
 	// Tal vez un metodo que construya un array de arboles con tamanios, coordenadas
