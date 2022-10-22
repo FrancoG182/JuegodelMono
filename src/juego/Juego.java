@@ -3,7 +3,7 @@ package juego;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Rectangle;
-import java.io.ObjectInputFilter.Config;
+//import java.io.ObjectInputFilter.Config;
 
 import entorno.Entorno;
 import entorno.Herramientas;
@@ -15,12 +15,13 @@ public class Juego extends InterfaceJuego {
 
 	Image background;
 	Mono mono;
-	Arbol arbol;
-//	Rama rama;
+//	Arbol arbol;
+	Rama rama;
 	int limiteSalto;
+	Arbol[] arboles;
+	Rama[] ramas;
 
 	static int piso = Configuracion.POSICION_Y_PISO;
-	Arbol[] arboles;
 
 	// Variables y métodos propios de cada grupo
 	// ...
@@ -37,8 +38,16 @@ public class Juego extends InterfaceJuego {
 
 		limiteSalto = 0;
 
-		arbol = new Arbol(300, 360); // Para el rectangulo
-		
+//		arbol = new Arbol(300); // Para el rectangulo
+
+		arboles = new Arbol[Configuracion.CANT_ARBOLES];
+		ramas = new Rama[arboles.length];
+
+//		arboles[0] = new Arbol(100);
+
+		generarArboles(arboles);
+		asignarRamasEnArreglo(arboles, ramas);
+
 //		rama = new Rama(arbol.x, arbol.y); // Para el rectangulo
 
 //		arbol = new Arbol(300, 295); // Para la imagen del arbol
@@ -56,27 +65,25 @@ public class Juego extends InterfaceJuego {
 	public void tick() {
 		entorno.dibujarImagen(background, 400, 300, 0, 1);
 
-//		int posYPiso = Configuracion.POSICION_Y_PISO;
+		for (Arbol arbol : arboles) {
+//			System.out.println(arbol.x);
+			arbol.dibujarse(entorno);
+		}
 
-		// Linea que delimita el piso. Ni el mono ni los enemigos deben traspasarla al
-		// hacer efecto la gravedad.
-//		entorno.dibujarRectangulo(400, piso, 800, 1, 0.0, Color.red);		
-		
-		arbol.dibujarse(entorno);
-//		rama.dibujarse(entorno);
 		mono.dibujarse(entorno);
-		
-		if (!mono.monoCayendo && entorno.estaPresionada(entorno.TECLA_ARRIBA) && limiteSalto < Configuracion.LIMITE_SALTO) {
+
+		if (!mono.monoCayendo && entorno.estaPresionada(entorno.TECLA_ARRIBA)
+				&& limiteSalto < Configuracion.LIMITE_SALTO) {
 			mono.saltar();
 			limiteSalto++;
 		} else {
 			limiteSalto = 0;
-			mono.gravedad(arbol, arbol.rama);
+			mono.gravedad(ramas);
 		}
 
 //		System.out.println(mono.monoCayendo);
 
-		if (Configuracion.MONO_DESPLAZAR) {			
+		if (Configuracion.MONO_DESPLAZAR) {
 			if (entorno.estaPresionada(entorno.TECLA_DERECHA)) {
 				mono.avanzar();
 			}
@@ -93,15 +100,15 @@ public class Juego extends InterfaceJuego {
 //		rama.moverAdelante();
 //		rama.subir();
 //		System.out.println(Configuracion.VELOCIDAD);
-		if(Configuracion.AVANZAR_ARBOL) {
-		arbol.moverAdelante();
+
+		if (Configuracion.AVANZAR_ARBOL) {
+			avanzarArboles(arboles);
 		}
-		if (arbol.x < 20.0) {
-			arbol.x = 300;
-			arbol.rama.x = arbol.x;
-			arbol.rama.ramaRect.x = arbol.rama.x - arbol.rama.ramaRect.width / 2;
-//			arbol.arbolRect.x = arbol.x - arbol.arbolRect.width / 2;
-		}
+//		if (arbol.x < 20.0) {
+//			arbol.x = 300;
+//			arbol.rama.x = arbol.x;
+//			arbol.rama.ramaRect.x = arbol.rama.x - arbol.rama.ramaRect.width / 2;
+//		}
 
 //		colisionEntre(mono.monoRect, arbol.arbolRect);
 	}
@@ -114,9 +121,25 @@ public class Juego extends InterfaceJuego {
 	public static int apoyarSobrePiso(Image img) {
 		return piso - img.getHeight(null) / 2;
 	}
-	
+
 	public static int apoyarSobrePiso(int altura) {
 		return piso - altura / 2;
+	}
+
+	public static void generarArboles(Arbol[] arboles) {
+		int x = 100;
+
+		for (int i = 0; i < arboles.length; i++) {
+			arboles[i] = new Arbol(x);
+//			System.out.println(arbol.x);
+			x += 100;
+		}
+	}
+
+	public static void asignarRamasEnArreglo(Arbol[] arboles, Rama[] ramas) {
+		for (int i = 0; i < arboles.length; i++) {
+			ramas[i] = arboles[i].rama;
+		}
 	}
 
 	public static boolean colisionEntre(Rectangle rect1, Rectangle rect2) {
@@ -125,6 +148,17 @@ public class Juego extends InterfaceJuego {
 			return true;
 		}
 		return false;
+	}
+
+	public static void avanzarArboles(Arbol[] arboles) {
+		for (Arbol arbol : arboles) {
+			arbol.moverAdelante();
+			if (arbol.x < 20.0) {
+				arbol.x = 300;
+				arbol.rama.x = arbol.x;
+				arbol.rama.ramaRect.x = arbol.rama.x - arbol.rama.ramaRect.width / 2;
+			}
+		}
 	}
 
 	@SuppressWarnings("unused")

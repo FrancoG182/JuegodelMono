@@ -13,16 +13,13 @@ public class Rama {
 
 	// PODRIA TOMAR COMO PARAMETRO UN ARBOL EN EL QUE DIBUJARSE.
 	public Rama(int x, int y) {
-		this.img1 = Herramientas.cargarImagen("rama.png"); // Poner img cuando este lista.
+		this.img1 = Herramientas.cargarImagen("rama.png"); // Hacer la rama menos larga.
 		this.x = x;
 		this.y = y;
 		
 		this.ramaRect = new Rectangle();
-		this.ramaRect.width = img1.getWidth(null);		// Para cuando sea una imagen
-		this.ramaRect.height = img1.getHeight(null);	// Para cuando sea una imagen
-
-//		this.ramaRect.width = 100;	// Para cuando sea un rectangulo
-//		this.ramaRect.height = 12;	// Para cuando sea un rectangulo
+		this.ramaRect.width = img1.getWidth(null);
+		this.ramaRect.height = img1.getHeight(null);
 		
 		this.ramaRect.x = this.x - ramaRect.width / 2;
 		this.ramaRect.y = this.y - ramaRect.height / 2;

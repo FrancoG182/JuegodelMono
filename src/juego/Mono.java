@@ -45,7 +45,8 @@ public class Mono {
 	}
 
 	public void dibujarse(Entorno entorno) {
-		entorno.dibujarRectangulo(this.monoRect.x + monoRect.width / 2, this.monoRect.y + monoRect.height / 2, this.monoRect.width, this.monoRect.height, 0.0, Color.gray);
+		entorno.dibujarRectangulo(this.monoRect.x + monoRect.width / 2, this.monoRect.y + monoRect.height / 2,
+				this.monoRect.width, this.monoRect.height, 0.0, Color.gray);
 
 		entorno.dibujarImagen(img1, this.x, this.y, 0, 1);
 	}
@@ -73,44 +74,39 @@ public class Mono {
 
 		boolean centroMonoSobreCentroRama = this.monoRect.x >= rama.ramaRect.x
 				&& this.monoRect.x + this.monoRect.width <= rama.ramaRect.x + rama.ramaRect.width;
-				
+
 		if (derMonoSobreIzqRama || centroMonoSobreCentroRama || izqMonoSobreDerRama) {
-			
+
 			if (proximaPosicion >= topeDeRama && this.monoCayendo && baseMono <= topeDeRama + 1) {
 				this.y = topeDeRama - this.monoRect.height / 2; // El mono se coloca por encima de la rama.
 				this.monoRect.y = this.y - this.monoRect.height / 2; // Lo mismo para su hitbox.
-				System.out.println("asd");
+
 				return true;
 			}
-			if (!(proximaPosicion >= topeDeRama)) {
-				System.out.println("1" + (proximaPosicion >= topeDeRama));
-			}
-			if (!(this.monoCayendo)) {
-				System.out.println("2" + this.monoCayendo);
-			}
-			if (!(baseMono <= topeDeRama)) {
-				System.out.println("3" + (baseMono <= topeDeRama));
-			}	
-			
 		}
 		return false;
 	}
 
-	public void gravedad(Arbol arbol, Rama rama) {
+	public void gravedad(Rama[] ramas) {
 		int coordPiso = Configuracion.POSICION_Y_PISO;
 		int limitePiso = Juego.apoyarSobrePiso(this.img1);
 
 		if (this.y < limitePiso) { // Si el mono esta por encima del piso:
 			this.monoCayendo = true;
-			int proximaPosicion = this.y + Configuracion.GRAVEDAD; // Su Y crece tanto como diga GRAVEDAD (esto es la velocidad
-															// de caida)
-			if (this.sobreRama(rama)) {
-				this.monoCayendo = false;
-				
-			} else if (proximaPosicion < limitePiso) { // Si la posicion a la que va a ser dibujado va a seguir por encima del piso:
+			int proximaPosicion = this.y + Configuracion.GRAVEDAD; // Su Y crece tanto como diga GRAVEDAD (esto es la
+																	// velocidad de caida)-
+			for (Rama rama : ramas) { // Por cada rama que exista, se fija si esta encima de ella. Si esta sobre una
+										// rama setea monoCayendo en false y termina el metodo.
+				if (this.sobreRama(rama)) {
+					this.monoCayendo = false;
+					return;
+				}
+			}
+			if (proximaPosicion < limitePiso) { // Si la posicion a la que va a ser dibujado va a seguir por encima del
+												// piso:
 				this.y = proximaPosicion; // El mono sigue cayendo.
 				this.monoRect.y = this.y - this.monoRect.height / 2; // Lo mismo para la hitbox.
-				
+
 			} else { // Si la posicion a la que va a ser dibujado no va a estar por encima del piso
 				// (es decir, toca el piso o lo traspasa):
 				this.y = coordPiso - this.monoRect.height / 2; // El mono se coloca por encima del piso.
