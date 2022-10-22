@@ -1,6 +1,6 @@
 package juego;
 
-import java.awt.Color;
+//import java.awt.Color;
 import java.awt.Image;
 import java.awt.Rectangle;
 
@@ -14,7 +14,6 @@ public class Juego extends InterfaceJuego {
 
 	Image background;
 	Mono mono;
-//	Arbol arbol;
 	Rama rama;
 	int limiteSalto;
 	Arbol[] arboles;
@@ -37,19 +36,11 @@ public class Juego extends InterfaceJuego {
 
 		limiteSalto = 0;
 
-//		arbol = new Arbol(300); // Para el rectangulo
-
 		arboles = new Arbol[Configuracion.CANT_ARBOLES];
 		ramas = new Rama[arboles.length];
 
-//		arboles[0] = new Arbol(100);
-
 		generarArboles(arboles);
 		asignarRamasEnArreglo(arboles, ramas);
-
-//		rama = new Rama(arbol.x, arbol.y); // Para el rectangulo
-
-//		arbol = new Arbol(300, 295); // Para la imagen del arbol
 
 		// Inicia el juego!
 		this.entorno.iniciar();
@@ -96,18 +87,9 @@ public class Juego extends InterfaceJuego {
 			}
 		}
 
-//		rama.moverAdelante();
-//		rama.subir();
-//		System.out.println(Configuracion.VELOCIDAD);
-
 		if (Configuracion.AVANZAR_ARBOL) {
 			avanzarArboles(arboles);
 		}
-//		if (arbol.x < 20.0) {
-//			arbol.x = 300;
-//			arbol.rama.x = arbol.x;
-//			arbol.rama.ramaRect.x = arbol.rama.x - arbol.rama.ramaRect.width / 2;
-//		}
 
 //		colisionEntre(mono.monoRect, arbol.arbolRect);
 	}
@@ -133,11 +115,7 @@ public class Juego extends InterfaceJuego {
 		for (int i = 0; i < arboles.length; i++) {
 			arboles[i] = new Arbol(x);
 //			System.out.println(arbol.x);
-//			x += 180;
-			x = enteroAleatorio(x + disMin, x + disMax); // Velocidad 1
-//			x = enteroAleatorio(x + 260, x + 360); // Velocidad 2
-//			x = enteroAleatorio(x + 330, x + 460); // Velocidad 3
-//			x = enteroAleatorio(x + 210, x + 560); // Velocidad 4
+			x = enteroAleatorio(x + disMin, x + disMax);
 		}
 	}
 

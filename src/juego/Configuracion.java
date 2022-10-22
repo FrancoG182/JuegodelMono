@@ -14,7 +14,6 @@ public class Configuracion {
 													// altura limite siga siendo la misma( funciona siqempre que la
 													// fuerza de salto menor a 100).
 	
-	
 	static int CANT_ARBOLES = 40;
 	static boolean MONO_DESPLAZAR = false;
 	static boolean AVANZAR_ARBOL = true;
