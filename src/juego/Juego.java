@@ -3,7 +3,6 @@ package juego;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Rectangle;
-//import java.io.ObjectInputFilter.Config;
 
 import entorno.Entorno;
 import entorno.Herramientas;
@@ -66,7 +65,7 @@ public class Juego extends InterfaceJuego {
 		entorno.dibujarImagen(background, 400, 300, 0, 1);
 
 		for (Arbol arbol : arboles) {
-//			System.out.println(arbol.x);
+			System.out.println(arbol.x);
 			arbol.dibujarse(entorno);
 		}
 
@@ -127,12 +126,18 @@ public class Juego extends InterfaceJuego {
 	}
 
 	public static void generarArboles(Arbol[] arboles) {
-		int x = 100;
+		int x = 600;
+		int disMin = Configuracion.MIN_DIST_DIBUJADO_ENTRE_ARBOLES;
+		int disMax = Configuracion.MAX_DIST_DIBUJADO_ENTRE_ARBOLES;
 
 		for (int i = 0; i < arboles.length; i++) {
 			arboles[i] = new Arbol(x);
 //			System.out.println(arbol.x);
-			x += 100;
+//			x += 180;
+			x = enteroAleatorio(x + disMin, x + disMax); // Velocidad 1
+//			x = enteroAleatorio(x + 260, x + 360); // Velocidad 2
+//			x = enteroAleatorio(x + 330, x + 460); // Velocidad 3
+//			x = enteroAleatorio(x + 210, x + 560); // Velocidad 4
 		}
 	}
 
@@ -152,15 +157,16 @@ public class Juego extends InterfaceJuego {
 
 	public static void avanzarArboles(Arbol[] arboles) {
 		for (Arbol arbol : arboles) {
-			arbol.moverAdelante();
-			if (arbol.x < 20.0) {
-				arbol.x = 300;
-				arbol.rama.x = arbol.x;
-				arbol.rama.ramaRect.x = arbol.rama.x - arbol.rama.ramaRect.width / 2;
-			}
+			arbol.moverAdelante();			
 		}
 	}
 
+	public static int enteroAleatorio(int minimo, int maximo) {
+		double r = Math.random();
+		double res = minimo + (maximo - minimo) * r;
+		return (int) Math.round(res);
+	}
+	
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		Juego juego = new Juego();

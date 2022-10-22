@@ -34,7 +34,11 @@ public class Arbol {
 	
 	public void moverAdelante() {
 		this.x -= Configuracion.VELOCIDAD;
-		
 		this.rama.moverAdelante();
+//		if (this.x < 0) {
+//			this.x = 300;
+//			this.rama.x = this.x;
+//			this.rama.ramaRect.x = this.rama.x - this.rama.ramaRect.width / 2;
+//		}
 	}
 }
