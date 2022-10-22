@@ -14,10 +14,10 @@ public class Mono {
 	boolean monoCayendo;
 
 	public Mono(int x, int y) {
-		img1 = Herramientas.cargarImagen("MonoChikito.png");
-//		img1 = Herramientas.cargarImagen("Rect.png");
-		img2 = Herramientas.cargarImagen("Mono2.png");
-		monoCayendo = false;
+		this.img1 = Herramientas.cargarImagen("MonoGr (1).png");
+//		this.img1 = Herramientas.cargarImagen("Rect.png");
+		this.img2 = Herramientas.cargarImagen("Mono2.png");
+		this.monoCayendo = false;
 
 		this.x = x;
 //		this.y = y;
@@ -45,9 +45,9 @@ public class Mono {
 	}
 
 	public void dibujarse(Entorno entorno) {
-		entorno.dibujarImagen(img1, this.x, this.y, 0, 1);
-
 		entorno.dibujarRectangulo(this.monoRect.x + monoRect.width / 2, this.monoRect.y + monoRect.height / 2, this.monoRect.width, this.monoRect.height, 0.0, Color.gray);
+
+		entorno.dibujarImagen(img1, this.x, this.y, 0, 1);
 	}
 
 	// ESTA MAL ESTE METODO.
@@ -76,11 +76,22 @@ public class Mono {
 				
 		if (derMonoSobreIzqRama || centroMonoSobreCentroRama || izqMonoSobreDerRama) {
 			
-			if (proximaPosicion >= topeDeRama && this.monoCayendo && baseMono <= topeDeRama) {
+			if (proximaPosicion >= topeDeRama && this.monoCayendo && baseMono <= topeDeRama + 1) {
 				this.y = topeDeRama - this.monoRect.height / 2; // El mono se coloca por encima de la rama.
 				this.monoRect.y = this.y - this.monoRect.height / 2; // Lo mismo para su hitbox.
+				System.out.println("asd");
 				return true;
 			}
+			if (!(proximaPosicion >= topeDeRama)) {
+				System.out.println("1" + (proximaPosicion >= topeDeRama));
+			}
+			if (!(this.monoCayendo)) {
+				System.out.println("2" + this.monoCayendo);
+			}
+			if (!(baseMono <= topeDeRama)) {
+				System.out.println("3" + (baseMono <= topeDeRama));
+			}	
+			
 		}
 		return false;
 	}

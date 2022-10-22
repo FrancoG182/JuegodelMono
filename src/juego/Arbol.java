@@ -14,7 +14,7 @@ public class Arbol {
 //	Rectangle arbolRect;
 
 	public Arbol(int x, int y) {
-		img1 = Herramientas.cargarImagen("arbol.png");
+		this.img1 = Herramientas.cargarImagen("arbol.png");
 		// Tamanio del rectangulo que va a hacer de hitbox del arbol.
 //		this.arbolRect = new Rectangle();
 //		this.arbolRect.width = img1.getWidth(null);
@@ -26,7 +26,7 @@ public class Arbol {
 		this.x = x;
 		this.y = Juego.apoyarSobrePiso(img1.getHeight(null));
 		
-		rama = new Rama(this.x, this.y);
+		this.rama = new Rama(this.x, this.y);
 		
 //		this.y = Juego.apoyarSobrePiso(this.arbolRect.height);
 //		this.y = y;
@@ -42,8 +42,7 @@ public class Arbol {
 	
 	public void dibujarse(Entorno entorno) {
 		entorno.dibujarImagen(img1, this.x, this.y, 0, 1);
-		rama.dibujarse(entorno);
-		
+		this.rama.dibujarse(entorno);
 		
 //		entorno.dibujarRectangulo(this.x, this.y, this.img1.getWidth(null), this.img1.getHeight(null), 0.0, Color.black);
 //		entorno.dibujarRectangulo(this.arbolRect.x + this.arbolRect.width / 2, this.arbolRect.y + this.arbolRect.height / 2, this.arbolRect.width, this.arbolRect.height, 0.0, Color.black);
@@ -55,7 +54,7 @@ public class Arbol {
 	
 	public void moverAdelante() {
 		this.x -= Configuracion.VELOCIDAD;
-		rama.moverAdelante();
+		this.rama.moverAdelante();
 //		this.rama.x -= Configuracion.VELOCIDAD; 
 //		this.rama.ramaRect.x -= Configuracion.VELOCIDAD; 
 		

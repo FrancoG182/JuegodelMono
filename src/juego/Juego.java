@@ -1,6 +1,6 @@
 package juego;
 
-//import java.awt.Color;
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.Rectangle;
 import entorno.Entorno;
@@ -14,7 +14,7 @@ public class Juego extends InterfaceJuego {
 	Image background;
 	Mono mono;
 	Arbol arbol;
-	Rama rama;
+//	Rama rama;
 	int limiteSalto;
 
 	static int piso = Configuracion.POSICION_Y_PISO;
@@ -64,7 +64,6 @@ public class Juego extends InterfaceJuego {
 //		rama.dibujarse(entorno);
 		mono.dibujarse(entorno);
 		
-		
 		if (!mono.monoCayendo && entorno.estaPresionada(entorno.TECLA_ARRIBA) && limiteSalto < Configuracion.LIMITE_SALTO) {
 			mono.saltar();
 			limiteSalto++;
@@ -89,7 +88,7 @@ public class Juego extends InterfaceJuego {
 
 //		rama.moverAdelante();
 //		rama.subir();
-		System.out.println(Configuracion.VELOCIDAD);
+//		System.out.println(Configuracion.VELOCIDAD);
 		arbol.moverAdelante();
 		if (arbol.x < 20.0) {
 			arbol.x = 300;
