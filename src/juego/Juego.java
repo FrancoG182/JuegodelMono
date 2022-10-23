@@ -20,9 +20,13 @@ public class Juego extends InterfaceJuego {
 	Arbol[] arboles;
 	Rama[] ramas;
 	Serpiente[] serpientes;
+	Puma[] pumas;
+
 	static Arbol ultimoArbolGenerado;
+	static int arbolesSeguidosSinSerpiente;
 
 	Puma puma;
+	static Puma ultimoPumaGenerado;
 
 	static int piso = Configuracion.POSICION_Y_PISO;
 
@@ -45,7 +49,11 @@ public class Juego extends InterfaceJuego {
 		ramas = new Rama[arboles.length];
 		serpientes = new Serpiente[arboles.length];
 
+		arbolesSeguidosSinSerpiente = 1;
+
+		pumas = new Puma[Configuracion.CANT_PUMAS];
 		puma = new Puma(300);
+
 		// Inicia el juego!
 		this.entorno.iniciar();
 	}
@@ -59,27 +67,32 @@ public class Juego extends InterfaceJuego {
 	public void tick() {
 		entorno.dibujarImagen(background, 400, 300, 0, 1);
 
+		generarPumas(pumas);
 		generarArboles(arboles);
-		asignarRamasEnUnArreglo(arboles, ramas, serpientes); // Se asignan las ramas ya creadas en un arreglo para pasar este
-													// arreglo al metodo gravedad().
+		asignarRamasEnUnArreglo(arboles, ramas); // Se asignan las ramas ya creadas en un arreglo para pasar
+													// este arreglo al metodo gravedad().
 
 		for (Arbol arbol : arboles) {
-//			System.out.println(arbol.x);
 			if (arbol != null) {
 				arbol.dibujarse(entorno);
-				colisionEntre(mono.monoRect, arbol.rama.serpiente.serpRect);
+				Serpiente s = arbol.rama.serpiente;
+				if (s != null)
+					colisionEntre(mono.monoRect, s.serpRect);
 			}
 		}
 
-		if (Configuracion.AVANZAR_ARBOL)
-			avanzarArboles(arboles);
-
-		if (Configuracion.AVANZAR_DEPREDADOR)
-			avanzarPuma(puma);
-
+		for (Puma puma : pumas) {
+			if (puma != null) {
+				puma.dibujarse(entorno);
+				colisionEntre(mono.monoRect, puma.pumaRect);
+			}
+		}
 		mono.dibujarse(entorno);
 
-		puma.dibujarse(entorno);
+		if (Configuracion.AVANZAR_ARBOL)
+			avanzarArboles(arboles);
+		if (Configuracion.AVANZAR_DEPREDADOR)
+			avanzarPumas(pumas);
 
 		if (!mono.monoCayendo && entorno.estaPresionada(entorno.TECLA_ARRIBA)
 				&& limiteSalto < Configuracion.LIMITE_SALTO) {
@@ -89,8 +102,6 @@ public class Juego extends InterfaceJuego {
 			limiteSalto = 0;
 			mono.gravedad(ramas);
 		}
-
-//		System.out.println(mono.monoCayendo);
 
 		if (Configuracion.MONO_DESPLAZAR) {
 			if (entorno.estaPresionada(entorno.TECLA_DERECHA)) {
@@ -106,11 +117,11 @@ public class Juego extends InterfaceJuego {
 			}
 		}
 
-//		colisionEntre(mono.monoRect, puma.pumaRect);
 	}
 
 	public static void generarArboles(Arbol[] arboles) {
 		int x = Configuracion.COORD_X_DE_PRIMER_ARBOL;
+		int chance = Configuracion.CHANCE_DE_SERPIENTE_EN_ARBOL;
 
 		int distMin = Configuracion.MIN_DIST_DIBUJADO_ENTRE_ARBOLES;
 		int distMax = Configuracion.MAX_DIST_DIBUJADO_ENTRE_ARBOLES;
@@ -125,10 +136,41 @@ public class Juego extends InterfaceJuego {
 										// recien empieza el juego o porque se salio de la pantalla.
 
 				x = enteroAleatorio(x + distMin, x + distMax); // A partir de la x del ultimo arbol creado, se obtiene
-																// un numero random que va a ser la diferencia entre el
+																// un numero random que va a ser la distancia entre el
 																// ultimo arbol y el siguiente.
 				arboles[i] = new Arbol(x); // Se crea el nuevo arbol.
+
+				if (x % chance != 0 && arbolesSeguidosSinSerpiente != 5) {
+					// Si x es divisible por chance o si ya se eliminaron las serpientes de
+					// 5 arboles, no se le elimina la serpiente al arbol actual.
+
+					arboles[i].rama.serpiente = null;
+					arbolesSeguidosSinSerpiente++;
+				} else {
+					arbolesSeguidosSinSerpiente = 0;
+				}
+
 				ultimoArbolGenerado = arboles[i]; // Se registra el ultimo arbol creado. Aca se utiliza aliasing.
+			}
+		}
+	}
+
+	public static void generarPumas(Puma[] pumas) {
+		int x = Configuracion.COORD_X_DE_PRIMER_PUMA;
+
+		int distMin = Configuracion.MIN_DIST_DIBUJADO_ENTRE_PUMAS;
+		int distMax = Configuracion.MAX_DIST_DIBUJADO_ENTRE_PUMAS;
+
+		if (ultimoPumaGenerado != null) { // Si el ultimo puma que se creo no es null,
+			x = ultimoPumaGenerado.x; // x toma el valor de la coordenada actual del ultimo puma generado.
+		}
+		
+		for (int i = 0; i < pumas.length; i++) { // Para cada puma
+			if (pumas[i] == null) {
+				x = enteroAleatorio(x + distMin, x + distMax); // X random generado a partir de la x del ultimo puma creado.
+				
+				pumas[i] = new Puma(x); // Se crea el nuevo puma.
+				ultimoPumaGenerado = pumas[i];
 			}
 		}
 	}
@@ -137,29 +179,30 @@ public class Juego extends InterfaceJuego {
 		for (int i = 0; i < arboles.length; i++) {
 			arboles[i].moverAdelante();
 
-			if (arboles[i].x < -arboles[i].ancho / 2) { // Apenas desaparezca de la pantalla, el arbol se va a volver
-				// null.
+			if (arboles[i].x < -arboles[i].ancho / 2) { // Apenas desaparezca de la pantalla, el
+				// arbol se va a volver null.
 				arboles[i].rama = null; // Seteamos a null tanto al arbol como a su rama. La rama no es necesaria, pero
-				// creo que es buena practica.
+				// supongo que es buena practica.
 				arboles[i] = null;
 			}
 		}
 	}
 
-	private void avanzarPuma(Puma puma) {
-		puma.moverAdelante();
-		if (puma.pumaRect.x < -puma.pumaRect.width / 2) {
-			puma.x = 300;
-			puma.pumaRect.x = puma.x - puma.pumaRect.width / 2;
-
+	public static void avanzarPumas(Puma[] pumas) {
+		for (int i = 0; i < pumas.length; i++) {
+			pumas[i].moverAdelante();
+			if (pumas[i].pumaRect.x < -pumas[i].pumaRect.width) {
+				pumas[i] = null;
+//				pumas[i].x = 300;
+//				pumas[i].pumaRect.x = pumas[i].x - pumas[i].pumaRect.width / 2;
+			}
 		}
 	}
 
-	public static void asignarRamasEnUnArreglo(Arbol[] arboles, Rama[] ramas, Serpiente[] serpientes) {
+	public static void asignarRamasEnUnArreglo(Arbol[] arboles, Rama[] ramas) {
 		for (int i = 0; i < arboles.length; i++) {
 			if (arboles[i] != null) {
 				ramas[i] = arboles[i].rama;
-				serpientes[i] = arboles[i].rama.serpiente;
 			}
 		}
 	}

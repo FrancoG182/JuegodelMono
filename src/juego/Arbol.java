@@ -21,7 +21,7 @@ public class Arbol {
 
 		this.ancho = img1.getWidth(null);
 
-		this.rama = new Rama(this.x, this.y);
+		this.rama = new Rama(this.x, this.y - 10);
 	}
 
 	public void dibujarse(Entorno entorno) {
