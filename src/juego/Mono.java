@@ -95,7 +95,7 @@ public class Mono {
 			this.monoCayendo = true;
 			int proximaPosicion = this.y + Configuracion.GRAVEDAD; // Su Y crece tanto como diga GRAVEDAD (esto es la
 																	// velocidad de caida)-
-			for (Rama rama : ramas) { // Por cada rama que exista, se fija si esta encima de ella. Si esta sobre una
+			for (Rama rama : ramas) { // Por cada rama que exista, se fija si el mono esta encima de ella. Si esta sobre una
 										// rama setea monoCayendo en false y termina el metodo.
 				if (rama != null && this.sobreRama(rama)) {
 					this.monoCayendo = false;
