@@ -34,8 +34,8 @@ public class Serpiente {
 	}
 
 	public void moverAdelante() {
-		this.x -= Configuracion.VELOCIDAD;
-		this.serpRect.x -= Configuracion.VELOCIDAD;
+		this.x -= Configuracion.VELOCIDAD_OBJETOS;
+		this.serpRect.x -= Configuracion.VELOCIDAD_OBJETOS;
 	}
 
 }

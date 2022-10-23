@@ -19,16 +19,16 @@ public class Juego extends InterfaceJuego {
 
 	Arbol[] arboles;
 	Rama[] ramas;
-	Serpiente[] serpientes;
 	Puma[] pumas;
 
 	static Arbol ultimoArbolGenerado;
 	static int arbolesSeguidosSinSerpiente;
 
-	Puma puma;
 	static Puma ultimoPumaGenerado;
 
-	static int piso = Configuracion.POSICION_Y_PISO;
+	Piedra[] piedras;
+	static Piedra ultimaPiedraGenerada;
+	Piedra[] piedrasArrojadas;
 
 	// Variables y métodos propios de cada grupo
 	// ...
@@ -47,12 +47,14 @@ public class Juego extends InterfaceJuego {
 
 		arboles = new Arbol[Configuracion.CANT_ARBOLES];
 		ramas = new Rama[arboles.length];
-		serpientes = new Serpiente[arboles.length];
 
 		arbolesSeguidosSinSerpiente = 1;
 
 		pumas = new Puma[Configuracion.CANT_PUMAS];
-		puma = new Puma(300);
+
+		piedras = new Piedra[Configuracion.CANT_PIEDRAS];
+
+		piedrasArrojadas = new Piedra[Configuracion.CANT_PROYECTILES];
 
 		// Inicia el juego!
 		this.entorno.iniciar();
@@ -69,15 +71,19 @@ public class Juego extends InterfaceJuego {
 
 		generarPumas(pumas);
 		generarArboles(arboles);
-		asignarRamasEnUnArreglo(arboles, ramas); // Se asignan las ramas ya creadas en un arreglo para pasar
-													// este arreglo al metodo gravedad().
+		asignarRamasEnUnArreglo(arboles, ramas); // Se asignan las ramas ya creadas en un arreglo para
+													// pasar este arreglo al metodo gravedad().
+		generarPiedras(piedras);
 
 		for (Arbol arbol : arboles) {
 			if (arbol != null) {
 				arbol.dibujarse(entorno);
 				Serpiente s = arbol.rama.serpiente;
-				if (s != null)
+
+				if (s != null) {
 					colisionEntre(mono.monoRect, s.serpRect);
+//					System.out.println("Collision detected!");
+				}
 			}
 		}
 
@@ -85,14 +91,36 @@ public class Juego extends InterfaceJuego {
 			if (puma != null) {
 				puma.dibujarse(entorno);
 				colisionEntre(mono.monoRect, puma.pumaRect);
+//				System.out.println("Collision detected!");
 			}
 		}
+
+		for (Piedra piedra : piedras) {
+			if (piedra != null) {
+				piedra.dibujarse(entorno);
+			}
+		}
+
+		if (entorno.estaPresionada(entorno.TECLA_ESPACIO)) {
+			arrojarPiedras(mono, piedrasArrojadas);
+		}
+
+		for (Piedra proyectil : piedrasArrojadas) {
+//			System.out.println(proyectil == null);
+			if (proyectil != null) {
+				proyectil.dibujarse(entorno);
+				proyectil.lanzarPiedra();
+			}
+		}
+
 		mono.dibujarse(entorno);
 
 		if (Configuracion.AVANZAR_ARBOL)
 			avanzarArboles(arboles);
 		if (Configuracion.AVANZAR_DEPREDADOR)
 			avanzarPumas(pumas);
+		if (Configuracion.AVANZAR_PIEDRA)
+			avanzarPiedras(piedras, mono);
 
 		if (!mono.monoCayendo && entorno.estaPresionada(entorno.TECLA_ARRIBA)
 				&& limiteSalto < Configuracion.LIMITE_SALTO) {
@@ -103,6 +131,10 @@ public class Juego extends InterfaceJuego {
 			mono.gravedad(ramas);
 		}
 
+		desplazar(mono); // Para testeo
+	}
+
+	public void desplazar(Mono mono) {
 		if (Configuracion.MONO_DESPLAZAR) {
 			if (entorno.estaPresionada(entorno.TECLA_DERECHA)) {
 				mono.avanzar();
@@ -116,7 +148,6 @@ public class Juego extends InterfaceJuego {
 				mono.monoRect.y += Configuracion.FUERZA_SALTO;
 			}
 		}
-
 	}
 
 	public static void generarArboles(Arbol[] arboles) {
@@ -143,7 +174,6 @@ public class Juego extends InterfaceJuego {
 				if (x % chance != 0 && arbolesSeguidosSinSerpiente != 5) {
 					// Si x es divisible por chance o si ya se eliminaron las serpientes de
 					// 5 arboles, no se le elimina la serpiente al arbol actual.
-
 					arboles[i].rama.serpiente = null;
 					arbolesSeguidosSinSerpiente++;
 				} else {
@@ -164,14 +194,43 @@ public class Juego extends InterfaceJuego {
 		if (ultimoPumaGenerado != null) { // Si el ultimo puma que se creo no es null,
 			x = ultimoPumaGenerado.x; // x toma el valor de la coordenada actual del ultimo puma generado.
 		}
-		
+
 		for (int i = 0; i < pumas.length; i++) { // Para cada puma
 			if (pumas[i] == null) {
-				x = enteroAleatorio(x + distMin, x + distMax); // X random generado a partir de la x del ultimo puma creado.
-				
+				x = enteroAleatorio(x + distMin, x + distMax); // X random generado a partir de la x del ultimo puma
+				// creado.
+
 				pumas[i] = new Puma(x); // Se crea el nuevo puma.
 				ultimoPumaGenerado = pumas[i];
 			}
+		}
+	}
+
+	public static void generarPiedras(Piedra[] piedras) {
+		int x = Configuracion.COORD_X_DE_PRIMER_PIEDRA;
+
+		int distMin = Configuracion.MIN_DIST_DIBUJADO_ENTRE_PIEDRAS;
+		int distMax = Configuracion.MAX_DIST_DIBUJADO_ENTRE_PIEDRAS;
+
+		if (ultimaPiedraGenerada != null) { // Si la ultima piedra que se creo no es null,
+			x = ultimaPiedraGenerada.x; // x toma el valor de la coordenada actual de la ultima piedra generada.
+		}
+
+		for (int i = 0; i < piedras.length; i++) { // Para cada piedra
+			if (piedras[i] == null) {
+				x = enteroAleatorio(x + distMin, x + distMax); // X aleatorio generado a partir de la x de la
+																// ultima piedra creada.
+				piedras[i] = new Piedra(x, 0, false); // Se crea la nueva piedra. La y no importa porque el constructor
+														// la apoya sobre el piso.
+				ultimaPiedraGenerada = piedras[i];
+			}
+		}
+	}
+
+	public static void asignarRamasEnUnArreglo(Arbol[] arboles, Rama[] ramas) {
+		for (int i = 0; i < arboles.length; i++) {
+			if (arboles[i] != null)
+				ramas[i] = arboles[i].rama;
 		}
 	}
 
@@ -179,37 +238,64 @@ public class Juego extends InterfaceJuego {
 		for (int i = 0; i < arboles.length; i++) {
 			arboles[i].moverAdelante();
 
-			if (arboles[i].x < -arboles[i].ancho / 2) { // Apenas desaparezca de la pantalla, el
-				// arbol se va a volver null.
-				arboles[i].rama = null; // Seteamos a null tanto al arbol como a su rama. La rama no es necesaria, pero
-				// supongo que es buena practica.
+			// Apenas el arbol desaparezca de la pantalla, el arbol, su rama y la serpiente
+			// de su
+			// rama van a volverse null.
+			if (arboles[i].x < -arboles[i].ancho / 2)
 				arboles[i] = null;
-			}
 		}
 	}
 
 	public static void avanzarPumas(Puma[] pumas) {
 		for (int i = 0; i < pumas.length; i++) {
 			pumas[i].moverAdelante();
-			if (pumas[i].pumaRect.x < -pumas[i].pumaRect.width) {
+			if (pumas[i].pumaRect.x < -pumas[i].pumaRect.width)
 				pumas[i] = null;
-//				pumas[i].x = 300;
-//				pumas[i].pumaRect.x = pumas[i].x - pumas[i].pumaRect.width / 2;
+		}
+	}
+
+	public static void avanzarPiedras(Piedra[] piedras, Mono mono) {
+		for (int i = 0; i < piedras.length; i++) {
+			piedras[i].moverAdelante();
+
+			if (piedraAgarrada(mono, piedras[i])) {
+				mono.agarrarPiedra();
+				piedras[i] = null;
+			} else if (piedras[i].piedraRect.x < -piedras[i].piedraRect.width) {
+				piedras[i] = null;
+//				piedras[i].x = 300;
+//				piedras[i].piedraRect.x = piedras[i].x - piedras[i].piedraRect.width / 2;
 			}
 		}
 	}
 
-	public static void asignarRamasEnUnArreglo(Arbol[] arboles, Rama[] ramas) {
-		for (int i = 0; i < arboles.length; i++) {
-			if (arboles[i] != null) {
-				ramas[i] = arboles[i].rama;
+	public static boolean piedraAgarrada(Mono mono, Piedra piedra) {
+//		return colisionEntre(mono.monoRect, piedra.piedraRect); 
+		if (colisionEntre(mono.monoRect, piedra.piedraRect)) {
+			return true;
+		}
+		return false;
+	}
+
+	public static void arrojarPiedras(Mono mono, Piedra[] piedrasArrojadas) {
+		if (mono.cantPiedras > 0) {
+			Piedra proyectil = mono.arrojarPiedra();
+			
+			for (int i = 0; i < piedrasArrojadas.length; i++) {
+				if (piedrasArrojadas[i] == null) {
+					piedrasArrojadas[i] = proyectil;
+					break;
+				}
 			}
+//			proyectil.lanzarPiedra();
 		}
 	}
 
 	public static boolean colisionEntre(Rectangle rect1, Rectangle rect2) {
+//		return rect1.intersects(rect2);
+
 		if (rect1.intersects(rect2)) {
-			System.out.println("Collision detected!");
+//			System.out.println("Collision detected!");
 			return true;
 		}
 		return false;
@@ -221,10 +307,12 @@ public class Juego extends InterfaceJuego {
 	 * debe pasar como parametro al constructor del objeto en cuestion.
 	 */
 	public static int apoyarSobrePiso(Image img) {
+		int piso = Configuracion.POSICION_Y_PISO;
 		return piso - img.getHeight(null) / 2;
 	}
 
 	public static int apoyarSobrePiso(int altura) {
+		int piso = Configuracion.POSICION_Y_PISO;
 		return piso - altura / 2;
 	}
 

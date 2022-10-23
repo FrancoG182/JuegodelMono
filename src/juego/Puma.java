@@ -33,8 +33,8 @@ public class Puma {
 	}
 
 	public void moverAdelante() {
-		this.x -= Configuracion.VELOCIDAD;
-		this.pumaRect.x -= Configuracion.VELOCIDAD;
+		this.x -= Configuracion.VELOCIDAD_PUMAS;
+		this.pumaRect.x -= Configuracion.VELOCIDAD_PUMAS;
 	}
 
 }

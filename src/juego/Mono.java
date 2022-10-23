@@ -13,12 +13,17 @@ public class Mono {
 	Rectangle monoRect;
 	boolean monoCayendo;
 
+	int cantPiedras;
+	boolean tienePiedras;
+
 	public Mono(int x, int y) {
 		this.img1 = Herramientas.cargarImagen("MonoGr (1).png");
 //		this.img1 = Herramientas.cargarImagen("Rect.png");
 //		this.img2 = Herramientas.cargarImagen("Mono2.png");
+		
 		this.monoCayendo = false;
-
+		cantPiedras = Configuracion.CANT_PIEDRAS_INICIALES_DEL_MONO;
+		
 		this.x = x;
 		this.y = Juego.apoyarSobrePiso(img1);
 
@@ -38,7 +43,6 @@ public class Mono {
 		 */
 		this.monoRect.x = this.x - monoRect.width / 2;
 		this.monoRect.y = this.y - monoRect.height / 2;
-
 	}
 
 	public void dibujarse(Entorno entorno) {
@@ -82,7 +86,8 @@ public class Mono {
 			this.monoCayendo = true;
 			int proximaPosicion = this.y + Configuracion.GRAVEDAD; // Su Y crece tanto como diga GRAVEDAD (esto es la
 																	// velocidad de caida)-
-			for (Rama rama : ramas) { // Por cada rama que exista, se fija si el mono esta encima de ella. Si esta sobre una
+			for (Rama rama : ramas) { // Por cada rama que exista, se fija si el mono esta encima de ella. Si esta
+										// sobre una
 										// rama setea monoCayendo en false y termina el metodo.
 				if (rama != null && this.sobreRama(rama)) {
 					this.monoCayendo = false;
@@ -103,13 +108,30 @@ public class Mono {
 		}
 	}
 
+	public void agarrarPiedra() {
+		if (cantPiedras < Configuracion.CANT_PIEDRAS_QUE_PUEDE_TENER_EL_MONO)
+			this.cantPiedras++;
+		System.out.println("this.cantPiedras = " + this.cantPiedras);
+	}
+
+	public Piedra arrojarPiedra() {
+		this.cantPiedras--;
+		int frenteMono = this.monoRect.x + this.monoRect.width;
+		int mitadMono = this.monoRect.y + this.monoRect.height / 2;
+
+		Piedra proyectil = new Piedra(frenteMono, mitadMono, true);
+
+		return proyectil;
+	}
+
 	public void saltar() {
 		this.monoCayendo = false;
 		this.y -= Configuracion.FUERZA_SALTO;
 		this.monoRect.y -= Configuracion.FUERZA_SALTO;
 	}
 
-	public void avanzar() { // METODO PARA TESTEO. HACE QUE EL MONO SE PUEDA DESPLAZAR EN CUALQUIER DIRECCION.
+	public void avanzar() { // METODO PARA TESTEO. HACE QUE EL MONO SE PUEDA DESPLAZAR EN CUALQUIER
+							// DIRECCION.
 		this.x += Configuracion.FUERZA_SALTO;
 		this.monoRect.x += Configuracion.FUERZA_SALTO;
 	}

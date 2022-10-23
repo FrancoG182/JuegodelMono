@@ -38,8 +38,8 @@ public class Rama {
 	}
 
 	public void moverAdelante() {
-		this.x -= Configuracion.VELOCIDAD;
-		this.ramaRect.x -= Configuracion.VELOCIDAD;
+		this.x -= Configuracion.VELOCIDAD_OBJETOS;
+		this.ramaRect.x -= Configuracion.VELOCIDAD_OBJETOS;
 
 		if (this.serpiente != null) {
 			this.serpiente.moverAdelante();
@@ -47,7 +47,7 @@ public class Rama {
 	}
 
 	public void subir() { // METODO PARA TESTEAR
-		this.y -= Configuracion.VELOCIDAD;
-		this.ramaRect.y -= Configuracion.VELOCIDAD;
+		this.y -= Configuracion.VELOCIDAD_OBJETOS;
+		this.ramaRect.y -= Configuracion.VELOCIDAD_OBJETOS;
 	}
 }
