@@ -97,7 +97,7 @@ public class Mono {
 																	// velocidad de caida)-
 			for (Rama rama : ramas) { // Por cada rama que exista, se fija si esta encima de ella. Si esta sobre una
 										// rama setea monoCayendo en false y termina el metodo.
-				if (this.sobreRama(rama)) {
+				if (rama != null && this.sobreRama(rama)) {
 					this.monoCayendo = false;
 					return;
 				}

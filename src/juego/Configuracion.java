@@ -2,10 +2,11 @@ package juego;
 
 public class Configuracion {
 	static int POSICION_Y_PISO = 460;
-	static int VELOCIDAD = 2; // Si se llega a hacer los puntos extra del tp, agregar mas velocidades.
+	static int VELOCIDAD = 3; // Si se llega a hacer los puntos extra del tp, agregar mas velocidades.
 
 	static int MIN_DIST_DIBUJADO_ENTRE_ARBOLES = 210;
 	static int MAX_DIST_DIBUJADO_ENTRE_ARBOLES = 160 + VELOCIDAD * 100;
+	static int COORD_X_DE_PRIMER_ARBOL = 600 - MIN_DIST_DIBUJADO_ENTRE_ARBOLES;
 	
 	static int GRAVEDAD = 3; // Velocidad a la que cae el mono.
 	static int FUERZA_SALTO = 3; // Velocidad a la que salta el mono.
@@ -13,8 +14,7 @@ public class Configuracion {
 													// la fuerza de salto para que, a mayores fuerzas de salto, la
 													// altura limite siga siendo la misma( funciona siqempre que la
 													// fuerza de salto menor a 100).
-	
-	static int CANT_ARBOLES = 40;
+	static int CANT_ARBOLES = 10;
 	static boolean MONO_DESPLAZAR = false;
 	static boolean AVANZAR_ARBOL = true;
 }

@@ -13,10 +13,13 @@ public class Juego extends InterfaceJuego {
 	private Entorno entorno;
 
 	Image background;
+
 	Mono mono;
-	Rama rama;
 	int limiteSalto;
+
 	Arbol[] arboles;
+	static Arbol ultimoArbol;
+//	static int xDeUltimoArbol;
 	Rama[] ramas;
 
 	static int piso = Configuracion.POSICION_Y_PISO;
@@ -39,8 +42,12 @@ public class Juego extends InterfaceJuego {
 		arboles = new Arbol[Configuracion.CANT_ARBOLES];
 		ramas = new Rama[arboles.length];
 
-		generarArboles(arboles);
-		asignarRamasEnArreglo(arboles, ramas);
+//		xDeUltimoArbol = Configuracion.COORD_X_DE_PRIMER_ARBOL;
+
+//		ultimoArbol = arboles[arboles.length - 1];
+
+//		generarArboles(arboles);
+//		asignarRamasEnArreglo(arboles, ramas);
 
 		// Inicia el juego!
 		this.entorno.iniciar();
@@ -55,9 +62,22 @@ public class Juego extends InterfaceJuego {
 	public void tick() {
 		entorno.dibujarImagen(background, 400, 300, 0, 1);
 
+		generarArboles(arboles);
+		asignarRamasEnUnArreglo(arboles, ramas); // Se asignan las ramas ya creadas en un arreglo para pasar este
+													// arreglo al metodo gravedad().
+//		if (ultimoArbol != null) {
+//			xDeUltimoArbol = ultimoArbol.x;
+//		}
+
 		for (Arbol arbol : arboles) {
-			System.out.println(arbol.x);
-			arbol.dibujarse(entorno);
+//			System.out.println(arbol.x);
+			if (arbol != null) {
+				arbol.dibujarse(entorno);
+			}
+		}
+
+		if (Configuracion.AVANZAR_ARBOL) {
+			avanzarArboles(arboles);
 		}
 
 		mono.dibujarse(entorno);
@@ -87,11 +107,55 @@ public class Juego extends InterfaceJuego {
 			}
 		}
 
-		if (Configuracion.AVANZAR_ARBOL) {
-			avanzarArboles(arboles);
+//		colisionEntre(mono.monoRect, arbol.arbolRect);
+	}
+
+	public static void generarArboles(Arbol[] arboles) {
+		int x = Configuracion.COORD_X_DE_PRIMER_ARBOL;
+
+		int distMin = Configuracion.MIN_DIST_DIBUJADO_ENTRE_ARBOLES;
+		int distMax = Configuracion.MAX_DIST_DIBUJADO_ENTRE_ARBOLES;
+
+		if (ultimoArbol != null) {
+			x = ultimoArbol.x;
 		}
 
-//		colisionEntre(mono.monoRect, arbol.arbolRect);
+		for (int i = 0; i < arboles.length; i++) {
+			if (arboles[i] == null) {
+				x = enteroAleatorio(x + distMin, x + distMax);
+				arboles[i] = new Arbol(x);
+				ultimoArbol = arboles[i];
+			}
+		}
+	}
+
+	public static void avanzarArboles(Arbol[] arboles) {
+		for (int i = 0; i < arboles.length; i++) {
+			arboles[i].moverAdelante();
+
+			if (arboles[i].x < -arboles[i].ancho / 2) { // Apenas desaparezca de la pantalla, el arbol se va a volver
+				// null.
+				arboles[i].rama = null; // Seteamos a null tanto al arbol como a su rama. La rama no es necesaria, pero
+				// creo que es buena practica.
+				arboles[i] = null;
+			}
+		}
+	}
+
+	public static void asignarRamasEnUnArreglo(Arbol[] arboles, Rama[] ramas) {
+		for (int i = 0; i < arboles.length; i++) {
+			if (arboles[i] != null) {
+				ramas[i] = arboles[i].rama;
+			}
+		}
+	}
+
+	public static boolean colisionEntre(Rectangle rect1, Rectangle rect2) {
+		if (rect1.intersects(rect2)) {
+			System.out.println("Collision detected!");
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -107,44 +171,12 @@ public class Juego extends InterfaceJuego {
 		return piso - altura / 2;
 	}
 
-	public static void generarArboles(Arbol[] arboles) {
-		int x = 600;
-		int disMin = Configuracion.MIN_DIST_DIBUJADO_ENTRE_ARBOLES;
-		int disMax = Configuracion.MAX_DIST_DIBUJADO_ENTRE_ARBOLES;
-
-		for (int i = 0; i < arboles.length; i++) {
-			arboles[i] = new Arbol(x);
-//			System.out.println(arbol.x);
-			x = enteroAleatorio(x + disMin, x + disMax);
-		}
-	}
-
-	public static void asignarRamasEnArreglo(Arbol[] arboles, Rama[] ramas) {
-		for (int i = 0; i < arboles.length; i++) {
-			ramas[i] = arboles[i].rama;
-		}
-	}
-
-	public static boolean colisionEntre(Rectangle rect1, Rectangle rect2) {
-		if (rect1.intersects(rect2)) {
-			System.out.println("Collision detected!");
-			return true;
-		}
-		return false;
-	}
-
-	public static void avanzarArboles(Arbol[] arboles) {
-		for (Arbol arbol : arboles) {
-			arbol.moverAdelante();			
-		}
-	}
-
 	public static int enteroAleatorio(int minimo, int maximo) {
 		double r = Math.random();
 		double res = minimo + (maximo - minimo) * r;
 		return (int) Math.round(res);
 	}
-	
+
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		Juego juego = new Juego();
