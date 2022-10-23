@@ -16,7 +16,7 @@ public class Mono {
 	public Mono(int x, int y) {
 		this.img1 = Herramientas.cargarImagen("MonoGr (1).png");
 //		this.img1 = Herramientas.cargarImagen("Rect.png");
-		this.img2 = Herramientas.cargarImagen("Mono2.png");
+//		this.img2 = Herramientas.cargarImagen("Mono2.png");
 		this.monoCayendo = false;
 
 		this.x = x;
