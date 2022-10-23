@@ -19,10 +19,11 @@ public class Juego extends InterfaceJuego {
 
 	Arbol[] arboles;
 	Rama[] ramas;
+	Serpiente[] serpientes;
 	static Arbol ultimoArbolGenerado;
 
 	Puma puma;
-	
+
 	static int piso = Configuracion.POSICION_Y_PISO;
 
 	// Variables y métodos propios de cada grupo
@@ -42,6 +43,7 @@ public class Juego extends InterfaceJuego {
 
 		arboles = new Arbol[Configuracion.CANT_ARBOLES];
 		ramas = new Rama[arboles.length];
+		serpientes = new Serpiente[arboles.length];
 
 		puma = new Puma(300);
 		// Inicia el juego!
@@ -58,22 +60,25 @@ public class Juego extends InterfaceJuego {
 		entorno.dibujarImagen(background, 400, 300, 0, 1);
 
 		generarArboles(arboles);
-		asignarRamasEnUnArreglo(arboles, ramas); // Se asignan las ramas ya creadas en un arreglo para pasar este
+		asignarRamasEnUnArreglo(arboles, ramas, serpientes); // Se asignan las ramas ya creadas en un arreglo para pasar este
 													// arreglo al metodo gravedad().
 
 		for (Arbol arbol : arboles) {
 //			System.out.println(arbol.x);
 			if (arbol != null) {
 				arbol.dibujarse(entorno);
+				colisionEntre(mono.monoRect, arbol.rama.serpiente.serpRect);
 			}
 		}
 
-		if (Configuracion.AVANZAR_ARBOL) {
+		if (Configuracion.AVANZAR_ARBOL)
 			avanzarArboles(arboles);
-		}
+
+		if (Configuracion.AVANZAR_DEPREDADOR)
+			avanzarPuma(puma);
 
 		mono.dibujarse(entorno);
-		
+
 		puma.dibujarse(entorno);
 
 		if (!mono.monoCayendo && entorno.estaPresionada(entorno.TECLA_ARRIBA)
@@ -101,7 +106,7 @@ public class Juego extends InterfaceJuego {
 			}
 		}
 
-		colisionEntre(mono.monoRect, puma.pumaRect);
+//		colisionEntre(mono.monoRect, puma.pumaRect);
 	}
 
 	public static void generarArboles(Arbol[] arboles) {
@@ -122,8 +127,8 @@ public class Juego extends InterfaceJuego {
 				x = enteroAleatorio(x + distMin, x + distMax); // A partir de la x del ultimo arbol creado, se obtiene
 																// un numero random que va a ser la diferencia entre el
 																// ultimo arbol y el siguiente.
-				arboles[i] = new Arbol(x);	// Se crea el nuevo arbol.
-				ultimoArbolGenerado = arboles[i];	// Se registra el ultimo arbol creado. Aca se utiliza aliasing.
+				arboles[i] = new Arbol(x); // Se crea el nuevo arbol.
+				ultimoArbolGenerado = arboles[i]; // Se registra el ultimo arbol creado. Aca se utiliza aliasing.
 			}
 		}
 	}
@@ -141,10 +146,20 @@ public class Juego extends InterfaceJuego {
 		}
 	}
 
-	public static void asignarRamasEnUnArreglo(Arbol[] arboles, Rama[] ramas) {
+	private void avanzarPuma(Puma puma) {
+		puma.moverAdelante();
+		if (puma.pumaRect.x < -puma.pumaRect.width / 2) {
+			puma.x = 300;
+			puma.pumaRect.x = puma.x - puma.pumaRect.width / 2;
+
+		}
+	}
+
+	public static void asignarRamasEnUnArreglo(Arbol[] arboles, Rama[] ramas, Serpiente[] serpientes) {
 		for (int i = 0; i < arboles.length; i++) {
 			if (arboles[i] != null) {
 				ramas[i] = arboles[i].rama;
+				serpientes[i] = arboles[i].rama.serpiente;
 			}
 		}
 	}

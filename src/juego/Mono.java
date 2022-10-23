@@ -20,17 +20,14 @@ public class Mono {
 		this.monoCayendo = false;
 
 		this.x = x;
-//		this.y = y;
 		this.y = Juego.apoyarSobrePiso(img1);
 
 		// Coordenadas y tamanio del rectangulo que va a hacer de hitbox del mono.
 		this.monoRect = new Rectangle();
 
-//		this.monoRect.width = 80;	// Esta asignacion es para cuando se esta dibujando un rectangulo.
 		this.monoRect.width = img1.getWidth(null); // Esta asignacion toma el ancho de la imagen que representa
 													// al mono para armar el rectangulo.
 
-//		this.monoRect.height = 80;	// Esta asignacion es para cuando se esta dibujando un rectangulo.
 		this.monoRect.height = img1.getHeight(null); // Esta asignacion toma el alto de la imagen que representa
 														// al mono para armar el rectangulo.
 
@@ -49,16 +46,6 @@ public class Mono {
 				this.monoRect.width, this.monoRect.height, 0.0, Color.gray);
 
 		entorno.dibujarImagen(img1, this.x, this.y, 0, 1);
-	}
-
-	// ESTA MAL ESTE METODO.
-	// PREGUNTA POR UNA COORDENADA DE MANERA INEFICIENTE. ARREGLAR CUANTO ANTES.
-	public void animar() {
-		if (this.y == 410) {
-			this.y = 415;
-		} else {
-			this.y = 410;
-		}
 	}
 
 	public boolean sobreRama(Rama rama) {
@@ -122,7 +109,7 @@ public class Mono {
 		this.monoRect.y -= Configuracion.FUERZA_SALTO;
 	}
 
-	public void avanzar() {
+	public void avanzar() { // METODO PARA TESTEO. HACE QUE EL MONO SE PUEDA DESPLAZAR EN CUALQUIER DIRECCION.
 		this.x += Configuracion.FUERZA_SALTO;
 		this.monoRect.x += Configuracion.FUERZA_SALTO;
 	}

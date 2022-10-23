@@ -12,8 +12,6 @@ public class Arbol {
 	Image img1;
 	Rama rama;
 
-//	Rectangle arbolRect;
-
 	public Arbol(int x) {
 		this.img1 = Herramientas.cargarImagen("Arbol.png");
 
@@ -25,9 +23,6 @@ public class Arbol {
 
 		this.rama = new Rama(this.x, this.y);
 	}
-
-	// Tal vez un metodo que construya un array de arboles con tamanios, coordenadas
-	// y otras propiedades distintas.
 
 	public void dibujarse(Entorno entorno) {
 		entorno.dibujarImagen(img1, this.x, this.y, 0, 1);
