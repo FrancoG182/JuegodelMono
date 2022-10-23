@@ -18,8 +18,7 @@ public class Juego extends InterfaceJuego {
 	int limiteSalto;
 
 	Arbol[] arboles;
-	static Arbol ultimoArbol;
-//	static int xDeUltimoArbol;
+	static Arbol ultimoArbolGenerado;
 	Rama[] ramas;
 
 	static int piso = Configuracion.POSICION_Y_PISO;
@@ -42,13 +41,6 @@ public class Juego extends InterfaceJuego {
 		arboles = new Arbol[Configuracion.CANT_ARBOLES];
 		ramas = new Rama[arboles.length];
 
-//		xDeUltimoArbol = Configuracion.COORD_X_DE_PRIMER_ARBOL;
-
-//		ultimoArbol = arboles[arboles.length - 1];
-
-//		generarArboles(arboles);
-//		asignarRamasEnArreglo(arboles, ramas);
-
 		// Inicia el juego!
 		this.entorno.iniciar();
 	}
@@ -65,9 +57,6 @@ public class Juego extends InterfaceJuego {
 		generarArboles(arboles);
 		asignarRamasEnUnArreglo(arboles, ramas); // Se asignan las ramas ya creadas en un arreglo para pasar este
 													// arreglo al metodo gravedad().
-//		if (ultimoArbol != null) {
-//			xDeUltimoArbol = ultimoArbol.x;
-//		}
 
 		for (Arbol arbol : arboles) {
 //			System.out.println(arbol.x);
@@ -116,15 +105,20 @@ public class Juego extends InterfaceJuego {
 		int distMin = Configuracion.MIN_DIST_DIBUJADO_ENTRE_ARBOLES;
 		int distMax = Configuracion.MAX_DIST_DIBUJADO_ENTRE_ARBOLES;
 
-		if (ultimoArbol != null) {
-			x = ultimoArbol.x;
+		if (ultimoArbolGenerado != null) { // Si el ultimo arbol que se creo no es null,
+			x = ultimoArbolGenerado.x; // x toma el valor de la coordenada actual del ultimo arbol generado (aliasing
+										// util).
 		}
 
-		for (int i = 0; i < arboles.length; i++) {
-			if (arboles[i] == null) {
-				x = enteroAleatorio(x + distMin, x + distMax);
-				arboles[i] = new Arbol(x);
-				ultimoArbol = arboles[i];
+		for (int i = 0; i < arboles.length; i++) { // Para cada arbol
+			if (arboles[i] == null) { // Si el arbol es null, se lo va a generar. Un arbol puede ser null porque
+										// recien empieza el juego o porque se salio de la pantalla.
+
+				x = enteroAleatorio(x + distMin, x + distMax); // A partir de la x del ultimo arbol creado, se obtiene
+																// un numero random que va a ser la diferencia entre el
+																// ultimo arbol y el siguiente.
+				arboles[i] = new Arbol(x);	// Se crea el nuevo arbol.
+				ultimoArbolGenerado = arboles[i];	// Se registra el ultimo arbol creado. Aca se utiliza aliasing.
 			}
 		}
 	}
