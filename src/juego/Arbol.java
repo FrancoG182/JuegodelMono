@@ -15,7 +15,7 @@ public class Arbol {
 //	Rectangle arbolRect;
 
 	public Arbol(int x) {
-		this.img1 = Herramientas.cargarImagen("arbol.png");
+		this.img1 = Herramientas.cargarImagen("Arbol.png");
 
 		// Coordenadas del arbol en si.
 		this.x = x;
