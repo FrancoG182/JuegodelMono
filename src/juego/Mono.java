@@ -1,5 +1,6 @@
 package juego;
 
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.Rectangle;
 
@@ -13,14 +14,14 @@ public class Mono {
 	boolean monoCayendo;
 
 	public Mono(int x, int y) {
-//		img1 = Herramientas.cargarImagen("Mono1.png");
-		img1 = Herramientas.cargarImagen("Rect.png");
-//		img2 = Herramientas.cargarImagen("Mono2.png");
-		monoCayendo = false;
+		this.img1 = Herramientas.cargarImagen("MonoGr (1).png");
+//		this.img1 = Herramientas.cargarImagen("Rect.png");
+//		this.img2 = Herramientas.cargarImagen("Mono2.png");
+		this.monoCayendo = false;
 
 		this.x = x;
-		this.y = y;
-//		this.y = Juego.apoyarSobrePiso(img1);
+//		this.y = y;
+		this.y = Juego.apoyarSobrePiso(img1);
 
 		// Coordenadas y tamanio del rectangulo que va a hacer de hitbox del mono.
 		this.monoRect = new Rectangle();
@@ -44,9 +45,10 @@ public class Mono {
 	}
 
 	public void dibujarse(Entorno entorno) {
-		entorno.dibujarImagen(img1, this.x, this.y, 0, 1);
+		entorno.dibujarRectangulo(this.monoRect.x + monoRect.width / 2, this.monoRect.y + monoRect.height / 2,
+				this.monoRect.width, this.monoRect.height, 0.0, Color.gray);
 
-//		entorno.dibujarRectangulo(this.x, this.y, this.monoRect.width, this.monoRect.height, 0.0, Color.gray);
+		entorno.dibujarImagen(img1, this.x, this.y, 0, 1);
 	}
 
 	// ESTA MAL ESTE METODO.
@@ -61,7 +63,7 @@ public class Mono {
 
 	public boolean sobreRama(Rama rama) {
 		int topeDeRama = rama.ramaRect.y;
-		int baseMono = this.monoRect.y + this.monoRect.height / 2;
+		int baseMono = this.monoRect.y + this.monoRect.height;
 		int proximaPosicion = baseMono + Configuracion.GRAVEDAD;
 
 		boolean derMonoSobreIzqRama = this.monoRect.x + this.monoRect.width >= rama.ramaRect.x
@@ -72,37 +74,43 @@ public class Mono {
 
 		boolean centroMonoSobreCentroRama = this.monoRect.x >= rama.ramaRect.x
 				&& this.monoRect.x + this.monoRect.width <= rama.ramaRect.x + rama.ramaRect.width;
-				
+
 		if (derMonoSobreIzqRama || centroMonoSobreCentroRama || izqMonoSobreDerRama) {
-			
-			if (proximaPosicion >= topeDeRama && this.monoCayendo && baseMono <= topeDeRama) {
+
+			if (proximaPosicion >= topeDeRama && this.monoCayendo && baseMono <= topeDeRama + 1) {
 				this.y = topeDeRama - this.monoRect.height / 2; // El mono se coloca por encima de la rama.
-				this.monoRect.y = topeDeRama - this.monoRect.height / 2; // Lo mismo para su hitbox.
+				this.monoRect.y = this.y - this.monoRect.height / 2; // Lo mismo para su hitbox.
+
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public void gravedad(Rama rama, Arbol arbol) {
+	public void gravedad(Rama[] ramas) {
 		int coordPiso = Configuracion.POSICION_Y_PISO;
 		int limitePiso = Juego.apoyarSobrePiso(this.img1);
 
 		if (this.y < limitePiso) { // Si el mono esta por encima del piso:
 			this.monoCayendo = true;
-			int proximaPosicion = this.y + Configuracion.GRAVEDAD; // Su Y crece tanto como diga GRAVEDAD (esto es la velocidad
-															// de caida)
-			if (this.sobreRama(rama)) {
-				this.monoCayendo = false;
-				
-			} else if (proximaPosicion < limitePiso) { // Si la posicion a la que va a ser dibujado va a seguir por encima del piso:
+			int proximaPosicion = this.y + Configuracion.GRAVEDAD; // Su Y crece tanto como diga GRAVEDAD (esto es la
+																	// velocidad de caida)-
+			for (Rama rama : ramas) { // Por cada rama que exista, se fija si esta encima de ella. Si esta sobre una
+										// rama setea monoCayendo en false y termina el metodo.
+				if (rama != null && this.sobreRama(rama)) {
+					this.monoCayendo = false;
+					return;
+				}
+			}
+			if (proximaPosicion < limitePiso) { // Si la posicion a la que va a ser dibujado va a seguir por encima del
+												// piso:
 				this.y = proximaPosicion; // El mono sigue cayendo.
-				this.monoRect.y = proximaPosicion; // Lo mismo para la hitbox.
-				
+				this.monoRect.y = this.y - this.monoRect.height / 2; // Lo mismo para la hitbox.
+
 			} else { // Si la posicion a la que va a ser dibujado no va a estar por encima del piso
 				// (es decir, toca el piso o lo traspasa):
-				this.y = coordPiso - monoRect.height / 2; // El mono se coloca por encima del piso.
-				this.monoRect.y = coordPiso - monoRect.height / 2; // Lo mismo para la hitbox.
+				this.y = coordPiso - this.monoRect.height / 2; // El mono se coloca por encima del piso.
+				this.monoRect.y = this.y - this.monoRect.height / 2; // Lo mismo para la hitbox.
 				this.monoCayendo = false;
 			}
 		}

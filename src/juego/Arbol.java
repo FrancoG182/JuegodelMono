@@ -1,51 +1,45 @@
 package juego;
 
 import java.awt.Image;
-import java.awt.Rectangle;
-
+//import java.awt.Rectangle;
 import entorno.Entorno;
 import entorno.Herramientas;
-import java.awt.Color;
+//import java.awt.Color;
 
 public class Arbol {
 	int x, y;
+	int ancho;
 	Image img1;
-	Rectangle arbolRect;
+	Rama rama;
 
-	public Arbol(int x, int y) {
+//	Rectangle arbolRect;
+
+	public Arbol(int x) {
+		this.img1 = Herramientas.cargarImagen("Arbol.png");
+
 		// Coordenadas del arbol en si.
 		this.x = x;
-		this.y = y;
-		// Coordenadas y tamaño del rectangulo que va a hacer de hitbox del arbol.
-		this.arbolRect = new Rectangle();
-		this.arbolRect.width = 30;
-		this.arbolRect.height = 200;
-		this.arbolRect.x = x - arbolRect.width / 2;
-		this.arbolRect.y = y - arbolRect.height / 2;
+		this.y = Juego.apoyarSobrePiso(img1.getHeight(null));
 
-		img1 = Herramientas.cargarImagen("arbol.png");
+		this.ancho = img1.getWidth(null);
+
+		this.rama = new Rama(this.x, this.y);
 	}
 
-	// Tal vez un metodo que construya un array de arboles con tamaños, coordenadas
+	// Tal vez un metodo que construya un array de arboles con tamanios, coordenadas
 	// y otras propiedades distintas.
 
-	// Para escalar un arbol, se podria crear un rectangulo que no se dibuje,
-	// pero que este en la misma posicion que el tronco. Cuando el mono colisione,
-	// se puede escalar y otras cosas.
-
-	
 	public void dibujarse(Entorno entorno) {
-//		entorno.dibujarImagen(img1, this.x, this.y, 0, 0.4);
+		entorno.dibujarImagen(img1, this.x, this.y, 0, 1);
 		
-		entorno.dibujarRectangulo(this.x, this.y, this.arbolRect.width, this.arbolRect.height, 0.0, Color.black);
-		
-//		entorno.dibujarRectangulo(this.x, this.y, 30.0, 200.0, 0.0, Color.black);
-//		else
-//			entorno.dibujarImagen(img2, this.x, this.y, 0);
+		if (this.rama != null) {
+			this.rama.dibujarse(entorno);
+		}
+//		entorno.dibujarRectangulo(this.x + ancho / 2 + 1, 300, 1, 600, 0.0, Color.yellow);
 	}
-	
+
 	public void moverAdelante() {
 		this.x -= Configuracion.VELOCIDAD;
-		this.arbolRect.x -= Configuracion.VELOCIDAD; 
+		this.rama.moverAdelante();
 	}
 }
