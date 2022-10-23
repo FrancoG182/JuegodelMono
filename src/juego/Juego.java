@@ -18,9 +18,11 @@ public class Juego extends InterfaceJuego {
 	int limiteSalto;
 
 	Arbol[] arboles;
-	static Arbol ultimoArbolGenerado;
 	Rama[] ramas;
+	static Arbol ultimoArbolGenerado;
 
+	Puma puma;
+	
 	static int piso = Configuracion.POSICION_Y_PISO;
 
 	// Variables y métodos propios de cada grupo
@@ -41,6 +43,7 @@ public class Juego extends InterfaceJuego {
 		arboles = new Arbol[Configuracion.CANT_ARBOLES];
 		ramas = new Rama[arboles.length];
 
+		puma = new Puma(300);
 		// Inicia el juego!
 		this.entorno.iniciar();
 	}
@@ -70,6 +73,8 @@ public class Juego extends InterfaceJuego {
 		}
 
 		mono.dibujarse(entorno);
+		
+		puma.dibujarse(entorno);
 
 		if (!mono.monoCayendo && entorno.estaPresionada(entorno.TECLA_ARRIBA)
 				&& limiteSalto < Configuracion.LIMITE_SALTO) {
@@ -96,7 +101,7 @@ public class Juego extends InterfaceJuego {
 			}
 		}
 
-//		colisionEntre(mono.monoRect, arbol.arbolRect);
+		colisionEntre(mono.monoRect, puma.pumaRect);
 	}
 
 	public static void generarArboles(Arbol[] arboles) {
