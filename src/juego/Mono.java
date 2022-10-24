@@ -21,7 +21,7 @@ public class Mono {
 	int puntos;
 
 	public Mono(int x, int y) {
-		this.img1 = Herramientas.cargarImagen("MonoGr (1).png");
+		this.img1 = Herramientas.cargarImagen("Mono.png");
 //		this.img1 = Herramientas.cargarImagen("Rect.png");
 //		this.img2 = Herramientas.cargarImagen("Mono2.png");
 		

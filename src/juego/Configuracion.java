@@ -14,13 +14,13 @@ public class Configuracion {
 	static int CHANCE_DE_SERPIENTE_EN_ARBOL = 5;
 
 	static int VELOCIDAD_PUMAS = 3;
-	static int MIN_DIST_DIBUJADO_ENTRE_PUMAS = 300;
+	static int MIN_DIST_DIBUJADO_ENTRE_PUMAS = 310;
 	static int MAX_DIST_DIBUJADO_ENTRE_PUMAS = 300 + VELOCIDAD_PUMAS * 100;
 	static int COORD_X_DE_PRIMER_PUMA = 800;
 
 	static int VELOCIDAD_PIEDRA_LANZADA = 2;
 	
-	static int MIN_DIST_DIBUJADO_ENTRE_PIEDRAS = 300;
+	static int MIN_DIST_DIBUJADO_ENTRE_PIEDRAS = 280;
 	static int MAX_DIST_DIBUJADO_ENTRE_PIEDRAS = 500 + VELOCIDAD_OBJETOS * 100;
 	static int COORD_X_DE_PRIMER_PIEDRA = 0;
 
@@ -34,8 +34,8 @@ public class Configuracion {
 													// la fuerza de salto para que, a mayores fuerzas de salto, la
 													// altura limite siga siendo la misma( funciona siempre que la
 													// fuerza de salto menor a LIMITE_SALTO).
-	static int CANT_PUMAS = 3;
-	static int CANT_ARBOLES = 10;
+	static int CANT_PUMAS = 5;
+	static int CANT_ARBOLES = 5;
 	static int CANT_PIEDRAS = 5;
 	static int CANT_PIEDRAS_INICIALES_DEL_MONO = 1;
 	static int CANT_PIEDRAS_QUE_PUEDE_TENER_EL_MONO = 2;

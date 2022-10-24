@@ -14,7 +14,7 @@ public class Arbol {
 
 	public Arbol(int x, boolean alto) {
 		if (alto) {
-			this.img1 = Herramientas.cargarImagen("Arbol alto.png");			
+			this.img1 = Herramientas.cargarImagen("Arbol_alto.png");			
 		}else {
 			this.img1 = Herramientas.cargarImagen("Arbol.png");			
 		}

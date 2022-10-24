@@ -89,6 +89,7 @@ public class Juego extends InterfaceJuego {
 			entorno.dibujarImagen(background, 400, 300, 0, 1); // Se dibuja el fondo de pantalla.
 
 			mostrarPuntos(mono, entorno);
+			mostrarPiedras(mono, entorno);
 
 			generarPumas(pumas);
 			generarArboles(arboles);
@@ -211,7 +212,11 @@ public class Juego extends InterfaceJuego {
 				x = enteroAleatorio(x + distMin, x + distMax); // A partir de la x del ultimo arbol creado, se obtiene
 																// un numero random que va a ser la distancia entre el
 																// ultimo arbol y el siguiente.
-				arboles[i] = new Arbol(x,true); // Se crea el nuevo arbol.
+				if (x % 3 != 0) {	// Si x es divisible por 3:
+					arboles[i] = new Arbol(x, true); // Se crea un nuevo arbol alto.				
+				} else {
+					arboles[i] = new Arbol(x, false); // Se crea un nuevo arbol bajo.										
+				}
 
 				if (x % chance != 0 && arbolesSeguidosSinSerpiente != 5) {
 					// Si x es divisible por chance o si ya se eliminaron las serpientes de
@@ -409,13 +414,30 @@ public class Juego extends InterfaceJuego {
 
 	public void mostrarPuntos(Mono mono, Entorno entorno) {
 		int largoPuntaje = ("Puntos: " + mono.puntos).length(); // Calcula el tamanio del String de la puntuacion.
-
+		
 		int xDePuntaje = Configuracion.ANCHO_PANTALLA - 18 * largoPuntaje; // Segun el largo del puntaje, se calcula el
-																			// x. La puntuacion se va a mostrar del lado
-																			// derecho de la pantalla.
+		// x. La puntuacion se va a mostrar del lado
+		// derecho de la pantalla.
 		// Se muestra el puntaje en pantalla:
 		entorno.cambiarFont("Consolas", 30, Color.black);
 		entorno.escribirTexto("Puntos: " + mono.puntos, xDePuntaje, 30);
+	}
+	
+	public void mostrarPiedras(Mono mono, Entorno entorno) {
+		Image img1 = Herramientas.cargarImagen("Piedra.png");
+		int anchoPiedra = img1.getWidth(null);
+		int altoPiedra = img1.getHeight(null);
+		
+		entorno.dibujarImagen(img1, anchoPiedra / 2, altoPiedra / 2, 0, 1);
+		
+//		int largoPuntaje = ("Puntos: " + mono.puntos).length(); // Calcula el tamanio del String de la puntuacion.
+//
+//		int xDePuntaje = Configuracion.ANCHO_PANTALLA - 18 * largoPuntaje; // Segun el largo del puntaje, se calcula el
+//																			// x. La puntuacion se va a mostrar del lado
+//																			// derecho de la pantalla.
+		// Se muestra el puntaje en pantalla:
+		entorno.cambiarFont("Consolas", 30, Color.black);
+		entorno.escribirTexto("Piedras: " + mono.cantPiedras, anchoPiedra, 30);
 	}
 
 	public static boolean colisionEntre(Rectangle rect1, Rectangle rect2) {

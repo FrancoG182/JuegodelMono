@@ -15,7 +15,7 @@ public class Piedra {
 	boolean lanzada;
 
 	public Piedra(int x, int y, boolean lanzada) {
-		img1 = Herramientas.cargarImagen("Piedra1.png");
+		img1 = Herramientas.cargarImagen("Piedra.png");
 
 		this.lanzada = lanzada;
 		
