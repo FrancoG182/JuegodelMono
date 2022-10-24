@@ -75,8 +75,7 @@ public class Juego extends InterfaceJuego {
 		generarPumas(pumas);
 		generarArboles(arboles);
 		asignarRamasYSerpientesEnArreglos(arboles, ramas, serpientes); // Se asignan las ramas ya creadas en un arreglo
-																		// para
-		// pasar este arreglo al metodo gravedad().
+																		// para pasar este arreglo al metodo gravedad().
 		generarPiedras(piedras);
 
 		for (Arbol arbol : arboles) {
@@ -278,14 +277,14 @@ public class Juego extends InterfaceJuego {
 			if (piedras[i] == null) {
 				continue;
 			}
+
 			piedras[i].moverAdelante();
 
 			if (piedraAgarrada(mono, piedras[i])) {
 				mono.agarrarPiedra();
-				if (mono.cantPiedras <= Configuracion.CANT_PIEDRAS_QUE_PUEDE_TENER_EL_MONO)
 				piedras[i] = null;
 
-			} else if (piedras[i].piedraRect.x < -piedras[i].piedraRect.width) {
+			} else if (piedras[i].piedraRect.x < - piedras[i].piedraRect.width) {
 				piedras[i] = null;
 			}
 		}
@@ -305,7 +304,7 @@ public class Juego extends InterfaceJuego {
 	}
 
 	public static boolean piedraAgarrada(Mono mono, Piedra piedra) {
-		return colisionEntre(mono.monoRect, piedra.piedraRect);
+		return (colisionEntre(mono.monoRect, piedra.piedraRect) && mono.cantPiedras < Configuracion.CANT_PIEDRAS_QUE_PUEDE_TENER_EL_MONO);
 	}
 
 	public static void arrojarPiedras(Mono mono, Piedra[] piedrasArrojadas) {
@@ -329,17 +328,17 @@ public class Juego extends InterfaceJuego {
 					if (colisionEntre(proyectil.piedraRect, pumas[i].pumaRect)) {
 						pumas[i] = null;
 						eliminarProyectil(proyectil);
-						return;					
+						return;
 					}
 				}
 			}
-			
+
 			for (int i = 0; i < arboles.length; i++) {
 				if (arboles[i] != null && arboles[i].rama.serpiente != null) {
 					if (colisionEntre(proyectil.piedraRect, arboles[i].rama.serpiente.serpRect)) {
 						arboles[i].rama.serpiente = null;
 						eliminarProyectil(proyectil);
-						return;	
+						return;
 					}
 				}
 			}
@@ -354,7 +353,7 @@ public class Juego extends InterfaceJuego {
 			}
 		}
 	}
-	
+
 	public static boolean colisionEntre(Rectangle rect1, Rectangle rect2) {
 		return rect1.intersects(rect2);
 	}
