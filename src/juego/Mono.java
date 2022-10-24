@@ -15,6 +15,8 @@ public class Mono {
 
 	int cantPiedras;
 	boolean tienePiedras;
+	
+	boolean muerto;
 
 	int puntos;
 
@@ -22,7 +24,9 @@ public class Mono {
 		this.img1 = Herramientas.cargarImagen("MonoGr (1).png");
 //		this.img1 = Herramientas.cargarImagen("Rect.png");
 //		this.img2 = Herramientas.cargarImagen("Mono2.png");
-
+		
+		this.muerto = false;
+		
 		this.monoCayendo = false;
 
 		cantPiedras = Configuracion.CANT_PIEDRAS_INICIALES_DEL_MONO;
@@ -135,13 +139,18 @@ public class Mono {
 		int limite = 99999999; // El valor mas grande que puede tomar un entero.
 
 		if (this.puntos + puntosGanados <= limite) { // Si la puntuacion no va a ser mayor a limite:
-			System.out.println("as");
 			this.puntos += puntosGanados; // Sumar puntos ganados.
 		} else if (this.puntos + puntosGanados > limite) {// Si se va a pasar del limite,
 			this.puntos += limite - this.puntos; // Le sumo lo que le falta para llegar a limite
 		}
 	}
 
+	public void morirse() {
+		if (!Configuracion.MONO_INMORTAL) {
+			this.muerto = true;	
+		}
+	}
+	
 	public void saltar() {
 		this.monoCayendo = false;
 		this.y -= Configuracion.FUERZA_SALTO;

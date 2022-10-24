@@ -5,7 +5,7 @@ public class Configuracion {
 	static int ALTO_PANTALLA = 600;
 	
 	static int POSICION_Y_PISO = 460;
-	static int VELOCIDAD_OBJETOS = 5; // Si se llega a hacer los puntos extra del tp, agregar mas velocidades.
+	static int VELOCIDAD_OBJETOS = 3; // Si se llega a hacer los puntos extra del tp, agregar mas velocidades.
 
 	static int MIN_DIST_DIBUJADO_ENTRE_ARBOLES = 210;
 	static int MAX_DIST_DIBUJADO_ENTRE_ARBOLES = 160 + VELOCIDAD_OBJETOS * 100;
@@ -26,7 +26,7 @@ public class Configuracion {
 
 	static int PUNTOS_GANADOS_POR_PARARSE_EN_RAMA = 5;
 	static int PUNTOS_GANADOS_POR_ESPANTAR_DEPREDADOR = 1;
-	static int PUNTOS_GANADOS_POR_COMER_FRUTA = 10;
+	static int PUNTOS_GANADOS_POR_COMER_FRUTA = 10;	//	/dasdaisjdaodnadnadnñadnasdasdasd
 	
 	static int GRAVEDAD = 3; // Velocidad a la que cae el mono.
 	static int FUERZA_SALTO = 3; // Velocidad a la que salta el mono.
@@ -42,6 +42,7 @@ public class Configuracion {
 	static int CANT_PROYECTILES = 10; // Cantidad de piedras que pueden estar volando al mismo tiempo porque el mono las arrojo. 
 	
 	
+	static boolean MONO_INMORTAL = true;
 	static boolean MONO_DESPLAZAR = true;
 	static boolean AVANZAR_ARBOL = true;
 	static boolean AVANZAR_DEPREDADOR = true;

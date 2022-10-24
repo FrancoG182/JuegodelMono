@@ -12,8 +12,13 @@ public class Arbol {
 	Image img1;
 	Rama rama;
 
-	public Arbol(int x) {
-		this.img1 = Herramientas.cargarImagen("Arbol.png");
+	public Arbol(int x, boolean alto) {
+		if (alto) {
+			this.img1 = Herramientas.cargarImagen("Arbol alto.png");			
+		}else {
+			this.img1 = Herramientas.cargarImagen("Arbol.png");			
+		}
+
 
 		// Coordenadas del arbol en si.
 		this.x = x;

@@ -15,7 +15,7 @@ public class Rama {
 
 	// PODRIA TOMAR COMO PARAMETRO UN ARBOL EN EL QUE DIBUJARSE.
 	public Rama(int x, int y) {
-		this.img1 = Herramientas.cargarImagen("rama.png"); // Hacer la rama menos larga.
+		this.img1 = Herramientas.cargarImagen("rama2.png"); // Hacer la rama menos larga.
 		yaDioPuntos = false;
 		
 		this.x = x;
