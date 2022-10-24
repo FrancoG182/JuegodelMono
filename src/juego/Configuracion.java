@@ -13,17 +13,19 @@ public class Configuracion {
 
 	static int CHANCE_DE_SERPIENTE_EN_ARBOL = 5;
 
-	static int VELOCIDAD_PUMAS = 3; // Si se llega a hacer los puntos extra del tp, agregar mas velocidades.
+	static int VELOCIDAD_PUMAS = 3;
 	static int MIN_DIST_DIBUJADO_ENTRE_PUMAS = 300;
 	static int MAX_DIST_DIBUJADO_ENTRE_PUMAS = 300 + VELOCIDAD_PUMAS * 100;
 	static int COORD_X_DE_PRIMER_PUMA = 800;
 
-	static int VELOCIDAD_PIEDRA_LANZADA = 2; // CHECKEAR /*8598+2*9+82*8/92*/82*/82/*82/*8/*821*8
+	static int VELOCIDAD_PIEDRA_LANZADA = 2;
 	
 	static int MIN_DIST_DIBUJADO_ENTRE_PIEDRAS = 300;
 	static int MAX_DIST_DIBUJADO_ENTRE_PIEDRAS = 500 + VELOCIDAD_OBJETOS * 100;
 	static int COORD_X_DE_PRIMER_PIEDRA = 0;
 
+	static int PUNTOS_GANADOS_POR_PARARSE_EN_RAMA = 5;
+	
 	static int GRAVEDAD = 3; // Velocidad a la que cae el mono.
 	static int FUERZA_SALTO = 3; // Velocidad a la que salta el mono.
 	static int LIMITE_SALTO = 130 / FUERZA_SALTO; // Altura limite a la que puede saltar el mono. Se calcula a partir de

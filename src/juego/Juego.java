@@ -1,6 +1,6 @@
 package juego;
 
-//import java.awt.Color;
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.Rectangle;
 
@@ -72,6 +72,10 @@ public class Juego extends InterfaceJuego {
 	public void tick() {
 		entorno.dibujarImagen(background, 400, 300, 0, 1);
 
+		//Mostrar puntaje en pantalla.
+		entorno.cambiarFont("Consolas", 30, Color.black);
+		entorno.escribirTexto("Puntos: "+ mono.puntos, 600, 50);
+		
 		generarPumas(pumas);
 		generarArboles(arboles);
 		asignarRamasYSerpientesEnArreglos(arboles, ramas, serpientes); // Se asignan las ramas ya creadas en un arreglo

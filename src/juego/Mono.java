@@ -16,15 +16,18 @@ public class Mono {
 	int cantPiedras;
 	boolean tienePiedras;
 
+	int puntos;
+
 	public Mono(int x, int y) {
 		this.img1 = Herramientas.cargarImagen("MonoGr (1).png");
 //		this.img1 = Herramientas.cargarImagen("Rect.png");
 //		this.img2 = Herramientas.cargarImagen("Mono2.png");
-		
+
 		this.monoCayendo = false;
-		
+
 		cantPiedras = Configuracion.CANT_PIEDRAS_INICIALES_DEL_MONO;
-		
+		puntos = 0;
+
 		this.x = x;
 		this.y = Juego.apoyarSobrePiso(img1);
 
@@ -72,7 +75,10 @@ public class Mono {
 			if (proximaPosicion >= topeDeRama && this.monoCayendo && baseMono <= topeDeRama + 1) {
 				this.y = topeDeRama - this.monoRect.height / 2; // El mono se coloca por encima de la rama.
 				this.monoRect.y = this.y - this.monoRect.height / 2; // Lo mismo para su hitbox.
-
+				if (!rama.yaDioPuntos) {
+					this.ganarPuntos(Configuracion.PUNTOS_GANADOS_POR_PARARSE_EN_RAMA);
+					rama.yaDioPuntos = true;
+				}
 				return true;
 			}
 		}
@@ -123,6 +129,10 @@ public class Mono {
 		Piedra proyectil = new Piedra(frenteMono, mitadMono, true);
 
 		return proyectil;
+	}
+
+	public void ganarPuntos(int puntosGanados) {
+		this.puntos += puntosGanados;
 	}
 
 	public void saltar() {

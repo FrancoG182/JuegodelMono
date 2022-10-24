@@ -11,10 +11,13 @@ public class Rama {
 	Image img1;
 	Rectangle ramaRect;
 	Serpiente serpiente;
+	boolean yaDioPuntos;
 
 	// PODRIA TOMAR COMO PARAMETRO UN ARBOL EN EL QUE DIBUJARSE.
 	public Rama(int x, int y) {
 		this.img1 = Herramientas.cargarImagen("rama.png"); // Hacer la rama menos larga.
+		yaDioPuntos = false;
+		
 		this.x = x;
 		this.y = y;
 
