@@ -1,8 +1,11 @@
 package juego;
 
 public class Configuracion {
+	static int ANCHO_PANTALLA = 800;
+	static int ALTO_PANTALLA = 600;
+	
 	static int POSICION_Y_PISO = 460;
-	static int VELOCIDAD_OBJETOS = 3; // Si se llega a hacer los puntos extra del tp, agregar mas velocidades.
+	static int VELOCIDAD_OBJETOS = 5; // Si se llega a hacer los puntos extra del tp, agregar mas velocidades.
 
 	static int MIN_DIST_DIBUJADO_ENTRE_ARBOLES = 210;
 	static int MAX_DIST_DIBUJADO_ENTRE_ARBOLES = 160 + VELOCIDAD_OBJETOS * 100;
@@ -15,7 +18,8 @@ public class Configuracion {
 	static int MAX_DIST_DIBUJADO_ENTRE_PUMAS = 300 + VELOCIDAD_PUMAS * 100;
 	static int COORD_X_DE_PRIMER_PUMA = 800;
 
-	static int VELOCIDAD_PIEDRA_LANZADA = 1;
+	static int VELOCIDAD_PIEDRA_LANZADA = 2; // CHECKEAR /*8598+2*9+82*8/92*/82*/82/*82/*8/*821*8
+	
 	static int MIN_DIST_DIBUJADO_ENTRE_PIEDRAS = 300;
 	static int MAX_DIST_DIBUJADO_ENTRE_PIEDRAS = 500 + VELOCIDAD_OBJETOS * 100;
 	static int COORD_X_DE_PRIMER_PIEDRA = 0;
@@ -29,7 +33,7 @@ public class Configuracion {
 	static int CANT_PUMAS = 3;
 	static int CANT_ARBOLES = 10;
 	static int CANT_PIEDRAS = 5;
-	static int CANT_PIEDRAS_INICIALES_DEL_MONO = 10;
+	static int CANT_PIEDRAS_INICIALES_DEL_MONO = 1;
 	static int CANT_PIEDRAS_QUE_PUEDE_TENER_EL_MONO = 2;
 	static int CANT_PROYECTILES = 10; // Cantidad de piedras que pueden estar volando al mismo tiempo porque el mono las arrojo. 
 	

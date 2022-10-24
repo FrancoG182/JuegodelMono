@@ -19,6 +19,7 @@ public class Juego extends InterfaceJuego {
 
 	Arbol[] arboles;
 	Rama[] ramas;
+	Serpiente[] serpientes;
 	Puma[] pumas;
 
 	static Arbol ultimoArbolGenerado;
@@ -28,14 +29,15 @@ public class Juego extends InterfaceJuego {
 
 	Piedra[] piedras;
 	static Piedra ultimaPiedraGenerada;
-	Piedra[] piedrasArrojadas;
+	static Piedra[] piedrasArrojadas;
 
 	// Variables y métodos propios de cada grupo
 	// ...
 
 	Juego() {
 		// Inicializa el objeto entorno
-		this.entorno = new Entorno(this, "Selva Mono Capuchino - Grupo 10 - v1", 800, 600);
+		this.entorno = new Entorno(this, "Selva Mono Capuchino - Grupo 10 - v1", Configuracion.ANCHO_PANTALLA,
+				Configuracion.ALTO_PANTALLA);
 
 		// Inicializar lo que haga falta para el juego
 
@@ -47,6 +49,7 @@ public class Juego extends InterfaceJuego {
 
 		arboles = new Arbol[Configuracion.CANT_ARBOLES];
 		ramas = new Rama[arboles.length];
+		serpientes = new Serpiente[arboles.length];
 
 		arbolesSeguidosSinSerpiente = 1;
 
@@ -71,8 +74,9 @@ public class Juego extends InterfaceJuego {
 
 		generarPumas(pumas);
 		generarArboles(arboles);
-		asignarRamasEnUnArreglo(arboles, ramas); // Se asignan las ramas ya creadas en un arreglo para
-													// pasar este arreglo al metodo gravedad().
+		asignarRamasYSerpientesEnArreglos(arboles, ramas, serpientes); // Se asignan las ramas ya creadas en un arreglo
+																		// para
+		// pasar este arreglo al metodo gravedad().
 		generarPiedras(piedras);
 
 		for (Arbol arbol : arboles) {
@@ -101,15 +105,19 @@ public class Juego extends InterfaceJuego {
 			}
 		}
 
-		if (entorno.estaPresionada(entorno.TECLA_ESPACIO)) {
+		if (entorno.sePresiono(entorno.TECLA_ESPACIO)) {
 			arrojarPiedras(mono, piedrasArrojadas);
 		}
 
-		for (Piedra proyectil : piedrasArrojadas) {
-//			System.out.println(proyectil == null);
-			if (proyectil != null) {
-				proyectil.dibujarse(entorno);
-				proyectil.lanzarPiedra();
+		for (int i = 0; i < piedrasArrojadas.length; i++) {
+			if (piedrasArrojadas[i] != null) {
+				piedrasArrojadas[i].dibujarse(entorno);
+
+				piedrasArrojadas[i].lanzarPiedra();
+
+				avanzarProyectiles(piedrasArrojadas);
+
+				espantarDepredador(piedrasArrojadas[i], pumas, arboles);
 			}
 		}
 
@@ -121,6 +129,7 @@ public class Juego extends InterfaceJuego {
 			avanzarPumas(pumas);
 		if (Configuracion.AVANZAR_PIEDRA)
 			avanzarPiedras(piedras, mono);
+//		avanzarProyectiles(piedrasArrojadas);
 
 		if (!mono.monoCayendo && entorno.estaPresionada(entorno.TECLA_ARRIBA)
 				&& limiteSalto < Configuracion.LIMITE_SALTO) {
@@ -227,20 +236,27 @@ public class Juego extends InterfaceJuego {
 		}
 	}
 
-	public static void asignarRamasEnUnArreglo(Arbol[] arboles, Rama[] ramas) {
+	public static void asignarRamasYSerpientesEnArreglos(Arbol[] arboles, Rama[] ramas, Serpiente[] serpientes) {
 		for (int i = 0; i < arboles.length; i++) {
-			if (arboles[i] != null)
+			if (arboles[i] != null) {
 				ramas[i] = arboles[i].rama;
+				if (ramas[i].serpiente != null) {
+					serpientes[i] = arboles[i].rama.serpiente;
+				}
+			}
 		}
 	}
 
 	public static void avanzarArboles(Arbol[] arboles) {
 		for (int i = 0; i < arboles.length; i++) {
+			if (arboles[i] == null) {
+				continue;
+			}
+
 			arboles[i].moverAdelante();
 
 			// Apenas el arbol desaparezca de la pantalla, el arbol, su rama y la serpiente
-			// de su
-			// rama van a volverse null.
+			// de su rama van a volverse null.
 			if (arboles[i].x < -arboles[i].ancho / 2)
 				arboles[i] = null;
 		}
@@ -248,6 +264,9 @@ public class Juego extends InterfaceJuego {
 
 	public static void avanzarPumas(Puma[] pumas) {
 		for (int i = 0; i < pumas.length; i++) {
+			if (pumas[i] == null) {
+				continue;
+			}
 			pumas[i].moverAdelante();
 			if (pumas[i].pumaRect.x < -pumas[i].pumaRect.width)
 				pumas[i] = null;
@@ -256,49 +275,88 @@ public class Juego extends InterfaceJuego {
 
 	public static void avanzarPiedras(Piedra[] piedras, Mono mono) {
 		for (int i = 0; i < piedras.length; i++) {
+			if (piedras[i] == null) {
+				continue;
+			}
 			piedras[i].moverAdelante();
 
 			if (piedraAgarrada(mono, piedras[i])) {
 				mono.agarrarPiedra();
+				if (mono.cantPiedras <= Configuracion.CANT_PIEDRAS_QUE_PUEDE_TENER_EL_MONO)
 				piedras[i] = null;
+
 			} else if (piedras[i].piedraRect.x < -piedras[i].piedraRect.width) {
 				piedras[i] = null;
-//				piedras[i].x = 300;
-//				piedras[i].piedraRect.x = piedras[i].x - piedras[i].piedraRect.width / 2;
+			}
+		}
+	}
+
+	public static void avanzarProyectiles(Piedra[] proyectiles) {
+		for (int i = 0; i < proyectiles.length; i++) {
+			if (proyectiles[i] == null) {
+				continue;
+			}
+			proyectiles[i].lanzarPiedra();
+
+			if (proyectiles[i].piedraRect.x > Configuracion.ANCHO_PANTALLA) {
+				proyectiles[i] = null;
 			}
 		}
 	}
 
 	public static boolean piedraAgarrada(Mono mono, Piedra piedra) {
-//		return colisionEntre(mono.monoRect, piedra.piedraRect); 
-		if (colisionEntre(mono.monoRect, piedra.piedraRect)) {
-			return true;
-		}
-		return false;
+		return colisionEntre(mono.monoRect, piedra.piedraRect);
 	}
 
 	public static void arrojarPiedras(Mono mono, Piedra[] piedrasArrojadas) {
-		if (mono.cantPiedras > 0) {
-			Piedra proyectil = mono.arrojarPiedra();
-			
-			for (int i = 0; i < piedrasArrojadas.length; i++) {
+		if (mono.cantPiedras > 0) { // Si el mono tiene piedras,
+			Piedra proyectil = mono.arrojarPiedra(); // Se crea una nueva piedra.
+
+			for (int i = 0; i < piedrasArrojadas.length; i++) { // Se carga la piedra en un arreglo de piedras que estan
+																// siendo arrojadas.
 				if (piedrasArrojadas[i] == null) {
 					piedrasArrojadas[i] = proyectil;
-					break;
+					break; // Si encuentra espacio, carga la piedra y sale del ciclo y termina el metodo.
 				}
 			}
-//			proyectil.lanzarPiedra();
 		}
 	}
 
-	public static boolean colisionEntre(Rectangle rect1, Rectangle rect2) {
-//		return rect1.intersects(rect2);
-
-		if (rect1.intersects(rect2)) {
-//			System.out.println("Collision detected!");
-			return true;
+	public void espantarDepredador(Piedra proyectil, Puma[] pumas, Arbol[] arboles) {
+		if (proyectil != null) {
+			for (int i = 0; i < pumas.length; i++) {
+				if (pumas[i] != null) {
+					if (colisionEntre(proyectil.piedraRect, pumas[i].pumaRect)) {
+						pumas[i] = null;
+						eliminarProyectil(proyectil);
+						return;					
+					}
+				}
+			}
+			
+			for (int i = 0; i < arboles.length; i++) {
+				if (arboles[i] != null && arboles[i].rama.serpiente != null) {
+					if (colisionEntre(proyectil.piedraRect, arboles[i].rama.serpiente.serpRect)) {
+						arboles[i].rama.serpiente = null;
+						eliminarProyectil(proyectil);
+						return;	
+					}
+				}
+			}
 		}
-		return false;
+	}
+
+	public static void eliminarProyectil(Piedra proyectil) {
+		for (int i = 0; i < piedrasArrojadas.length; i++) {
+			if (proyectil == piedrasArrojadas[i]) {
+				piedrasArrojadas[i] = null;
+				return;
+			}
+		}
+	}
+	
+	public static boolean colisionEntre(Rectangle rect1, Rectangle rect2) {
+		return rect1.intersects(rect2);
 	}
 
 	/**

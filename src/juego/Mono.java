@@ -22,6 +22,7 @@ public class Mono {
 //		this.img2 = Herramientas.cargarImagen("Mono2.png");
 		
 		this.monoCayendo = false;
+		
 		cantPiedras = Configuracion.CANT_PIEDRAS_INICIALES_DEL_MONO;
 		
 		this.x = x;
@@ -109,7 +110,7 @@ public class Mono {
 	}
 
 	public void agarrarPiedra() {
-		if (cantPiedras < Configuracion.CANT_PIEDRAS_QUE_PUEDE_TENER_EL_MONO)
+		if (cantPiedras <= Configuracion.CANT_PIEDRAS_QUE_PUEDE_TENER_EL_MONO)
 			this.cantPiedras++;
 		System.out.println("this.cantPiedras = " + this.cantPiedras);
 	}
