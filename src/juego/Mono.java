@@ -132,7 +132,14 @@ public class Mono {
 	}
 
 	public void ganarPuntos(int puntosGanados) {
-		this.puntos += puntosGanados;
+		int limite = 99999999; // El valor mas grande que puede tomar un entero.
+
+		if (this.puntos + puntosGanados <= limite) { // Si la puntuacion no va a ser mayor a limite:
+			System.out.println("as");
+			this.puntos += puntosGanados; // Sumar puntos ganados.
+		} else if (this.puntos + puntosGanados > limite) {// Si se va a pasar del limite,
+			this.puntos += limite - this.puntos; // Le sumo lo que le falta para llegar a limite
+		}
 	}
 
 	public void saltar() {

@@ -25,6 +25,8 @@ public class Configuracion {
 	static int COORD_X_DE_PRIMER_PIEDRA = 0;
 
 	static int PUNTOS_GANADOS_POR_PARARSE_EN_RAMA = 5;
+	static int PUNTOS_GANADOS_POR_ESPANTAR_DEPREDADOR = 1;
+	static int PUNTOS_GANADOS_POR_COMER_FRUTA = 10;
 	
 	static int GRAVEDAD = 3; // Velocidad a la que cae el mono.
 	static int FUERZA_SALTO = 3; // Velocidad a la que salta el mono.

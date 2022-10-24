@@ -31,7 +31,7 @@ public class Juego extends InterfaceJuego {
 	static Piedra ultimaPiedraGenerada;
 	static Piedra[] piedrasArrojadas;
 
-	// Variables y métodos propios de cada grupo
+	// Variables y metodos propios de cada grupo
 	// ...
 
 	Juego() {
@@ -64,17 +64,15 @@ public class Juego extends InterfaceJuego {
 	}
 
 	/**
-	 * Durante el juego, el método tick() será ejecutado en cada instante y por lo
-	 * tanto es el método más importante de esta clase. Aquí se debe actualizar el
+	 * Durante el juego, el metodo tick() sera ejecutado en cada instante y por lo
+	 * tanto es el metodo más importante de esta clase. Aqui se debe actualizar el
 	 * estado interno del juego para simular el paso del tiempo (ver el enunciado
 	 * del TP para mayor detalle).
 	 */
 	public void tick() {
 		entorno.dibujarImagen(background, 400, 300, 0, 1);
-
-		//Mostrar puntaje en pantalla.
-		entorno.cambiarFont("Consolas", 30, Color.black);
-		entorno.escribirTexto("Puntos: "+ mono.puntos, 600, 50);
+		
+		mostrarPuntos(mono, entorno);
 		
 		generarPumas(pumas);
 		generarArboles(arboles);
@@ -120,7 +118,7 @@ public class Juego extends InterfaceJuego {
 
 				avanzarProyectiles(piedrasArrojadas);
 
-				espantarDepredador(piedrasArrojadas[i], pumas, arboles);
+				espantarDepredador(piedrasArrojadas[i], pumas, arboles, mono);
 			}
 		}
 
@@ -132,7 +130,6 @@ public class Juego extends InterfaceJuego {
 			avanzarPumas(pumas);
 		if (Configuracion.AVANZAR_PIEDRA)
 			avanzarPiedras(piedras, mono);
-//		avanzarProyectiles(piedrasArrojadas);
 
 		if (!mono.monoCayendo && entorno.estaPresionada(entorno.TECLA_ARRIBA)
 				&& limiteSalto < Configuracion.LIMITE_SALTO) {
@@ -170,7 +167,7 @@ public class Juego extends InterfaceJuego {
 		int distMax = Configuracion.MAX_DIST_DIBUJADO_ENTRE_ARBOLES;
 
 		if (ultimoArbolGenerado != null) { // Si el ultimo arbol que se creo no es null,
-			x = ultimoArbolGenerado.x; // x toma el valor de la coordenada actual del ultimo arbol generado (aliasing
+			x = ultimoArbolGenerado.x; 	// x toma el valor de la coordenada actual del ultimo arbol generado (aliasing
 										// util).
 		}
 
@@ -325,13 +322,15 @@ public class Juego extends InterfaceJuego {
 		}
 	}
 
-	public void espantarDepredador(Piedra proyectil, Puma[] pumas, Arbol[] arboles) {
+	public static void espantarDepredador(Piedra proyectil, Puma[] pumas, Arbol[] arboles, Mono mono) {
 		if (proyectil != null) {
 			for (int i = 0; i < pumas.length; i++) {
 				if (pumas[i] != null) {
 					if (colisionEntre(proyectil.piedraRect, pumas[i].pumaRect)) {
 						pumas[i] = null;
 						eliminarProyectil(proyectil);
+						mono.ganarPuntos(Configuracion.PUNTOS_GANADOS_POR_ESPANTAR_DEPREDADOR);
+						
 						return;
 					}
 				}
@@ -342,6 +341,8 @@ public class Juego extends InterfaceJuego {
 					if (colisionEntre(proyectil.piedraRect, arboles[i].rama.serpiente.serpRect)) {
 						arboles[i].rama.serpiente = null;
 						eliminarProyectil(proyectil);
+						
+						mono.ganarPuntos(Configuracion.PUNTOS_GANADOS_POR_ESPANTAR_DEPREDADOR);
 						return;
 					}
 				}
@@ -382,7 +383,16 @@ public class Juego extends InterfaceJuego {
 		double res = minimo + (maximo - minimo) * r;
 		return (int) Math.round(res);
 	}
-
+	
+	public void mostrarPuntos(Mono mono, Entorno entorno) {
+		int largoPuntaje = ("Puntos: " + mono.puntos).length(); // Calcula el tamanio del String de la puntuacion.
+		
+		int xDePuntaje = Configuracion.ANCHO_PANTALLA - 18 * largoPuntaje;	// Segun el largo del puntaje, se calcula el x. La puntuacio 
+		
+		entorno.cambiarFont("Consolas", 30, Color.black);
+		entorno.escribirTexto("Puntos: "+ mono.puntos, xDePuntaje, 30);
+	}
+	
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		Juego juego = new Juego();
