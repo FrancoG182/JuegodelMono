@@ -5,7 +5,7 @@ public class Configuracion {
 	static int ALTO_PANTALLA = 600;
 	
 	static int POSICION_Y_PISO = 460;
-	static int VELOCIDAD_OBJETOS = 5; // Si se llega a hacer los puntos extra del tp, agregar mas velocidades.
+	static int VELOCIDAD_OBJETOS = 3; // Si se llega a hacer los puntos extra del tp, agregar mas velocidades.
 
 	static int MIN_DIST_DIBUJADO_ENTRE_ARBOLES = 210;
 	static int MAX_DIST_DIBUJADO_ENTRE_ARBOLES = 160 + VELOCIDAD_OBJETOS * 100;
