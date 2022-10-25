@@ -15,6 +15,7 @@ public class Juego extends InterfaceJuego {
 	Image background; // El fondo de pantalla.
 
 	Mono mono;
+	
 	static int puntuacionFinal;
 
 	int limiteSalto; // Altura maxima a la que puede llegar el mono.

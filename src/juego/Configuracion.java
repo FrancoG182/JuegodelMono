@@ -13,7 +13,7 @@ public class Configuracion {
 	static int COORD_X_DE_PRIMER_ARBOL = 600 - MIN_DIST_DIBUJADO_ENTRE_ARBOLES;
 
 	static int CHANCE_DE_SERPIENTE_EN_ARBOL = 5;
-	static int CHANCE_DE_FRUTA_EN_ARBOL = 1; // 20
+	static int CHANCE_DE_FRUTA_EN_ARBOL = 10;
 
 	static int VELOCIDAD_PUMAS = 3;
 	static int MIN_DIST_DIBUJADO_ENTRE_PUMAS = 310;
