@@ -26,9 +26,11 @@ public class Puma {
 	}
 
 	public void dibujarse(Entorno entorno) {
+		// Hitbox
 		entorno.dibujarRectangulo(this.pumaRect.x + pumaRect.width / 2, this.pumaRect.y + pumaRect.height / 2,
 				this.pumaRect.width, this.pumaRect.height, 0.0, Color.gray);
 
+		// Imagen
 		entorno.dibujarImagen(img1, this.x, this.y, 0, 1);
 	}
 

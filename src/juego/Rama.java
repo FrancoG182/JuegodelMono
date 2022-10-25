@@ -35,14 +35,19 @@ public class Rama {
 	}
 
 	public void dibujarse(Entorno entorno) {
+		// Imagen
 		entorno.dibujarImagen(img1, this.x, this.y, 0, 1);
 
+		// Imagen de la serpiente
 		if (this.serpiente != null) {
 			this.serpiente.dibujarse(entorno);
 		}
+		// Imagen de la manzana
 		if (this.fruta != null) {
 			this.fruta.dibujarse(entorno);
 		}
+		
+		// Hitbox de la rama
 //		entorno.dibujarRectangulo(this.ramaRect.x + ramaRect.width / 2, this.ramaRect.y + ramaRect.height / 2, this.ramaRect.width, this.ramaRect.height, 0.0, Color.gray);
 	}
 

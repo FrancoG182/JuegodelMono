@@ -15,7 +15,7 @@ public class Juego extends InterfaceJuego {
 	Image background; // El fondo de pantalla.
 
 	Mono mono;
-	
+
 	static int puntuacionFinal;
 
 	int limiteSalto; // Altura maxima a la que puede llegar el mono.
@@ -100,7 +100,7 @@ public class Juego extends InterfaceJuego {
 
 			asignarRamasEnArreglos(arboles, ramas); // Se asignan las ramas ya creadas en
 			// un arreglo para pasar este arreglo al metodo gravedad().
-			
+
 			generarPiedras(piedras);
 
 			for (Arbol arbol : arboles) { // Se dibuja cada arbol que no sea null con su rama y su serpiente, si es que
@@ -115,7 +115,7 @@ public class Juego extends InterfaceJuego {
 						comerAlMono(mono, serpiente); // Si no es null, vemos si esta colisionando con el mono.
 					}
 					if (fruta != null) {// Ya que estamos recorriendo los arboles, vemos si la serpiente del arbol
-												// no es null.
+										// no es null.
 						agarrarFruta(mono, fruta, arboles);// Si no es null, vemos si esta colisionando con el mono.
 					}
 				}
@@ -165,7 +165,7 @@ public class Juego extends InterfaceJuego {
 				mono.gravedad(ramas);
 			}
 
-			desplazarMono(mono); // Para testeo
+			desplazarMono(mono); // PARA TESTEO
 
 		} else {
 			entorno.cambiarFont("Consolas", 30, Color.white);
@@ -178,7 +178,7 @@ public class Juego extends InterfaceJuego {
 			entorno.escribirTexto("Puntos: " + puntuacionFinal, xDePuntaje, 300);
 			entorno.escribirTexto(mensaje, xDeMensaje, 500);
 
-			if (entorno.sePresiono(entorno.TECLA_ESPACIO)) { //
+			if (entorno.sePresiono(entorno.TECLA_ESPACIO)) {
 				quitar();
 			}
 		}
@@ -186,6 +186,7 @@ public class Juego extends InterfaceJuego {
 
 	public static void generarArboles(Arbol[] arboles) {
 		int x = Configuracion.COORD_X_DE_PRIMER_ARBOL;
+		int chanceArbolAlto = Configuracion.CHANCE_DE_ARBOL_ALTO;
 		int chanceSerpiente = Configuracion.CHANCE_DE_SERPIENTE_EN_ARBOL;
 		int chanceFruta = Configuracion.CHANCE_DE_FRUTA_EN_ARBOL;
 
@@ -204,14 +205,15 @@ public class Juego extends InterfaceJuego {
 				x = enteroAleatorio(x + distMin, x + distMax); // A partir de la x del ultimo arbol creado, se obtiene
 																// un numero random que va a ser la distancia entre el
 																// ultimo arbol y el siguiente.
-				if (x % 3 != 0) { // Si x es divisible por 3:
+
+				if (x % chanceArbolAlto == 0) { // Si x es divisible por chanceArbolAlto:
 					arboles[i] = new Arbol(x, true); // Se crea un nuevo arbol alto,
-				} else { // si no:
-					arboles[i] = new Arbol(x, false); // Se crea un nuevo arbol bajo.
+				} else {
+					arboles[i] = new Arbol(x, false); // si no, se crea un nuevo arbol bajo.
 				}
 
 				if (x % chanceSerpiente == 0 || arbolesSeguidosSinSerpiente == 5) {
-					// Si x es divisible por chance o si ya se eliminaron las serpientes de
+					// Si x es divisible por chanceSerpiente o si ya se eliminaron las serpientes de
 					// 5 arboles, no se le elimina la serpiente al arbol actual y se reinicia la
 					// cuenta de arboles sin serpiente.
 					arbolesSeguidosSinSerpiente = 0;
@@ -220,7 +222,7 @@ public class Juego extends InterfaceJuego {
 					arbolesSeguidosSinSerpiente++;
 				}
 				if (x % chanceFruta != 0) {
-					// Si x no es divisible por chance, se le elimina la fruta al arbol actual.
+					// Si x no es divisible por chanceFruta, se le elimina la fruta al arbol actual.
 					arboles[i].rama.fruta = null;
 				}
 
@@ -423,28 +425,34 @@ public class Juego extends InterfaceJuego {
 	}
 
 	public void mostrarPuntos(Mono mono, Entorno entorno) {
-		int largoPuntaje = ("Puntos: " + mono.puntos).length(); // Calcula el tamanio del String de la puntuacion.
+		int largoPuntaje = ("PUNTOS: " + mono.puntos).length(); // Calcula el tamanio del String de la puntuacion.
 
 		int xDePuntaje = Configuracion.ANCHO_PANTALLA - 18 * largoPuntaje; // Segun el largo del puntaje, se calcula el
 		// x. La puntuacion se va a mostrar del lado
 		// derecho de la pantalla.
 		// Se muestra el puntaje en pantalla:
 		entorno.cambiarFont("Consolas", 30, Color.black);
-		entorno.escribirTexto("Puntos: " + mono.puntos, xDePuntaje, 30);
+		entorno.escribirTexto("PUNTOS: " + mono.puntos, xDePuntaje, 30);
 	}
 
 	public void mostrarPiedras(Mono mono, Entorno entorno) {
 		Image img1 = Herramientas.cargarImagen("Piedra.png");
+
+		// Se calcula la posicion de la piedra en la esquina superior izquierda de la
+		// pantalla.
 		int anchoPiedra = img1.getWidth(null);
 		int altoPiedra = img1.getHeight(null);
 
-		entorno.dibujarImagen(img1, anchoPiedra / 2, altoPiedra / 2, 0, 1); // Se dibuja una piedra para hacer de icono
-																			// de la cantidad de piedras que tiene el
-																			// mono.
+		int xDePiedra = 10 + anchoPiedra / 2;
+		int yDePiedra = 12 + altoPiedra / 2;
+
+		// Se dibuja una piedra para hacer de icono de la cantidad de piedras que tiene
+		// el mono.
+		entorno.dibujarImagen(img1, xDePiedra, yDePiedra, 0, 1);
 
 		// Se muestra la cantidad de piedras en pantalla:
-		entorno.cambiarFont("Consolas", 30, Color.black);
-		entorno.escribirTexto("Piedras: " + mono.cantPiedras, anchoPiedra, 30);
+		entorno.cambiarFont("Consolas", 25, Color.black);
+		entorno.escribirTexto("PIEDRAS: " + mono.cantPiedras, xDePiedra + anchoPiedra, yDePiedra + altoPiedra / 2 - 2);
 	}
 
 	public static boolean colisionEntre(Rectangle rect1, Rectangle rect2) {

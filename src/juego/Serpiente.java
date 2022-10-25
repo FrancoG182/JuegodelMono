@@ -27,9 +27,11 @@ public class Serpiente {
 	}
 
 	public void dibujarse(Entorno entorno) {
-		entorno.dibujarRectangulo(this.serpRect.x + serpRect.width / 2, this.serpRect.y + serpRect.height / 2,
-				this.serpRect.width, this.serpRect.height, 0.0, Color.gray);
+		// Hitbox
+//		entorno.dibujarRectangulo(this.serpRect.x + serpRect.width / 2, this.serpRect.y + serpRect.height / 2,
+//				this.serpRect.width, this.serpRect.height, 0.0, Color.gray);
 
+		// Imagen
 		entorno.dibujarImagen(img1, this.x, this.y, 0, 1);
 	}
 

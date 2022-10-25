@@ -15,7 +15,7 @@ public class Mono {
 
 	int cantPiedras;
 	boolean tienePiedras;
-	
+
 	boolean muerto;
 
 	int puntos;
@@ -24,9 +24,9 @@ public class Mono {
 		this.img1 = Herramientas.cargarImagen("Mono.png");
 //		this.img1 = Herramientas.cargarImagen("Rect.png");
 //		this.img2 = Herramientas.cargarImagen("Mono2.png");
-		
+
 		this.muerto = false;
-		
+
 		this.monoCayendo = false;
 
 		cantPiedras = Configuracion.CANT_PIEDRAS_INICIALES_DEL_MONO;
@@ -54,9 +54,11 @@ public class Mono {
 	}
 
 	public void dibujarse(Entorno entorno) {
-		entorno.dibujarRectangulo(this.monoRect.x + monoRect.width / 2, this.monoRect.y + monoRect.height / 2,
-				this.monoRect.width, this.monoRect.height, 0.0, Color.gray);
+		// Hitbox
+//		entorno.dibujarRectangulo(this.monoRect.x + monoRect.width / 2, this.monoRect.y + monoRect.height / 2,
+//				this.monoRect.width, this.monoRect.height, 0.0, Color.gray);
 
+		// Imagen
 		entorno.dibujarImagen(img1, this.x, this.y, 0, 1);
 	}
 
@@ -98,8 +100,8 @@ public class Mono {
 			int proximaPosicion = this.y + Configuracion.GRAVEDAD; // Su Y crece tanto como diga GRAVEDAD (esto es la
 																	// velocidad de caida)-
 			for (Rama rama : ramas) { // Por cada rama que exista, se fija si el mono esta encima de ella. Si esta
-										// sobre una
-										// rama setea monoCayendo en false y termina el metodo.
+										// sobre una rama setea monoCayendo en false y termina el metodo.
+				
 				if (rama != null && this.sobreRama(rama)) {
 					this.monoCayendo = false;
 					return;
@@ -111,7 +113,8 @@ public class Mono {
 				this.monoRect.y = this.y - this.monoRect.height / 2; // Lo mismo para la hitbox.
 
 			} else { // Si la posicion a la que va a ser dibujado no va a estar por encima del piso
-				// (es decir, toca el piso o lo traspasa):
+						// (es decir, toca el piso o lo traspasa):
+				
 				this.y = coordPiso - this.monoRect.height / 2; // El mono se coloca por encima del piso.
 				this.monoRect.y = this.y - this.monoRect.height / 2; // Lo mismo para la hitbox.
 				this.monoCayendo = false;
@@ -122,7 +125,6 @@ public class Mono {
 	public void agarrarPiedra() {
 		if (cantPiedras < Configuracion.CANT_PIEDRAS_QUE_PUEDE_TENER_EL_MONO)
 			this.cantPiedras++;
-		System.out.println("this.cantPiedras = " + this.cantPiedras);
 	}
 
 	public Piedra arrojarPiedra() {
@@ -147,10 +149,10 @@ public class Mono {
 
 	public void morirse() {
 		if (!Configuracion.MONO_INMORTAL) {
-			this.muerto = true;	
+			this.muerto = true;
 		}
 	}
-	
+
 	public void saltar() {
 		this.monoCayendo = false;
 		this.y -= Configuracion.FUERZA_SALTO;

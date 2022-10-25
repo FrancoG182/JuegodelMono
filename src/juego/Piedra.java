@@ -1,6 +1,6 @@
 package juego;
 
-import java.awt.Color;
+//import java.awt.Color;
 import java.awt.Image;
 import java.awt.Rectangle;
 import entorno.Entorno;
@@ -40,7 +40,10 @@ public class Piedra {
 	}
 
 	public void dibujarse(Entorno entorno) {
-		entorno.dibujarRectangulo(this.piedraRect.x + piedraRect.width / 2, this.piedraRect.y + piedraRect.height / 2, this.piedraRect.width, this.piedraRect.height, 0.0, Color.black);
+		// Hitbox
+//		entorno.dibujarRectangulo(this.piedraRect.x + piedraRect.width / 2, this.piedraRect.y + piedraRect.height / 2, this.piedraRect.width, this.piedraRect.height, 0.0, Color.black);
+		
+		// Imagen
 		entorno.dibujarImagen(img1, this.x, this.y, 0, 1);
 	}
 

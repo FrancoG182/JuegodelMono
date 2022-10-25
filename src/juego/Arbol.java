@@ -30,11 +30,14 @@ public class Arbol {
 	}
 
 	public void dibujarse(Entorno entorno) {
+		// Imagen
 		entorno.dibujarImagen(img1, this.x, this.y, 0, 1);
 		
+		// Imagen de la manzana
 		if (this.rama != null) {
 			this.rama.dibujarse(entorno);
 		}
+		// Hitbox del arbol 
 //		entorno.dibujarRectangulo(this.x + ancho / 2 + 1, 300, 1, 600, 0.0, Color.yellow);
 	}
 

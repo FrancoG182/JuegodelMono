@@ -1,6 +1,6 @@
 package juego;
 
-import java.awt.Color;
+//import java.awt.Color;
 import java.awt.Image;
 import java.awt.Rectangle;
 
@@ -27,9 +27,11 @@ public class Fruta {
 	}
 
 	public void dibujarse(Entorno entorno) {
-		entorno.dibujarRectangulo(this.frutaRect.x + frutaRect.width / 2, this.frutaRect.y + frutaRect.height / 2,
-				this.frutaRect.width, this.frutaRect.height, 0.0, Color.gray);
+		// Hitbox
+//		entorno.dibujarRectangulo(this.frutaRect.x + frutaRect.width / 2, this.frutaRect.y + frutaRect.height / 2,
+//				this.frutaRect.width, this.frutaRect.height, 0.0, Color.gray);
 
+		// Imagen
 		entorno.dibujarImagen(img1, this.x, this.y, 0, 1);
 	}
 

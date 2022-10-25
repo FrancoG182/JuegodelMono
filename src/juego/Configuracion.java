@@ -12,14 +12,14 @@ public class Configuracion {
 	static int MAX_DIST_DIBUJADO_ENTRE_ARBOLES = 160 + VELOCIDAD_OBJETOS * 100;
 	static int COORD_X_DE_PRIMER_ARBOL = 600 - MIN_DIST_DIBUJADO_ENTRE_ARBOLES;
 
+	static int CHANCE_DE_ARBOL_ALTO = 9;
 	static int CHANCE_DE_SERPIENTE_EN_ARBOL = 5;
 	static int CHANCE_DE_FRUTA_EN_ARBOL = 10;
 
-	static int VELOCIDAD_PUMAS = 3;
+	static int VELOCIDAD_PUMAS = 4;
 	static int MIN_DIST_DIBUJADO_ENTRE_PUMAS = 310;
 	static int MAX_DIST_DIBUJADO_ENTRE_PUMAS = 300 + VELOCIDAD_PUMAS * 100;
 	static int COORD_X_DE_PRIMER_PUMA = 800;
-
 	
 	static int VELOCIDAD_PIEDRA_LANZADA = 5;
 	static int MIN_DIST_DIBUJADO_ENTRE_PIEDRAS = 280;
@@ -28,7 +28,7 @@ public class Configuracion {
 
 	static int PUNTOS_GANADOS_POR_PARARSE_EN_RAMA = 5;
 	static int PUNTOS_GANADOS_POR_ESPANTAR_DEPREDADOR = 1;
-	static int PUNTOS_GANADOS_POR_COMER_FRUTA = 10;	//	/dasdaisjdaodnadnadnñadnasdasdasd
+	static int PUNTOS_GANADOS_POR_COMER_FRUTA = 10;
 	
 	static int GRAVEDAD = 3; // Velocidad a la que cae el mono.
 	static int FUERZA_SALTO = 3; // Velocidad a la que salta el mono.
@@ -44,7 +44,7 @@ public class Configuracion {
 	static int CANT_PROYECTILES = 10; // Cantidad de piedras que pueden estar volando al mismo tiempo porque el mono las arrojo. 
 	
 	
-	static boolean MONO_INMORTAL = true;
+	static boolean MONO_INMORTAL = false;
 	static boolean MONO_DESPLAZAR = false;
 	static boolean AVANZAR_ARBOL = true;
 	static boolean AVANZAR_DEPREDADOR = true;
