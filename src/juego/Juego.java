@@ -12,16 +12,19 @@ public class Juego extends InterfaceJuego {
 	// El objeto Entorno que controla el tiempo y otros
 	private Entorno entorno;
 
-	Image background; // El fondo de pantalla.
+	// El fondo de pantalla.
+	Image background;
 
 	Mono mono;
-	int limiteSalto; // Altura maxima a la que puede llegar el mono.
 
-	Arbol[] arboles; // Arreglo que va a guardar a los arboles generados con sus ramas y las
-						// serpientes de sus ramas.
+	// Altura maxima a la que puede llegar el mono.
+	int limiteSalto;
+
+	// Arreglo que va a guardar a los arboles generados con sus ramas y las
+	// serpientes y frutas de sus ramas.
+	Arbol[] arboles;
 
 	Rama[] ramas; // *
-	Serpiente[] serpientes; // *
 	static Fruta[] frutas; // *
 
 	// (*) Tanto las ramas como las serpientes y las frutas se generan con los
@@ -31,22 +34,28 @@ public class Juego extends InterfaceJuego {
 
 	Puma[] pumas;
 
-	static Arbol ultimoArbolGenerado; // A partir de la coordenada x de este arbol se calculara la x del siguiente
-										// arbol a generarse.
+	// A partir de la coordenada x de este arbol se calculara la x del siguiente
+	// arbol a generarse.
+	static Arbol ultimoArbolGenerado;
 
-	static int arbolesSeguidosSinSerpiente; // Cantidad de arboles seguidos con sus serpientes == null.
+	// Cantidad de arboles seguidos con sus serpientes == null.
+	static int arbolesSeguidosSinSerpiente;
 
-	static Puma ultimoPumaGenerado;// A partir de la coordenada x de este puma se calculara la x del siguiente
-									// puma a generarse.
+	// A partir de la coordenada x de este puma se calculara la x del siguiente puma
+	// a generarse.
+	static Puma ultimoPumaGenerado;
 
-	Piedra[] piedras; // Piedras del suelo.
+	// Piedras del suelo.
+	Piedra[] piedras;
 
-	static Piedra ultimaPiedraGenerada;// A partir de la coordenada x de esta piedra se calculara la x de la siguiente
-										// piedra a generarse.
+	// A partir de la coordenada x de esta piedra se calculara la x de la siguiente
+	// piedra a generarse.
+	static Piedra ultimaPiedraGenerada;
 
-	static Piedra[] piedrasArrojadas; // Piedras que estan siendo lanzadas. Tendra elementos cuando el mono lance una
-										// piedra y este elemento se eliminara cuando la piedra toque un depredador o se
-										// salga de la pantalla.
+	// Piedras que estan siendo lanzadas. Tendra elementos cuando el mono lance una
+	// piedra y este elemento se eliminara cuando la piedra toque un depredador o se
+	// salga de la pantalla.
+	static Piedra[] piedrasArrojadas;
 
 	Juego() {
 		// Inicializa el objeto entorno
@@ -59,16 +68,18 @@ public class Juego extends InterfaceJuego {
 
 		mono = new Mono(100, 0);
 
-		limiteSalto = 0; // El contador que va a contar la cantidad de ticks que el mono estuvo saltando
-							// en el salto actual.
+		// El contador que va a contar la cantidad de ticks que el mono estuvo saltando
+		// en el salto actual.
+		limiteSalto = 0;
 
-		arboles = new Arbol[Configuracion.CANT_ARBOLES]; // Arreglos de arboles, ramas, frutas y serpientes.
+		// Arreglos de arboles, ramas y frutas.
+		arboles = new Arbol[Configuracion.CANT_ARBOLES];
 		ramas = new Rama[arboles.length];
 		frutas = new Fruta[arboles.length];
-		serpientes = new Serpiente[arboles.length];
 
-		arbolesSeguidosSinSerpiente = 0; // Ayudara a que, cada cierta cantidad de arboles sin serpiente, se genere una
-											// serpiente obligatoriamente.
+		// Ayudara a que, cada cierta cantidad de arboles sin serpiente, se genere una
+		// serpiente obligatoriamente.
+		arbolesSeguidosSinSerpiente = 0;
 
 		pumas = new Puma[Configuracion.CANT_PUMAS];
 
@@ -122,11 +133,12 @@ public class Juego extends InterfaceJuego {
 						comerAlMono(mono, serpiente); // Si no es null, vemos si esta colisionando con el mono.
 					}
 
-					// Ya que estamos recorriendo los arboles, vemos si la serpiente del arbol no es
+					// Ya que estamos recorriendo los arboles, vemos si la fruta del arbol no es
 					// null.
 					Fruta fruta = arbol.rama.fruta;
 					if (fruta != null) {
-						agarrarFruta(mono, fruta, arboles); // Si no es null, vemos si esta colisionando con el mono.
+						// Si no es null, vemos si esta colisionando con el mono.
+						agarrarFruta(mono, fruta, arboles);
 					}
 				}
 			}
@@ -198,7 +210,8 @@ public class Juego extends InterfaceJuego {
 				mono.gravedad(ramas);
 			}
 
-			desplazarMono(mono); // PARA TESTEO. Permite al mono moverse en cualquier direccion.
+			 // PARA TESTEO. Permite al mono moverse en cualquier direccion.
+			desplazarMono(mono);
 
 		} else {
 			// Si el mono esta muerto:
