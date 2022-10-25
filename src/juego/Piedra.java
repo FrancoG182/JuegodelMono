@@ -15,28 +15,29 @@ public class Piedra {
 	boolean lanzada;
 
 	public Piedra(int x, int y, boolean lanzada) {
+		// Imagen de la piedra.
 		img1 = Herramientas.cargarImagen("Piedra.png");
-
-		this.lanzada = lanzada;
 		
-		// Hitbox de la piedra que agarra el mono
+		// Ancho y alto de la hitbox de la piedra.
 		this.piedraRect = new Rectangle();
 		this.piedraRect.width = img1.getWidth(null);
 		this.piedraRect.height = img1.getHeight(null);
 		
-		// Coordenadas de la piedra
+		// Coordenadas X de la piedra y su hitbox.
 		this.x = x;
 		this.piedraRect.x = x - piedraRect.width / 2;
 		
+		// Si el booleano pasado como parametro es false, la piedra se situara sobre el suelo. Si es true, se
+		// situara donde le indique la Y pasada como parametro.
+		this.lanzada = lanzada;
 		if (this.lanzada == false) {
 			this.y = Juego.apoyarSobrePiso(this.piedraRect.height);			
 		} else {
 			this.y = y;			
 		}
+		
+		// Coordenada Y de la hitbox de la piedra.
 		this.piedraRect.y = this.y - piedraRect.height / 2;
-
-
-
 	}
 
 	public void dibujarse(Entorno entorno) {
@@ -48,11 +49,13 @@ public class Piedra {
 	}
 
 	public void moverAdelante() {
+		// Avanza la piedra hacia la izquierda de la pantalla.
 		this.x -= Configuracion.VELOCIDAD_OBJETOS;
 		this.piedraRect.x -= Configuracion.VELOCIDAD_OBJETOS;
 	}
 	
 	public void lanzarPiedra() {
+		// Avanza la piedra hacia la derecha de la pantalla.
 		this.x += Configuracion.VELOCIDAD_PIEDRA_LANZADA;
 		this.piedraRect.x += Configuracion.VELOCIDAD_PIEDRA_LANZADA;
 	}

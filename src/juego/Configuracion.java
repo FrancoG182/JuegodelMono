@@ -47,6 +47,6 @@ public class Configuracion {
 	static boolean MONO_INMORTAL = false;
 	static boolean MONO_DESPLAZAR = false;
 	static boolean AVANZAR_ARBOL = true;
-	static boolean AVANZAR_DEPREDADOR = true;
+	static boolean AVANZAR_PUMAS = true;
 	static boolean AVANZAR_PIEDRA = true;
 }

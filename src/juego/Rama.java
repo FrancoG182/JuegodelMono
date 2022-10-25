@@ -12,17 +12,20 @@ public class Rama {
 	Rectangle ramaRect;
 	Serpiente serpiente;
 	Fruta fruta;
-	
 	boolean yaDioPuntos;
 
-	// PODRIA TOMAR COMO PARAMETRO UN ARBOL EN EL QUE DIBUJARSE.
 	public Rama(int x, int y) {
-		this.img1 = Herramientas.cargarImagen("Rama.png"); // Hacer la rama menos larga.
+		// Imagen de la rama.
+		this.img1 = Herramientas.cargarImagen("Rama.png");
+		
+		// Booleano que verifica si el mono ya obtuvo puntos por pararse en esta rama.
 		yaDioPuntos = false;
 		
+		// Coordenadas de la rama.
 		this.x = x;
 		this.y = y;
 
+		// Coordenadas de la hitbox de la rama.
 		this.ramaRect = new Rectangle();
 		this.ramaRect.width = img1.getWidth(null);
 		this.ramaRect.height = img1.getHeight(null);
@@ -30,19 +33,21 @@ public class Rama {
 		this.ramaRect.x = this.x - ramaRect.width / 2;
 		this.ramaRect.y = this.y - ramaRect.height / 2;
 
+		// Se inicializa su serpiente
 		this.serpiente = new Serpiente(this.x, this.ramaRect.y);
+		// Se inicializa su fruta
 		this.fruta = new Fruta(this.x, this.ramaRect.y);
 	}
 
 	public void dibujarse(Entorno entorno) {
-		// Imagen
+		// Se dibuja la rama.
 		entorno.dibujarImagen(img1, this.x, this.y, 0, 1);
 
-		// Imagen de la serpiente
+		// Se dibuja la serpiente.
 		if (this.serpiente != null) {
 			this.serpiente.dibujarse(entorno);
 		}
-		// Imagen de la manzana
+		// Se dibuja la manzana.
 		if (this.fruta != null) {
 			this.fruta.dibujarse(entorno);
 		}
@@ -52,19 +57,17 @@ public class Rama {
 	}
 
 	public void moverAdelante() {
+		// Avanza la rama.
 		this.x -= Configuracion.VELOCIDAD_OBJETOS;
 		this.ramaRect.x -= Configuracion.VELOCIDAD_OBJETOS;
 
+		// Si no es null, tambien avanza su serpiente. 
 		if (this.serpiente != null) {
 			this.serpiente.moverAdelante();
 		}
+		// Si no es null, tambien avanza su fruta. 
 		if (this.fruta != null) {
 			this.fruta.moverAdelante();
 		}
-	}
-
-	public void subir() { // METODO PARA TESTEAR
-		this.y -= Configuracion.VELOCIDAD_OBJETOS;
-		this.ramaRect.y -= Configuracion.VELOCIDAD_OBJETOS;
 	}
 }

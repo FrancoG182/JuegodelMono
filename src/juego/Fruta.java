@@ -13,15 +13,19 @@ public class Fruta {
 	Rectangle frutaRect;
 
 	public Fruta(int x, int y) {
+		// Imagen de la fruta.
 		this.img1 = Herramientas.cargarImagen("Manzanita.png");
 		
+		// Ancho y alto de la hitbox de la fruta.
 		this.frutaRect = new Rectangle();
 		this.frutaRect.width = img1.getWidth(null);
 		this.frutaRect.height = img1.getHeight(null);
 		
+		// Coordenadas de la fruta en si.
 		this.x = x;
 		this.y = y - this.frutaRect.height / 2;
 
+		// Coordenadas de la hitbox de la fruta.
 		this.frutaRect.x = this.x - frutaRect.width / 2;
 		this.frutaRect.y = this.y - frutaRect.height / 2;
 	}
@@ -36,6 +40,7 @@ public class Fruta {
 	}
 
 	public void moverAdelante() {
+		// Avanza la fruta.
 		this.x -= Configuracion.VELOCIDAD_OBJETOS;
 		this.frutaRect.x -= Configuracion.VELOCIDAD_OBJETOS;
 	}

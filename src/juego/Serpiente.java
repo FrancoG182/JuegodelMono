@@ -1,6 +1,6 @@
 package juego;
 
-import java.awt.Color;
+//import java.awt.Color;
 import java.awt.Image;
 import java.awt.Rectangle;
 
@@ -13,15 +13,19 @@ public class Serpiente {
 	Rectangle serpRect;
 
 	public Serpiente(int x, int y) {
+		// Imagen de la serpiente.
 		this.img1 = Herramientas.cargarImagen("serpiente.png");
 		
+		// Ancho y alto de la hitbox de la serpiente.
 		this.serpRect = new Rectangle();
 		this.serpRect.width = img1.getWidth(null);
 		this.serpRect.height = img1.getHeight(null);
 		
+		// Coordenadas de la serpiente en si.
 		this.x = x;
 		this.y = y - this.serpRect.height / 2;
 
+		// Coordenadas de la hitbox de la serpiente.
 		this.serpRect.x = this.x - serpRect.width / 2;
 		this.serpRect.y = this.y - serpRect.height / 2;
 	}
@@ -36,6 +40,7 @@ public class Serpiente {
 	}
 
 	public void moverAdelante() {
+		// Avanza la serpiente.
 		this.x -= Configuracion.VELOCIDAD_OBJETOS;
 		this.serpRect.x -= Configuracion.VELOCIDAD_OBJETOS;
 	}
