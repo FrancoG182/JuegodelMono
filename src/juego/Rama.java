@@ -11,6 +11,8 @@ public class Rama {
 	Image img1;
 	Rectangle ramaRect;
 	Serpiente serpiente;
+	Fruta fruta;
+	
 	boolean yaDioPuntos;
 
 	// PODRIA TOMAR COMO PARAMETRO UN ARBOL EN EL QUE DIBUJARSE.
@@ -29,6 +31,7 @@ public class Rama {
 		this.ramaRect.y = this.y - ramaRect.height / 2;
 
 		this.serpiente = new Serpiente(this.x, this.ramaRect.y);
+		this.fruta = new Fruta(this.x, this.ramaRect.y);
 	}
 
 	public void dibujarse(Entorno entorno) {
@@ -36,6 +39,9 @@ public class Rama {
 
 		if (this.serpiente != null) {
 			this.serpiente.dibujarse(entorno);
+		}
+		if (this.fruta != null) {
+			this.fruta.dibujarse(entorno);
 		}
 //		entorno.dibujarRectangulo(this.ramaRect.x + ramaRect.width / 2, this.ramaRect.y + ramaRect.height / 2, this.ramaRect.width, this.ramaRect.height, 0.0, Color.gray);
 	}
@@ -46,6 +52,9 @@ public class Rama {
 
 		if (this.serpiente != null) {
 			this.serpiente.moverAdelante();
+		}
+		if (this.fruta != null) {
+			this.fruta.moverAdelante();
 		}
 	}
 

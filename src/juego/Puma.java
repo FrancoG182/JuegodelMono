@@ -18,10 +18,10 @@ public class Puma {
 		this.y = Juego.apoyarSobrePiso(img1.getHeight(null));
 
 		this.pumaRect = new Rectangle();
-		this.pumaRect.width = img1.getWidth(null);
+		this.pumaRect.width = img1.getWidth(null) / 2;
 		this.pumaRect.height = img1.getHeight(null);
 
-		this.pumaRect.x = this.x - pumaRect.width / 2;
+		this.pumaRect.x = this.x - pumaRect.width;
 		this.pumaRect.y = this.y - pumaRect.height / 2;
 	}
 
