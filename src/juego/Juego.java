@@ -604,7 +604,7 @@ public class Juego extends InterfaceJuego {
 	}
 
 	/**
-	 * Verfica si un puma esta colisionando con el mono y mata al mono en caso
+	 * Verifica si un puma esta colisionando con el mono y mata al mono en caso
 	 * afirmativo.
 	 * 
 	 * @param mono
@@ -618,7 +618,7 @@ public class Juego extends InterfaceJuego {
 	}
 
 	/**
-	 * Verfica si una serpiente esta colisionando con el mono y mata al mono en caso
+	 * Verifica si una serpiente esta colisionando con el mono y mata al mono en caso
 	 * afirmativo.
 	 * 
 	 * @param mono
@@ -632,7 +632,7 @@ public class Juego extends InterfaceJuego {
 	}
 
 	/**
-	 * Verfica si una fruta esta colisionando con el mono. En caso afirmativo, se
+	 * Verifica si una fruta esta colisionando con el mono. En caso afirmativo, se
 	 * elimina la fruta y el mono gana puntos.
 	 * 
 	 * @param mono
