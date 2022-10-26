@@ -11,7 +11,6 @@ public class Piedra {
 	Image img1;
 	Rectangle piedraRect;
 
-	boolean agarrada;
 	boolean lanzada;
 
 	public Piedra(int x, int y, boolean lanzada) {
