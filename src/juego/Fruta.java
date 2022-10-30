@@ -1,16 +1,16 @@
 package juego;
 
-//import java.awt.Color;
 import java.awt.Image;
-import java.awt.Rectangle;
-
 import entorno.Entorno;
 import entorno.Herramientas;
+import java.awt.Rectangle;
+
+//import java.awt.Color;
 
 public class Fruta {
-	int x, y;
-	Image img1;
-	Rectangle frutaRect;
+	 private int x, y;
+	 private Image img1;
+	 private Rectangle frutaRect;
 
 	public Fruta(int x, int y) {
 		// Imagen de la fruta.
@@ -43,6 +43,10 @@ public class Fruta {
 		// Avanza la fruta.
 		this.x -= Configuracion.VELOCIDAD_OBJETOS;
 		this.frutaRect.x -= Configuracion.VELOCIDAD_OBJETOS;
+	}
+
+	public Rectangle getFrutaRect() {
+		return frutaRect;
 	}
 
 }

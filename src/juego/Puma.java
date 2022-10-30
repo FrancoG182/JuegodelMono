@@ -1,16 +1,16 @@
 package juego;
 
-//import java.awt.Color;
 import java.awt.Image;
-import java.awt.Rectangle;
-
 import entorno.Entorno;
 import entorno.Herramientas;
+import java.awt.Rectangle;
+
+//import java.awt.Color;
 
 public class Puma {
-	int x, y;
-	Image img1;
-	Rectangle pumaRect;
+	private int x, y;
+	private Image img1;
+	private Rectangle pumaRect;
 
 	public Puma(int x) {
 		// Imagen del puma.
@@ -42,6 +42,14 @@ public class Puma {
 	public void moverAdelante() {
 		this.x -= Configuracion.VELOCIDAD_PUMAS;
 		this.pumaRect.x -= Configuracion.VELOCIDAD_PUMAS;
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public Rectangle getPumaRect() {
+		return pumaRect;
 	}
 
 }

@@ -1,16 +1,17 @@
 package juego;
 
 import java.awt.Image;
-//import java.awt.Rectangle;
 import entorno.Entorno;
 import entorno.Herramientas;
+
+//import java.awt.Rectangle;
 //import java.awt.Color;
 
 public class Arbol {
-	int x, y;
-	int ancho;
-	Image img1;
-	Rama rama;
+	private int x, y;
+	private int ancho;
+	private Image img1;
+	private Rama rama;
 
 	public Arbol(int x, boolean alto) {
 		// Si el booleano pasado como parametro es true, la imagen sera la de un arbol
@@ -44,9 +45,21 @@ public class Arbol {
 //		entorno.dibujarRectangulo(this.x + ancho / 2 + 1, 300, 1, 600, 0.0, Color.yellow);
 	}
 
+	public int getX() {
+		return x;
+	}
+	
 	public void moverAdelante() {
 		// Avanza el arbol junto con su rama.
 		this.x -= Configuracion.VELOCIDAD_OBJETOS;
 		this.rama.moverAdelante();
+	}
+
+	public int getAncho() {
+		return ancho;
+	}
+
+	public Rama getRama() {
+		return rama;
 	}
 }

@@ -1,17 +1,18 @@
 package juego;
 
-//import java.awt.Color;
 import java.awt.Image;
-import java.awt.Rectangle;
 import entorno.Entorno;
 import entorno.Herramientas;
+import java.awt.Rectangle;
+
+//import java.awt.Color;
 
 public class Piedra {
-	int x, y;
-	Image img1;
-	Rectangle piedraRect;
+	private int x, y;
+	private Image img1;
+	private Rectangle piedraRect;
 
-	boolean lanzada;
+	private boolean lanzada;
 
 	public Piedra(int x, int y, boolean lanzada) {
 		// Imagen de la piedra.
@@ -19,24 +20,24 @@ public class Piedra {
 		
 		// Ancho y alto de la hitbox de la piedra.
 		this.piedraRect = new Rectangle();
-		this.piedraRect.width = img1.getWidth(null);
-		this.piedraRect.height = img1.getHeight(null);
+		this.getPiedraRect().width = img1.getWidth(null);
+		this.getPiedraRect().height = img1.getHeight(null);
 		
 		// Coordenadas X de la piedra y su hitbox.
 		this.x = x;
-		this.piedraRect.x = x - piedraRect.width / 2;
+		this.getPiedraRect().x = x - getPiedraRect().width / 2;
 		
 		// Si el booleano pasado como parametro es false, la piedra se situara sobre el suelo. Si es true, se
 		// situara donde le indique la Y pasada como parametro.
 		this.lanzada = lanzada;
 		if (this.lanzada == false) {
-			this.y = Juego.apoyarSobrePiso(this.piedraRect.height);			
+			this.y = Juego.apoyarSobrePiso(this.getPiedraRect().height);			
 		} else {
 			this.y = y;			
 		}
 		
 		// Coordenada Y de la hitbox de la piedra.
-		this.piedraRect.y = this.y - piedraRect.height / 2;
+		this.getPiedraRect().y = this.y - getPiedraRect().height / 2;
 	}
 
 	public void dibujarse(Entorno entorno) {
@@ -50,12 +51,20 @@ public class Piedra {
 	public void moverAdelante() {
 		// Avanza la piedra hacia la izquierda de la pantalla.
 		this.x -= Configuracion.VELOCIDAD_OBJETOS;
-		this.piedraRect.x -= Configuracion.VELOCIDAD_OBJETOS;
+		this.getPiedraRect().x -= Configuracion.VELOCIDAD_OBJETOS;
 	}
 	
 	public void lanzarPiedra() {
 		// Avanza la piedra hacia la derecha de la pantalla.
 		this.x += Configuracion.VELOCIDAD_PIEDRA_LANZADA;
-		this.piedraRect.x += Configuracion.VELOCIDAD_PIEDRA_LANZADA;
+		this.getPiedraRect().x += Configuracion.VELOCIDAD_PIEDRA_LANZADA;
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public Rectangle getPiedraRect() {
+		return piedraRect;
 	}
 }

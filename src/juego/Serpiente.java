@@ -1,6 +1,6 @@
 package juego;
 
-//import java.awt.Color;
+import java.awt.Color; 
 import java.awt.Image;
 import java.awt.Rectangle;
 
@@ -8,9 +8,9 @@ import entorno.Entorno;
 import entorno.Herramientas;
 
 public class Serpiente {
-	int x, y;
-	Image img1;
-	Rectangle serpRect;
+	 private int x, y;
+	 private Image img1;
+	 private Rectangle serpRect;
 
 	public Serpiente(int x, int y) {
 		// Imagen de la serpiente.
@@ -32,8 +32,8 @@ public class Serpiente {
 
 	public void dibujarse(Entorno entorno) {
 		// Hitbox
-//		entorno.dibujarRectangulo(this.serpRect.x + serpRect.width / 2, this.serpRect.y + serpRect.height / 2,
-//				this.serpRect.width, this.serpRect.height, 0.0, Color.gray);
+		entorno.dibujarRectangulo(this.serpRect.x + serpRect.width / 2, this.serpRect.y + serpRect.height / 2,
+				this.serpRect.width, this.serpRect.height, 0.0, Color.gray);
 
 		// Imagen
 		entorno.dibujarImagen(img1, this.x, this.y, 0, 1);
@@ -43,6 +43,10 @@ public class Serpiente {
 		// Avanza la serpiente.
 		this.x -= Configuracion.VELOCIDAD_OBJETOS;
 		this.serpRect.x -= Configuracion.VELOCIDAD_OBJETOS;
+	}
+
+	public Rectangle getSerpRect() {
+		return serpRect;
 	}
 
 }

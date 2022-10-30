@@ -17,21 +17,20 @@ public class Juego extends InterfaceJuego {
 
 	Mono mono;
 
-	// Altura maxima a la que puede llegar el mono.
-	int limiteSalto;
+	// El contador que va a contar la cantidad de ticks que el mono estuvo saltando
+	// en el salto actual.
+	int alturaSaltoActual;
 
 	// Arreglo que va a guardar a los arboles generados con sus ramas y las
 	// serpientes y frutas de sus ramas.
 	Arbol[] arboles;
 
-	Rama[] ramas; // *
-	static Fruta[] frutas; // *
+	// Las ramas se generan con los mismos arboles. Este array sirve para llevar
+	// registro de la posicion actual de las ramas para que el mono
+	// interactue con ellas.
+	Rama[] ramas;
 
-	// (*) Tanto las ramas como las serpientes y las frutas se generan con los
-	// mismos arboles. Estos arrays sirven para llevar registro de la posicion
-	// actual de las frutas, las serpientes y las ramas para que el mono interactue
-	// con ellas.
-
+	
 	Puma[] pumas;
 
 	// A partir de la coordenada x de este arbol se calculara la x del siguiente
@@ -70,12 +69,11 @@ public class Juego extends InterfaceJuego {
 
 		// El contador que va a contar la cantidad de ticks que el mono estuvo saltando
 		// en el salto actual.
-		limiteSalto = 0;
+		alturaSaltoActual = 0;
 
 		// Arreglos de arboles, ramas y frutas.
 		arboles = new Arbol[Configuracion.CANT_ARBOLES];
 		ramas = new Rama[arboles.length];
-		frutas = new Fruta[arboles.length];
 
 		// Ayudara a que, cada cierta cantidad de arboles sin serpiente, se genere una
 		// serpiente obligatoriamente.
@@ -99,7 +97,7 @@ public class Juego extends InterfaceJuego {
 	 */
 	public void tick() {
 		// Si el mono no esta muerto, iniciamos el juego.
-		if (!mono.muerto) {
+		if (!mono.estaMuerto()) {
 			entorno.dibujarImagen(background, 400, 300, 0, 1); // Se dibuja el fondo de pantalla.
 
 			// Mostramos los puntos y la cantidad de piedras que tiene el mono.
@@ -128,17 +126,20 @@ public class Juego extends InterfaceJuego {
 
 					// Ya que estamos recorriendo los arboles, vemos si la serpiente del arbol no es
 					// null.
-					Serpiente serpiente = arbol.rama.serpiente;
+					Serpiente serpiente = arbol.getRama().getSerpiente();
 					if (serpiente != null) {
 						comerAlMono(mono, serpiente); // Si no es null, vemos si esta colisionando con el mono.
 					}
 
 					// Ya que estamos recorriendo los arboles, vemos si la fruta del arbol no es
 					// null.
-					Fruta fruta = arbol.rama.fruta;
+					Fruta fruta = arbol.getRama().getFruta();
 					if (fruta != null) {
 						// Si no es null, vemos si esta colisionando con el mono.
-						agarrarFruta(mono, fruta, arboles);
+						if (frutaAgarrada(mono, fruta)) {
+							mono.ganarPuntos(Configuracion.PUNTOS_GANADOS_POR_COMER_FRUTA);
+							arbol.getRama().setFruta(null);
+						}
 					}
 				}
 			}
@@ -151,10 +152,17 @@ public class Juego extends InterfaceJuego {
 				}
 			}
 
-			// Se dibuja cada piedra DEL SUELO que no sea null.
-			for (Piedra piedra : piedras) {
-				if (piedra != null) {
-					piedra.dibujarse(entorno);
+			// Se dibuja cada piedra DEL SUELO que no sea null. Se usa un for normal porque
+			// en el for each no se puede cambiar el valor del elemento de un array.
+			for (int i = 0; i < piedras.length; i++) {
+				if (piedras[i] != null) {
+					piedras[i].dibujarse(entorno);
+
+					// Si el mono agarra la piedra, esta se hace null.
+					if (piedraAgarrada(mono, piedras[i])) {
+						mono.agarrarPiedra();
+						piedras[i] = null;
+					}
 				}
 			}
 
@@ -194,48 +202,94 @@ public class Juego extends InterfaceJuego {
 
 			// Si el mono no esta cayendo, se esta apretando la tecla arriba y no se llego
 			// al limite del salto:
-			if (!mono.monoCayendo && entorno.estaPresionada(entorno.TECLA_ARRIBA)
-					&& limiteSalto < Configuracion.LIMITE_SALTO) {
+			if (!mono.estaCayendo() && entorno.estaPresionada(entorno.TECLA_ARRIBA)
+					&& alturaSaltoActual < Configuracion.LIMITE_SALTO) {
 				// el mono salta
 				mono.saltar();
 
 				// y hacemos crecer la variable que nos ayuda a llevar registro de cuanto esta
 				// saltando el mono.
-				limiteSalto++;
+				alturaSaltoActual++;
 			} else {
 				// Si no se entra en la rama afirmativa, se reinicia el limite del salto
-				limiteSalto = 0;
+				alturaSaltoActual = 0;
 
 				// y el mono cae.
 				mono.gravedad(ramas);
 			}
 
-			 // PARA TESTEO. Permite al mono moverse en cualquier direccion.
+			// PARA TESTEO. Permite al mono moverse en cualquier direccion.
 			desplazarMono(mono);
 
 		} else {
 			// Si el mono esta muerto:
-			entorno.cambiarFont("Consolas", 30, Color.white);
-
-			// Calculamos el largo del String del puntaje final para situarlo en el centro
-			// de la pantalla.
-			int largoPuntaje = ("Puntos: " + mono.puntos).length();
-			int xDePuntaje = Configuracion.ANCHO_PANTALLA / 2 - (18 * largoPuntaje) / 2;
-
-			// Calculamos el largo del mensaje de la pantalla final para situarlo en el
-			// centro de la pantalla, abajo del puntaje.
-			String mensaje = "Presione la tecla ESPACIO para salir";
-			int xDeMensaje = Configuracion.ANCHO_PANTALLA / 2 - (18 * mensaje.length()) / 2;
-
-			// Mostramos la puntuacion y el mensaje final en pantalla.
-			entorno.escribirTexto("Puntos: " + mono.puntos, xDePuntaje, 300);
-			entorno.escribirTexto(mensaje, xDeMensaje, 500);
+			mostrarPantallaFinal(mono);
 
 			// Si se aprieta la tecla espacios, se quita el juego.
-			if (entorno.sePresiono(entorno.TECLA_ESPACIO)) {
+			if (entorno.sePresiono(entorno.TECLA_ENTER)) {
 				quitar();
 			}
+			if (entorno.sePresiono(entorno.TECLA_ESPACIO)) {
+				resetear(arboles, pumas, piedras, piedrasArrojadas);
+			}
 		}
+	}
+
+	/**
+	 * Muestra la pantalla final con el puntaje logrado y las opciones para salir o
+	 * volver a jugar.
+	 * 
+	 * @param mono
+	 */
+	public void mostrarPantallaFinal(Mono mono) {
+		entorno.cambiarFont("Consolas", 30, Color.white);
+
+		// Calculamos el largo del String del puntaje final para situarlo en el centro
+		// de la pantalla.
+		int largoPuntaje = ("Puntos: " + mono.getPuntos()).length();
+		int xDePuntaje = Configuracion.ANCHO_PANTALLA / 2 - (18 * largoPuntaje) / 2;
+
+		String mensaje = "Presione la tecla ESPACIO para reiniciar";
+		int xDeMensaje = Configuracion.ANCHO_PANTALLA / 2 - (18 * mensaje.length()) / 2;
+
+		// Calculamos el largo del mensaje de la pantalla final para situarlo en el
+		// centro de la pantalla, abajo del puntaje.
+		String mensaje2 = "Presione la tecla ENTER para salir";
+		int xDeMensaje2 = Configuracion.ANCHO_PANTALLA / 2 - (18 * mensaje2.length()) / 2;
+
+		// Mostramos la puntuacion y el mensaje final en pantalla.
+		entorno.escribirTexto("Puntos: " + mono.getPuntos(), xDePuntaje, 200);
+		entorno.escribirTexto(mensaje, xDeMensaje, 400);
+		entorno.escribirTexto(mensaje2, xDeMensaje2, 600);
+	}
+
+	/**
+	 * Setea todos los objetos y variables de instancia de Juego a como estarian al
+	 * inicio del juego e inicia otra partida.
+	 * 
+	 * @param arboles
+	 * @param pumas
+	 * @param piedras
+	 * @param piedrasArrojadas
+	 */
+	public void resetear(Arbol[] arboles, Puma[] pumas, Piedra[] piedras, Piedra[] piedrasArrojadas) {
+		mono.resetear();
+
+		for (int i = 0; i < arboles.length; i++) {
+			arboles[i] = null;
+		}
+		for (int i = 0; i < pumas.length; i++) {
+			pumas[i] = null;
+		}
+		for (int i = 0; i < piedras.length; i++) {
+			piedras[i] = null;
+		}
+		for (int i = 0; i < piedrasArrojadas.length; i++) {
+			piedrasArrojadas[i] = null;
+		}
+		ultimoArbolGenerado = null;
+		ultimoPumaGenerado = null;
+		ultimaPiedraGenerada = null;
 	}
 
 	/**
@@ -262,7 +316,7 @@ public class Juego extends InterfaceJuego {
 		// Si el ultimo arbol que se creo no es null, x toma el valor de la coordenada
 		// actual del ultimo arbol generado (aliasing util).
 		if (ultimoArbolGenerado != null) {
-			x = ultimoArbolGenerado.x;
+			x = ultimoArbolGenerado.getX();
 		}
 
 		// Para cada arbol:
@@ -294,13 +348,13 @@ public class Juego extends InterfaceJuego {
 				} else {
 					// En caso contrario, se elimina la serpiente del arbol actual y se va llevando
 					// la cuenta de los arboles seguidos sin serpiente.
-					arboles[i].rama.serpiente = null;
+					arboles[i].getRama().setSerpiente(null);
 					arbolesSeguidosSinSerpiente++;
 				}
 
 				// Si x no es divisible por chanceFruta, se le elimina la fruta al arbol actual.
 				if (x % chanceFruta != 0) {
-					arboles[i].rama.fruta = null;
+					arboles[i].getRama().setFruta(null);
 				}
 
 				// Se registra el ultimo arbol creado. Aca se utiliza aliasing.
@@ -326,7 +380,7 @@ public class Juego extends InterfaceJuego {
 		// Si el ultimo puma que se creo no es null, x toma el valor de la coordenada
 		// actual del ultimo puma generado.
 		if (ultimoPumaGenerado != null) {
-			x = ultimoPumaGenerado.x;
+			x = ultimoPumaGenerado.getX();
 		}
 
 		// Para cada puma
@@ -364,7 +418,7 @@ public class Juego extends InterfaceJuego {
 		// Si la ultima piedra que se creo no es null,
 		// x toma el valor de la coordenada actual de la ultima piedra generada.
 		if (ultimaPiedraGenerada != null) {
-			x = ultimaPiedraGenerada.x;
+			x = ultimaPiedraGenerada.getX();
 		}
 
 		// Para cada piedra
@@ -398,7 +452,7 @@ public class Juego extends InterfaceJuego {
 	public static void asignarRamasEnArreglos(Arbol[] arboles, Rama[] ramas) {
 		for (int i = 0; i < arboles.length; i++) {
 			if (arboles[i] != null) {
-				ramas[i] = arboles[i].rama;
+				ramas[i] = arboles[i].getRama();
 			}
 		}
 	}
@@ -411,14 +465,14 @@ public class Juego extends InterfaceJuego {
 	public static void avanzarArboles(Arbol[] arboles) {
 		for (int i = 0; i < arboles.length; i++) {
 			// Si el arbol actual es null, salta a la siguiente iteracion.
-			if (arboles[i] == null) {
+			if (arboles[i] == null)
 				continue;
-			}
+
 			arboles[i].moverAdelante();
 
 			// Apenas el arbol desaparezca de la pantalla, el arbol, su rama y la serpiente
 			// de su rama van a volverse null.
-			if (arboles[i].x < -arboles[i].ancho / 2)
+			if (arboles[i].getX() < -arboles[i].getAncho() / 2)
 				arboles[i] = null;
 		}
 	}
@@ -431,13 +485,13 @@ public class Juego extends InterfaceJuego {
 	public static void avanzarPumas(Puma[] pumas) {
 		for (int i = 0; i < pumas.length; i++) {
 			// Si el puma actual es null, salta a la siguiente iteracion.
-			if (pumas[i] == null) {
+			if (pumas[i] == null)
 				continue;
-			}
+
+			pumas[i].moverAdelante();
 
 			// El puma se hace null si se sale de la pantalla.
-			pumas[i].moverAdelante();
-			if (pumas[i].pumaRect.x < -pumas[i].pumaRect.width * 2)
+			if (pumas[i].getPumaRect().x < -pumas[i].getPumaRect().width * 2)
 				pumas[i] = null;
 		}
 	}
@@ -452,21 +506,14 @@ public class Juego extends InterfaceJuego {
 	public static void avanzarPiedras(Piedra[] piedras, Mono mono) {
 		for (int i = 0; i < piedras.length; i++) {
 			// Si la piedra actual es null, salta a la siguiente iteracion.
-			if (piedras[i] == null) {
+			if (piedras[i] == null)
 				continue;
-			}
 
 			piedras[i].moverAdelante();
 
-			// Si el mono agarra la piedra, esta se hace null.
-			if (piedraAgarrada(mono, piedras[i])) {
-				mono.agarrarPiedra();
+			// La piedra se hace null si se sale de la pantalla.
+			if (piedras[i].getPiedraRect().x < -piedras[i].getPiedraRect().width)
 				piedras[i] = null;
-
-				// La piedra se hace null si se sale de la pantalla.
-			} else if (piedras[i].piedraRect.x < -piedras[i].piedraRect.width) {
-				piedras[i] = null;
-			}
 		}
 	}
 
@@ -486,7 +533,7 @@ public class Juego extends InterfaceJuego {
 			proyectiles[i].lanzarPiedra();
 
 			// El proyectil se hace null si se sale de la pantalla.
-			if (proyectiles[i].piedraRect.x > Configuracion.ANCHO_PANTALLA) {
+			if (proyectiles[i].getPiedraRect().x > Configuracion.ANCHO_PANTALLA) {
 				proyectiles[i] = null;
 			}
 		}
@@ -501,8 +548,8 @@ public class Juego extends InterfaceJuego {
 	 * @return Verdadero si el mono agarro la piedra y falso en caso contrario.
 	 */
 	public static boolean piedraAgarrada(Mono mono, Piedra piedra) {
-		return (colisionEntre(mono.monoRect, piedra.piedraRect)
-				&& mono.cantPiedras < Configuracion.CANT_PIEDRAS_QUE_PUEDE_TENER_EL_MONO);
+		return (colisionEntre(mono.getMonoRect(), piedra.getPiedraRect())
+				&& mono.getCantPiedras() < Configuracion.CANT_PIEDRAS_QUE_PUEDE_TENER_EL_MONO);
 	}
 
 	/**
@@ -515,7 +562,7 @@ public class Juego extends InterfaceJuego {
 	 */
 	public static void arrojarPiedras(Mono mono, Piedra[] piedrasArrojadas) {
 		// Si el mono tiene piedras:
-		if (mono.cantPiedras > 0) {
+		if (mono.getCantPiedras() > 0) {
 			// se crea una nueva piedra.
 			Piedra proyectil = mono.arrojarPiedra();
 
@@ -551,7 +598,7 @@ public class Juego extends InterfaceJuego {
 				if (pumas[i] != null) {
 
 					// y si el proyectil colisiona con el puma:
-					if (colisionEntre(proyectil.piedraRect, pumas[i].pumaRect)) {
+					if (colisionEntre(proyectil.getPiedraRect(), pumas[i].getPumaRect())) {
 
 						// el puma y el proyectil se eliminan,
 						pumas[i] = null;
@@ -568,12 +615,12 @@ public class Juego extends InterfaceJuego {
 			for (int i = 0; i < arboles.length; i++) {
 
 				// si el arbol actual y la serpiente de su rama no son null
-				if (arboles[i] != null && arboles[i].rama.serpiente != null) {
+				if (arboles[i] != null && arboles[i].getRama().getSerpiente() != null) {
 
 					// y si el proyectil colisiona con la serpiente:
-					if (colisionEntre(proyectil.piedraRect, arboles[i].rama.serpiente.serpRect)) {
+					if (colisionEntre(proyectil.getPiedraRect(), arboles[i].getRama().getSerpiente().getSerpRect())) {
 						// la serpiente y el proyectil se eliminan,
-						arboles[i].rama.serpiente = null;
+						arboles[i].getRama().setSerpiente(null);
 						eliminarProyectil(proyectil);
 
 						// el mono gana puntos y termina el metodo.
@@ -612,21 +659,21 @@ public class Juego extends InterfaceJuego {
 	 */
 	public static void comerAlMono(Mono mono, Puma puma) {
 		// Si el puma y el mono colisionan, el mono muere.
-		if (colisionEntre(mono.monoRect, puma.pumaRect)) {
+		if (colisionEntre(mono.getMonoRect(), puma.getPumaRect())) {
 			mono.morirse();
 		}
 	}
 
 	/**
-	 * Verifica si una serpiente esta colisionando con el mono y mata al mono en caso
-	 * afirmativo.
+	 * Verifica si una serpiente esta colisionando con el mono y mata al mono en
+	 * caso afirmativo.
 	 * 
 	 * @param mono
 	 * @param serpiente
 	 */
 	public static void comerAlMono(Mono mono, Serpiente serpiente) {
 		// Si la serpiente y el mono colisionan, el mono muere.
-		if (colisionEntre(mono.monoRect, serpiente.serpRect)) {
+		if (colisionEntre(mono.getMonoRect(), serpiente.getSerpRect())) {
 			mono.morirse();
 		}
 	}
@@ -640,32 +687,8 @@ public class Juego extends InterfaceJuego {
 	 * @param arboles Un arreglo de arboles. Se utiliza el arreglo de arboles para
 	 *                acceder a sus ramas y, de esta manera, a las frutas.
 	 */
-	public static void agarrarFruta(Mono mono, Fruta fruta, Arbol[] arboles) {
-		if (colisionEntre(mono.monoRect, fruta.frutaRect)) {
-			mono.ganarPuntos(Configuracion.PUNTOS_GANADOS_POR_COMER_FRUTA);
-			eliminarFruta(fruta, arboles);
-		}
-	}
-
-	/**
-	 * Recibe una fruta como parametro y la busca en el arreglo de arboles para
-	 * pasarla a null.
-	 * 
-	 * @param fruta
-	 * @param arboles
-	 */
-	public static void eliminarFruta(Fruta fruta, Arbol[] arboles) {
-		// Por cada arbol:
-		for (int i = 0; i < arboles.length; i++) {
-
-			// Si la fruta pasada com parametro es el mismo objeto que la fruta del arbol
-			// actual,
-			if (fruta == arboles[i].rama.fruta) {
-				// la fruta del arbol actual pasa a ser null y termina el metodo.
-				arboles[i].rama.fruta = null;
-				return;
-			}
-		}
+	public static boolean frutaAgarrada(Mono mono, Fruta fruta) {
+		return colisionEntre(mono.getMonoRect(), fruta.getFrutaRect());
 	}
 
 	/**
@@ -676,7 +699,7 @@ public class Juego extends InterfaceJuego {
 	 */
 	public void mostrarPuntos(Mono mono, Entorno entorno) {
 		// Calcula el tamanio del String de la puntuacion.
-		int largoPuntaje = ("PUNTOS: " + mono.puntos).length();
+		int largoPuntaje = ("PUNTOS: " + mono.getPuntos()).length();
 
 		// Segun el largo del puntaje, se calcula el x.
 		int xDePuntaje = Configuracion.ANCHO_PANTALLA - 18 * largoPuntaje;
@@ -685,7 +708,7 @@ public class Juego extends InterfaceJuego {
 
 		// Se muestra el puntaje en pantalla:
 		entorno.cambiarFont("Consolas", 30, Color.black);
-		entorno.escribirTexto("PUNTOS: " + mono.puntos, xDePuntaje, yDePuntaje);
+		entorno.escribirTexto("PUNTOS: " + mono.getPuntos(), xDePuntaje, yDePuntaje);
 	}
 
 	/**
@@ -712,7 +735,8 @@ public class Juego extends InterfaceJuego {
 
 		// Se muestra la cantidad de piedras en pantalla:
 		entorno.cambiarFont("Consolas", 25, Color.black);
-		entorno.escribirTexto("PIEDRAS: " + mono.cantPiedras, xDePiedra + anchoPiedra, yDePiedra + altoPiedra / 2 - 2);
+		entorno.escribirTexto("PIEDRAS: " + mono.getCantPiedras(), xDePiedra + anchoPiedra,
+				yDePiedra + altoPiedra / 2 - 2);
 	}
 
 	/**
@@ -756,13 +780,6 @@ public class Juego extends InterfaceJuego {
 	}
 
 	/**
-	 * Cierra el juego
-	 */
-	public void quitar() {
-		System.exit(0);
-	}
-
-	/**
 	 * METODO PARA TESTEAR. Hace que el mono se mueva en cualquier direccion.
 	 * 
 	 * @param mono
@@ -773,14 +790,19 @@ public class Juego extends InterfaceJuego {
 				mono.avanzar();
 			}
 			if (entorno.estaPresionada(entorno.TECLA_IZQUIERDA)) {
-				mono.x -= Configuracion.FUERZA_SALTO;
-				mono.monoRect.x -= Configuracion.FUERZA_SALTO;
+				mono.moverIzq();
 			}
 			if (entorno.estaPresionada(entorno.TECLA_ABAJO)) {
-				mono.y += Configuracion.FUERZA_SALTO;
-				mono.monoRect.y += Configuracion.FUERZA_SALTO;
+				mono.moverAbajo();
 			}
 		}
+	}
+
+	/**
+	 * Cierra el juego
+	 */
+	public void quitar() {
+		System.exit(0);
 	}
 
 	@SuppressWarnings("unused")

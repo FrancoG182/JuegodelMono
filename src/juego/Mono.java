@@ -1,22 +1,23 @@
 package juego;
 
-//import java.awt.Color;
 import java.awt.Image;
-import java.awt.Rectangle;
-
 import entorno.Entorno;
 import entorno.Herramientas;
+import java.awt.Rectangle;
+
+//import java.awt.Color;
+
 
 public class Mono {
-	int x, y;
-	Image img1;
-	Rectangle monoRect;
-	boolean monoCayendo;
+	private int x, y;
+	private Image img1;
+	private Rectangle monoRect;
+	private boolean monoCayendo;
 
-	int cantPiedras;
-	int puntos;
+	private int cantPiedras;
+	private int puntos;
 
-	boolean muerto;
+	private boolean muerto;
 
 	public Mono(int x, int y) {
 		this.img1 = Herramientas.cargarImagen("Mono.png");
@@ -29,10 +30,10 @@ public class Mono {
 		this.monoCayendo = false;
 
 		// Cantidad de piedras actuales del mono.
-		cantPiedras = Configuracion.CANT_PIEDRAS_INICIALES_DEL_MONO;
+		this.cantPiedras = Configuracion.CANT_PIEDRAS_INICIALES_DEL_MONO;
 
 		// Cantidad de puntos actuales del mono.
-		puntos = 0;
+		this.puntos = 0;
 
 		// Cordenadas del mono-
 		this.x = x;
@@ -72,7 +73,7 @@ public class Mono {
 	 */
 	public boolean sobreRama(Rama rama) {
 		// La parte de arriba de la rama donde se pararia el mono.
-		int topeDeRama = rama.ramaRect.y;
+		int topeDeRama = rama.getRamaRect().y;
 
 		int baseMono = this.monoRect.y + this.monoRect.height;
 
@@ -80,12 +81,12 @@ public class Mono {
 		int proximaPosicion = baseMono + Configuracion.GRAVEDAD;
 
 		// Verifica si el mono y la rama se corresponden con respecto al eje X.
-		boolean derMonoSobreIzqRama = this.monoRect.x + this.monoRect.width >= rama.ramaRect.x
-				&& this.monoRect.x + this.monoRect.width <= rama.ramaRect.x + rama.ramaRect.width;
-		boolean izqMonoSobreDerRama = this.monoRect.x >= rama.ramaRect.x
-				&& this.monoRect.x <= rama.ramaRect.x + rama.ramaRect.width;
-		boolean centroMonoSobreCentroRama = this.monoRect.x >= rama.ramaRect.x
-				&& this.monoRect.x + this.monoRect.width <= rama.ramaRect.x + rama.ramaRect.width;
+		boolean derMonoSobreIzqRama = this.monoRect.x + this.monoRect.width >= rama.getRamaRect().x
+				&& this.monoRect.x + this.monoRect.width <= rama.getRamaRect().x + rama.getRamaRect().width;
+		boolean izqMonoSobreDerRama = this.monoRect.x >= rama.getRamaRect().x
+				&& this.monoRect.x <= rama.getRamaRect().x + rama.getRamaRect().width;
+		boolean centroMonoSobreCentroRama = this.monoRect.x >= rama.getRamaRect().x
+				&& this.monoRect.x + this.monoRect.width <= rama.getRamaRect().x + rama.getRamaRect().width;
 
 		// Si se corresponden en el eje X:
 		if (derMonoSobreIzqRama || centroMonoSobreCentroRama || izqMonoSobreDerRama) {
@@ -101,9 +102,9 @@ public class Mono {
 				this.monoRect.y = this.y - this.monoRect.height / 2;
 
 				// Y la rama da puntos, si es que todavia no los dio.
-				if (!rama.yaDioPuntos) {
+				if (!rama.yaDioPuntos()) {
 					this.ganarPuntos(Configuracion.PUNTOS_GANADOS_POR_PARARSE_EN_RAMA);
-					rama.yaDioPuntos = true;
+					rama.setYaDioPuntos(true);
 				}
 				return true;
 			}
@@ -164,11 +165,6 @@ public class Mono {
 		}
 	}
 
-	public void agarrarPiedra() {
-		if (cantPiedras < Configuracion.CANT_PIEDRAS_QUE_PUEDE_TENER_EL_MONO)
-			this.cantPiedras++;
-	}
-
 	/**
 	 * Crea una piedra que va a ser lanzada.
 	 * 
@@ -183,6 +179,46 @@ public class Mono {
 		Piedra proyectil = new Piedra(frenteMono, mitadMono, true);
 
 		return proyectil;
+	}
+
+	public void saltar() {
+		this.monoCayendo = false;
+		this.y -= Configuracion.FUERZA_SALTO;
+		this.monoRect.y -= Configuracion.FUERZA_SALTO;
+	}
+
+	public void resetear() {
+		this.cantPiedras = 1;
+		this.muerto = false;
+		this.puntos = 0;
+		this.y = Juego.apoyarSobrePiso(this.img1);
+		this.monoRect.y = this.y - this.monoRect.height / 2;
+		this.monoCayendo = false;
+	}
+
+	public Rectangle getMonoRect() {
+		return this.monoRect;
+	}
+
+	public boolean estaCayendo() {
+		return this.monoCayendo;
+	}
+
+	public void setMonoCayendo(boolean monoCayendo) {
+		this.monoCayendo = monoCayendo;
+	}
+
+	public int getCantPiedras() {
+		return this.cantPiedras;
+	}
+
+	public void agarrarPiedra() {
+		if (cantPiedras < Configuracion.CANT_PIEDRAS_QUE_PUEDE_TENER_EL_MONO)
+			this.cantPiedras++;
+	}
+
+	public int getPuntos() {
+		return this.puntos;
 	}
 
 	public void ganarPuntos(int puntosGanados) {
@@ -200,6 +236,10 @@ public class Mono {
 		}
 	}
 
+	public boolean estaMuerto() {
+		return this.muerto;
+	}
+
 	public void morirse() {
 		// Si el mono no esta seteado para ser inmortal, se cambia su variable muerto a
 		// true.
@@ -208,18 +248,22 @@ public class Mono {
 		}
 	}
 
-	public void saltar() {
-		this.monoCayendo = false;
-		this.y -= Configuracion.FUERZA_SALTO;
-		this.monoRect.y -= Configuracion.FUERZA_SALTO;
-	}
-
 	/**
-	 * METODO PARA TESTEO. HACE QUE EL MONO SE PUEDA DESPLAZAR EN CUALQUIER
+	 * METODOS PARA TESTEO. HACEN QUE EL MONO SE PUEDA DESPLAZAR EN CUALQUIER
 	 * DIRECCION.
 	 */
 	public void avanzar() {
 		this.x += Configuracion.FUERZA_SALTO;
 		this.monoRect.x += Configuracion.FUERZA_SALTO;
+	}
+
+	public void moverIzq() {
+		this.x -= Configuracion.FUERZA_SALTO;
+		this.monoRect.x -= Configuracion.FUERZA_SALTO;
+	}
+
+	public void moverAbajo() {
+		this.y += Configuracion.FUERZA_SALTO;
+		this.monoRect.y += Configuracion.FUERZA_SALTO;
 	}
 }
