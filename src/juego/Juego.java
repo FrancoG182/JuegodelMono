@@ -65,7 +65,7 @@ public class Juego extends InterfaceJuego {
 
 		background = Herramientas.cargarImagen("background.jpg");
 
-		mono = new Mono(100, 0);
+		mono = new Mono(100);
 
 		// El contador que va a contar la cantidad de ticks que el mono estuvo saltando
 		// en el salto actual.

@@ -19,7 +19,7 @@ public class Mono {
 
 	private boolean muerto;
 
-	public Mono(int x, int y) {
+	public Mono(int x) {
 		this.img1 = Herramientas.cargarImagen("Mono.png");
 //		this.img1 = Herramientas.cargarImagen("Mono1.png");
 
@@ -35,7 +35,7 @@ public class Mono {
 		// Cantidad de puntos actuales del mono.
 		this.puntos = 0;
 
-		// Cordenadas del mono-
+		// Cordenadas del mono.
 		this.x = x;
 		this.y = Juego.apoyarSobrePiso(img1);
 
@@ -165,6 +165,15 @@ public class Mono {
 		}
 	}
 
+	public int getCantPiedras() {
+		return this.cantPiedras;
+	}
+	
+	public void agarrarPiedra() {
+		if (cantPiedras < Configuracion.CANT_PIEDRAS_QUE_PUEDE_TENER_EL_MONO)
+			this.cantPiedras++;
+	}
+	
 	/**
 	 * Crea una piedra que va a ser lanzada.
 	 * 
@@ -206,15 +215,6 @@ public class Mono {
 
 	public void setMonoCayendo(boolean monoCayendo) {
 		this.monoCayendo = monoCayendo;
-	}
-
-	public int getCantPiedras() {
-		return this.cantPiedras;
-	}
-
-	public void agarrarPiedra() {
-		if (cantPiedras < Configuracion.CANT_PIEDRAS_QUE_PUEDE_TENER_EL_MONO)
-			this.cantPiedras++;
 	}
 
 	public int getPuntos() {

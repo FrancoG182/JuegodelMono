@@ -1,11 +1,11 @@
 package juego;
 
-import java.awt.Color; 
 import java.awt.Image;
-import java.awt.Rectangle;
-
 import entorno.Entorno;
 import entorno.Herramientas;
+import java.awt.Rectangle;
+
+//import java.awt.Color;
 
 public class Serpiente {
 	 private int x, y;
@@ -32,8 +32,8 @@ public class Serpiente {
 
 	public void dibujarse(Entorno entorno) {
 		// Hitbox
-		entorno.dibujarRectangulo(this.serpRect.x + serpRect.width / 2, this.serpRect.y + serpRect.height / 2,
-				this.serpRect.width, this.serpRect.height, 0.0, Color.gray);
+//		entorno.dibujarRectangulo(this.serpRect.x + serpRect.width / 2, this.serpRect.y + serpRect.height / 2,
+//				this.serpRect.width, this.serpRect.height, 0.0, Color.gray);
 
 		// Imagen
 		entorno.dibujarImagen(img1, this.x, this.y, 0, 1);
@@ -48,5 +48,4 @@ public class Serpiente {
 	public Rectangle getSerpRect() {
 		return serpRect;
 	}
-
 }
